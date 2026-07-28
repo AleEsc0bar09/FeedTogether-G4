@@ -2,10 +2,10 @@
 
 :root {
   --primary-orange: #E9802A;
-  --secondary-green: #4D8C28;
+  --secondary-green: #44930F;
   --dark-text: #1A1A1A;
   --bg-light: #F9F9F9;
-  --font-title: 'Chau Philomene One', sans-serif;
+  --font-title: 'Arimo', sans-serif;
   --font-body: 'Roboto', sans-serif;
 }
 
@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6,
 
 .custom-navbar .nav-link {
   color: var(--dark-text) !important;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   transition: color 0.2s ease;
 }
 
@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-login-nav:hover {
-  background-color: #3d7020;
+  background-color: #44930F;
   color: #ffffff !important;
 }
 
@@ -83,7 +83,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-green:hover {
-  background-color: #3d7020;
+  background-color: #44930F;
   color: #ffffff;
 }
 
