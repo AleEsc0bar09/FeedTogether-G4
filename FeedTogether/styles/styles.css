@@ -2,7 +2,7 @@
 
 :root {
   --primary-orange: #E9802A;
-  --secondary-green: #44930F;
+  --secondary-green: #489912;
   --dark-text: #1A1A1A;
   --bg-light: #F9F9F9;
   --font-title: 'Arimo', sans-serif;
@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-login-nav:hover {
-  background-color: #44930F;
+  background-color: #7bfd24;
   color: #ffffff !important;
 }
 
@@ -83,7 +83,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-green:hover {
-  background-color: #44930F;
+  background-color: #7bfd24;
   color: #ffffff;
 }
 
