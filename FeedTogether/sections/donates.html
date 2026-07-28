@@ -1,0 +1,63 @@
+<button class="btn btn-link text-muted text-decoration-none p-0 mb-3" onclick="loadSection('details')">
+  <i class="bi bi-arrow-left"></i> Back
+</button>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="p-4 bg-warning rounded-4 text-dark mb-4">
+      <h3 class="fw-bold">Pledge Support for Nuevo Israel</h3>
+    </div>
+    <div class="card border-0 shadow-sm p-3">
+      <h5 class="fw-bold">Pledge Process</h5>
+      <p class="small text-muted mb-2">Your pledge will be reviewed. Our team will contact you to coordinate delivery logistics.</p>
+      <p class="small text-muted mb-0">Track your contribution status in <strong>"My Commitments"</strong>.</p>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm p-4 bg-success text-white rounded-4">
+      <h4 class="fw-bold mb-3">Pledge Details</h4>
+      <form onsubmit="event.preventDefault(); loadSection('mydonations');">
+        <div class="mb-3">
+          <label class="form-label small">Organization / Entity Type</label>
+          <select class="form-select">
+            <option>Community Group</option>
+            <option>Organization / NGO</option>
+            <option>Business / Corporate</option>
+            <option>Individual</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Contact Person Name</label>
+          <input type="text" class="form-control" required placeholder="Full name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Email Address</label>
+          <input type="email" class="form-control" required placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Phone Number</label>
+          <input type="tel" class="form-control" required placeholder="+503 ....">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Categories to Donate</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="dairy">
+            <label class="form-check-label" for="dairy">Dairy Products</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="grains">
+            <label class="form-check-label" for="grains">Grains & Pantry Staples</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="meat">
+            <label class="form-check-label" for="meat">Proteins / Meat</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="produce">
+            <label class="form-check-label" for="produce">Fresh Produce</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-light text-success w-100 fw-bold py-2">Confirm Pledge</button>
+      </form>
+    </div>
+  </div>
+</div>

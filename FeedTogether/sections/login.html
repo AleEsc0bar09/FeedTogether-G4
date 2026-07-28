@@ -1,0 +1,21 @@
+<div class="row justify-content-center my-5">
+  <div class="col-md-5">
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <i class="bi bi-heart-fill text-warning display-4 mb-2"></i>
+      <h3 class="fw-bold">Welcome Back</h3>
+      <p class="text-muted small mb-4">Sign in to continue making an impact.</p>
+      <form onsubmit="event.preventDefault(); loginAs('donor');">
+        <div class="mb-3 text-start">
+          <label class="form-label fw-semibold">Email address</label>
+          <input type="email" class="form-control" required placeholder="name@example.com">
+        </div>
+        <div class="mb-3 text-start">
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Sign In</button>
+      </form>
+      <p class="mt-3 small mb-0">Don't have an account? <a href="#" class="text-warning fw-bold text-decoration-none" onclick="loadSection('roles')">Register</a></p>
+    </div>
+  </div>
+</div>

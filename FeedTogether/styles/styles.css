@@ -1,0 +1,101 @@
+
+
+:root {
+  --primary-orange: #E9802A;
+  --secondary-green: #4D8C28;
+  --dark-text: #1A1A1A;
+  --bg-light: #F9F9F9;
+  --font-title: 'Chau Philomene One', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: var(--bg-light);
+  font-family: var(--font-body);
+  color: var(--dark-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main#main-content {
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6,
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
+.navbar-brand,
+.btn,
+.nav-link,
+.card-title {
+  font-family: var(--font-title);
+}
+
+.custom-navbar {
+  background-color: #ffffff !important;
+}
+
+.brand-logo {
+  object-fit: contain;
+}
+
+.nav-brand-text {
+  color: var(--dark-text) !important;
+}
+
+.custom-navbar .nav-link {
+  color: var(--dark-text) !important;
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
+
+.custom-navbar .nav-link:hover {
+  color: var(--secondary-green) !important;
+}
+
+.btn-login-nav {
+  background-color: var(--secondary-green);
+  border-radius: 6px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-login-nav:hover {
+  background-color: #3d7020;
+  color: #ffffff !important;
+}
+
+.btn-orange {
+  background-color: var(--primary-orange);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-orange:hover {
+  background-color: #d66f1e;
+  color: #ffffff;
+}
+
+.btn-green {
+  background-color: var(--secondary-green);
+  color: #ffffff;
+  border: none;
+}
+
+.btn-green:hover {
+  background-color: #3d7020;
+  color: #ffffff;
+}
+
+.metric-box {
+  background-color: var(--secondary-green);
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card-custom {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
