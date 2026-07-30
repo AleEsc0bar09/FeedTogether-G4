@@ -1,11 +1,9 @@
-
-
 :root {
   --primary-orange: #E9802A;
-  --secondary-green: #489912;
+  --secondary-green: #4D8C28;
   --dark-text: #1A1A1A;
   --bg-light: #F9F9F9;
-  --font-title: 'Arimo', sans-serif;
+  --font-title: 'Chau Philomene One', sans-serif;
   --font-body: 'Roboto', sans-serif;
 }
 
@@ -33,6 +31,8 @@ h1, h2, h3, h4, h5, h6,
 
 .custom-navbar {
   background-color: #ffffff !important;
+  padding-top: 0.8rem !important;
+  padding-bottom: 0.8rem !important;
 }
 
 .brand-logo {
@@ -45,7 +45,9 @@ h1, h2, h3, h4, h5, h6,
 
 .custom-navbar .nav-link {
   color: var(--dark-text) !important;
-  font-size: 1.12rem;
+  font-size: 1.05rem;
+  padding-left: 0.8rem !important;
+  padding-right: 0.8rem !important;
   transition: color 0.2s ease;
 }
 
@@ -61,8 +63,43 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-login-nav:hover {
-  background-color: #7bfd24;
+  background-color: #3d7020;
   color: #ffffff !important;
+}
+
+.hero-cover {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.hero-cover .title-orange {
+  color: var(--primary-orange);
+}
+
+.hero-cover .title-green {
+  color: var(--secondary-green);
+}
+
+.hero-cover .hero-subtitle {
+  color: var(--dark-text);
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}
+
+.text-orange {
+  color: var(--primary-orange) !important;
+}
+
+.text-green {
+  color: var(--secondary-green) !important;
+}
+
+.bg-orange {
+  background-color: var(--primary-orange) !important;
+}
+
+.bg-green {
+  background-color: var(--secondary-green) !important;
 }
 
 .btn-orange {
@@ -83,7 +120,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-green:hover {
-  background-color: #7bfd24;
+  background-color: #3d7020;
   color: #ffffff;
 }
 
