@@ -10,7 +10,7 @@ function loadSection(sectionName) {
     return;
   }
 
-  fetch(`sections/${sectionName}.html`)
+  fetch(`public/${sectionName}.html`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`Failed to load section: ${response.statusText}`);
