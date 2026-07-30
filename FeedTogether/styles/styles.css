@@ -1,14 +1,15 @@
 :root {
-  --primary-orange: #E9802A;
-  --secondary-green: #4D8C28;
-  --dark-text: #1A1A1A;
-  --bg-light: #F9F9F9;
+  --primary-yellow: #FFCE2D;
+  --secondary-green: #44930F;
+  --accent-orange: #DD6E10;
+  --dark-text: #000000;
+  --bg-porcelana: #F5F5EF;
   --font-title: 'Chau Philomene One', sans-serif;
   --font-body: 'Roboto', sans-serif;
 }
 
 body {
-  background-color: var(--bg-light);
+  background-color: var(--bg-porcelana);
   font-family: var(--font-body);
   color: var(--dark-text);
   min-height: 100vh;
@@ -23,10 +24,9 @@ main#main-content {
 h1, h2, h3, h4, h5, h6,
 .display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
 .navbar-brand,
-.btn,
-.nav-link,
 .card-title {
-  font-family: var(--font-title);
+  font-family: var(--font-title) !important;
+  font-weight: normal !important;
 }
 
 .custom-navbar {
@@ -39,13 +39,11 @@ h1, h2, h3, h4, h5, h6,
   object-fit: contain;
 }
 
-.nav-brand-text {
-  color: var(--dark-text) !important;
-}
-
 .custom-navbar .nav-link {
   color: var(--dark-text) !important;
   font-size: 1.05rem;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
   padding-left: 0.8rem !important;
   padding-right: 0.8rem !important;
   transition: color 0.2s ease;
@@ -56,83 +54,102 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .btn-login-nav {
-  background-color: var(--secondary-green);
+  background-color: var(--secondary-green) !important;
   border-radius: 6px;
   border: none;
-  transition: background-color 0.2s ease;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+  transition: opacity 0.2s ease;
 }
 
 .btn-login-nav:hover {
-  background-color: #3d7020;
+  opacity: 0.9;
   color: #ffffff !important;
 }
 
-.hero-cover {
-  padding: 4rem 1rem;
-  text-align: center;
+.text-yellow, .title-yellow {
+  color: var(--primary-yellow) !important;
 }
 
-.hero-cover .title-orange {
-  color: var(--primary-orange);
-}
-
-.hero-cover .title-green {
-  color: var(--secondary-green);
-}
-
-.hero-cover .hero-subtitle {
-  color: var(--dark-text);
-  font-size: 1.25rem;
-  margin-top: 1rem;
-}
-
-.text-orange {
-  color: var(--primary-orange) !important;
-}
-
-.text-green {
+.text-green, .title-green {
   color: var(--secondary-green) !important;
 }
 
-.bg-orange {
-  background-color: var(--primary-orange) !important;
-}
-
-.bg-green {
-  background-color: var(--secondary-green) !important;
-}
-
-.btn-orange {
-  background-color: var(--primary-orange);
-  color: #ffffff;
-  border: none;
-}
-
-.btn-orange:hover {
-  background-color: #d66f1e;
-  color: #ffffff;
+.text-orange, .title-orange {
+  color: var(--accent-orange) !important;
 }
 
 .btn-green {
-  background-color: var(--secondary-green);
-  color: #ffffff;
+  background-color: var(--secondary-green) !important;
+  color: #ffffff !important;
   border: none;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
 }
 
 .btn-green:hover {
-  background-color: #3d7020;
-  color: #ffffff;
+  background-color: #38780c !important;
 }
 
-.metric-box {
-  background-color: var(--secondary-green);
-  color: white;
+.btn-yellow {
+  background-color: var(--primary-yellow) !important;
+  color: var(--dark-text) !important;
+  border: none;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+}
+
+.btn-yellow:hover {
+  background-color: #e6b825 !important;
+}
+
+.btn-orange {
+  background-color: var(--accent-orange) !important;
+  color: #ffffff !important;
+  border: none;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+}
+
+.btn-orange:hover {
+  background-color: #c4600d !important;
+}
+
+.metric-card {
+  background-color: var(--secondary-green) !important;
+  color: #ffffff !important;
   border-radius: 8px;
-  padding: 20px;
+}
+
+.metric-card h3,
+.metric-card small,
+.metric-card i {
+  color: #ffffff !important;
 }
 
 .card-custom {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+}
+.btn-warning,
+.bg-warning {
+  background-color: var(--accent-orange) !important;
+  border-color: var(--accent-orange) !important;
+  color: #ffffff !important;
+}
+
+.btn-success,
+.bg-success {
+  background-color: var(--secondary-green) !important;
+  border-color: var(--secondary-green) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary,
+.bg-primary {
+  background-color: var(--secondary-green) !important;
+  border-color: var(--secondary-green) !important;
+  color: #ffffff !important;
 }
