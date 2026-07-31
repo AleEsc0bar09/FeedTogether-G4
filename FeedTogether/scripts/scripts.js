@@ -54,3 +54,16 @@ function loginAs(role) {
     loadSection('home');
   }
 }
+function loadStoryDetail(storyKey) {
+  loadSection('stories_details');
+
+  setTimeout(() => {
+    const title = document.getElementById('detail-story-title');
+    const img = document.getElementById('detail-story-img');
+    
+    if (storyKey === 'surplus-recovery' && title && img) {
+      title.innerText = "Surplus Recovery Initiative in Local Markets";
+      img.src = "img/Food recovery.jpg";
+    }
+  }, 50);
+}
