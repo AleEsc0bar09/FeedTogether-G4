@@ -4,7 +4,7 @@ CREATE TABLE usuarios(
 
 id_usuario INT AUTO_INCREMENT PRIMARY KEY,
 nombre_contacto VARCHAR(100) NOT NULL,
-nombre_organizacion VARCHAR(150),
+nombre_organizacion VARCHAR(150) ,
 correo VARCHAR(150) UNIQUE NOT NULL,
 password_hash VARCHAR(255) NOT NULL,
 
@@ -14,7 +14,6 @@ rol ENUM(
 ) NOT NULL,
 
 telefono VARCHAR(20),
-whatsapp VARCHAR(255),
 descripcion TEXT,
 direccion VARCHAR(255),
 municipio VARCHAR(50),
@@ -64,7 +63,7 @@ estado ENUM(
  
  );
  
- CREATE TABLE solicitudes(
+CREATE TABLE solicitudes(
  
 id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
 

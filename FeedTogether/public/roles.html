@@ -6,7 +6,7 @@
       <p class="text-muted">Choose how you would like to participate</p>
     </div>
     <div class="row g-4">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card h-100 border-0 bg-light rounded-3 p-3 shadow-sm d-flex flex-column justify-content-between">
           <div>
             <div class="mb-3 fs-1 text-orange">
@@ -15,12 +15,12 @@
             <h4>I Need Support</h4>
             <p class="text-muted small">I represent a community or shelter requiring food assistance.</p>
           </div>
-          <button class="btn btn-orange text-white w-100 mt-3 py-2" onclick="setRoleAndNavigate('requester')">
+          <button class="btn btn-orange text-white w-100 mt-3 py-2" onclick="loadSection('register')">
             Continue as Requester
           </button>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card h-100 border-0 bg-light rounded-3 p-3 shadow-sm d-flex flex-column justify-content-between">
           <div>
             <div class="mb-3 fs-1 text-green">
@@ -29,21 +29,21 @@
             <h4>I Want to Help</h4>
             <p class="text-muted small">I am an individual, company, or organization offering support.</p>
           </div>
-          <button class="btn btn-green text-white w-100 mt-3 py-2" onclick="setRoleAndNavigate('donor')">
+          <button class="btn btn-green text-white w-100 mt-3 py-2" onclick="loadSection('register')">
             Continue as Donor
           </button>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card h-100 border-0 bg-light rounded-3 p-3 shadow-sm d-flex flex-column justify-content-between">
+      <div class="col-md-12">
+        <div class="card h-100 border-0 bg-light rounded-3  shadow-sm d-flex flex-column justify-content-between">
           <div>
             <div class="mb-3 fs-1 text-green">
               <i class="bi bi-people-fill"></i>
             </div>
             <h4>Volunteering</h4>
-            <p class="text-muted small">Join community activities and on-site logistics programs.</p>
+            <p class="text-muted small">Explore new ways to help with your volunteering, <b>without any account needed!</b></p>
           </div>
-          <button class="btn btn-green text-white w-100 mt-3 py-2" onclick="setRoleAndNavigate('volunteer')">
+          <button class="btn btn-green text-white w-100 mt-3 py-2" onclick="loadSection('volunteer')">
             Explore Opportunities
           </button>
         </div>
