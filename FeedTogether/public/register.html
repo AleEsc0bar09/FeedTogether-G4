@@ -1,0 +1,507 @@
+<div class="row justify-content-center my-5">
+  <div class="col-11">
+    <div class="card border-0 shadow-sm p-4 text-center">
+      <img
+        src="img/logo.png"
+        class="img-fluid mx-auto d-block mb-3"
+        style="max-width: 200px"
+        alt="FeedTogether Logo"
+      />
+
+      <h3 class="fw-bold">Create an Account</h3>
+      <p class="text-muted small mb-4">Join us to start making an impact.</p>
+
+      <form
+        action="php/registrar.php"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3 text-start">
+          <label for="nombre" class="form-label fw-semibold">Full Name</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            class="form-control"
+            required
+            placeholder="Your name"
+          />
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="email" class="form-label fw-semibold"
+            >Email address</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            required
+            placeholder="name@example.com"
+          />
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="password" class="form-label fw-semibold">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            required
+            placeholder="••••••••"
+          />
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="confirm_password" class="form-label fw-semibold"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            class="form-control"
+            required
+            placeholder="••••••••"
+          />
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="departamento" class="form-label fw-semibold"
+            >your local department</label
+          >
+
+          <select
+            class="form-select"
+            name="departamento"
+            id="departamento"
+            required
+          >
+            <option value="">Select a department</option>
+            <option value="ahuachapan">Ahuachapán</option>
+            <option value="santa_ana">Santa Ana</option>
+            <option value="chalatenango">Chalatenango</option>
+            <option value="la_libertad">La Libertad</option>
+            <option value="san_salvador">San Salvador</option>
+            <option value="cuscatlan">Cuscatlán</option>
+            <option value="sonsonate">Sonsonate</option>
+            <option value="la_paz">La Paz</option>
+            <option value="cabañas">Cabañas</option>
+            <option value="san_vicente">San Vicente</option>
+            <option value="usulutan">Usulután</option>
+            <option value="san_miguel">San Miguel</option>
+            <option value="morazan">Morazán</option>
+            <option value="la_union">La Unión</option>
+          </select>
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="distrito" class="form-label fw-semibold">Municipality</label>
+          <select class="form-select" name="distrito" id="distrito" required>
+            <option value="" disabled selected>
+              Select your municipality
+            </option>
+
+            <optgroup label="Ahuachapán">
+              <option value="ahuachapan">Ahuachapán</option>
+              <option value="apaneca">Apaneca</option>
+              <option value="atiquizaya">Atiquizaya</option>
+              <option value="concepcion_de_ataco">Concepción de Ataco</option>
+              <option value="el_refugio">El Refugio</option>
+              <option value="guaymango">Guaymango</option>
+              <option value="jujutla">Jujutla</option>
+              <option value="san_francisco_menendez">
+                San Francisco Menéndez
+              </option>
+              <option value="san_lorenzo_ahuachapan">San Lorenzo</option>
+              <option value="san_pedro_puxtla">San Pedro Puxtla</option>
+              <option value="tacuba">Tacuba</option>
+              <option value="turin">Turín</option>
+            </optgroup>
+
+            <optgroup label="Cabañas">
+              <option value="cinquera">Cinquera</option>
+              <option value="dolores">Dolores</option>
+              <option value="guacotecti">Guacotecti</option>
+              <option value="ilobasco">Ilobasco</option>
+              <option value="jutiapa">Jutiapa</option>
+              <option value="san_isidro_cabanas">San Isidro</option>
+              <option value="sensuntepeque">Sensuntepeque</option>
+              <option value="tejutepeque">Tejutepeque</option>
+              <option value="victoria">Victoria</option>
+            </optgroup>
+
+            <optgroup label="Chalatenango">
+              <option value="agua_caliente">Agua Caliente</option>
+              <option value="arcatao">Arcatao</option>
+              <option value="azacualpa">Azacualpa</option>
+              <option value="chalatenango">Chalatenango</option>
+              <option value="citala">Citalá</option>
+              <option value="comalapa">Comalapa</option>
+              <option value="concepcion_quezaltepeque">
+                Concepción Quezaltepeque
+              </option>
+              <option value="dulce_nombre_de_maria">
+                Dulce Nombre de María
+              </option>
+              <option value="el_carrizal">El Carrizal</option>
+              <option value="el_paraiso">El Paraíso</option>
+              <option value="la_laguna">La Laguna</option>
+              <option value="la_palma">La Palma</option>
+              <option value="la_reina">La Reina</option>
+              <option value="las_vueltas">Las Vueltas</option>
+              <option value="nombre_de_jesus">Nombre de Jesús</option>
+              <option value="nueva_concepcion">Nueva Concepción</option>
+              <option value="nueva_trinidad">Nueva Trinidad</option>
+              <option value="ojos_de_agua">Ojos de Agua</option>
+              <option value="potonico">Potonico</option>
+              <option value="san_antonio_de_la_cruz">
+                San Antonio de la Cruz
+              </option>
+              <option value="san_antonio_los_ranchos">
+                San Antonio Los Ranchos
+              </option>
+              <option value="san_fernando_chalatenango">San Fernando</option>
+              <option value="san_francisco_lempa">San Francisco Lempa</option>
+              <option value="san_francisco_morazan">
+                San Francisco Morazán
+              </option>
+              <option value="san_ignacio">San Ignacio</option>
+              <option value="san_isidro_labrador">San Isidro Labrador</option>
+              <option value="san_jose_cancasque">San José Cancasque</option>
+              <option value="san_jose_las_flores">San José Las Flores</option>
+              <option value="san_luis_del_carmen">San Luis del Carmen</option>
+              <option value="san_miguel_de_mercedes">
+                San Miguel de Mercedes
+              </option>
+              <option value="san_rafael_chalatenango">San Rafael</option>
+              <option value="santa_rita">Santa Rita</option>
+            </optgroup>
+
+            <optgroup label="Cuscatlán">
+              <option value="candelaria">Candelaria</option>
+              <option value="cojutepeque">Cojutepeque</option>
+              <option value="el_carmen_cuscatlan">El Carmen</option>
+              <option value="el_rosario_cuscatlan">El Rosario</option>
+              <option value="monte_san_juan">Monte San Juan</option>
+              <option value="oratorio_de_concepcion">
+                Oratorio de Concepción
+              </option>
+              <option value="san_bartolome_perulapia">
+                San Bartolomé Perulapía
+              </option>
+              <option value="san_cristobal">San Cristóbal</option>
+              <option value="san_jose_guayabal">San José Guayabal</option>
+              <option value="san_pedro_perulapan">San Pedro Perulapán</option>
+              <option value="san_rafael_cedros">San Rafael Cedros</option>
+              <option value="san_ramon">San Ramón</option>
+              <option value="santa_cruz_analquito">Santa Cruz Analquito</option>
+              <option value="santa_cruz_michapa">Santa Cruz Michapa</option>
+              <option value="suchitoto">Suchitoto</option>
+              <option value="tenancingo">Tenancingo</option>
+            </optgroup>
+
+            <optgroup label="La Libertad">
+              <option value="antiguo_cuscatlan">Antiguo Cuscatlán</option>
+              <option value="chiltiupan">Chiltiupán</option>
+              <option value="ciudad_arce">Ciudad Arce</option>
+              <option value="colon">Colón</option>
+              <option value="comasagua">Comasagua</option>
+              <option value="huizucar">Huizúcar</option>
+              <option value="jayaque">Jayaque</option>
+              <option value="jicalapa">Jicalapa</option>
+              <option value="la_libertad">La Libertad</option>
+              <option value="nuevo_cuscatlan">Nuevo Cuscatlán</option>
+              <option value="quezaltepeque">Quezaltepeque</option>
+              <option value="sacacoyo">Sacacoyo</option>
+              <option value="san_jose_villanueva">San José Villanueva</option>
+              <option value="san_juan_opico">San Juan Opico</option>
+              <option value="san_matias">San Matías</option>
+              <option value="san_pablo_tacachico">San Pablo Tacachico</option>
+              <option value="santa_tecla">Santa Tecla</option>
+              <option value="talnique">Talnique</option>
+              <option value="tamanique">Tamanique</option>
+              <option value="teotepeque">Teotepeque</option>
+              <option value="tepecoyo">Tepecoyo</option>
+              <option value="zaragoza">Zaragoza</option>
+            </optgroup>
+
+            <optgroup label="La Paz">
+              <option value="cuyultitan">Cuyultitán</option>
+              <option value="el_rosario_la_paz">El Rosario</option>
+              <option value="jerusalen">Jerusalén</option>
+              <option value="mercedes_la_ceiba">Mercedes La Ceiba</option>
+              <option value="olocuilta">Olocuilta</option>
+              <option value="paraiso_de_osorio">Paraíso de Osorio</option>
+              <option value="san_antonio_masahuat">San Antonio Masahuat</option>
+              <option value="san_emigdio">San Emigdio</option>
+              <option value="san_francisco_chinameca">
+                San Francisco Chinameca
+              </option>
+              <option value="san_juan_nonualco">San Juan Nonualco</option>
+              <option value="san_juan_talpa">San Juan Talpa</option>
+              <option value="san_juan_tepezontes">San Juan Tepezontes</option>
+              <option value="san_luis_la_herradura">
+                San Luis La Herradura
+              </option>
+              <option value="san_luis_talpa">San Luis Talpa</option>
+              <option value="san_miguel_tepezontes">
+                San Miguel Tepezontes
+              </option>
+              <option value="san_pedro_masahuat">San Pedro Masahuat</option>
+              <option value="san_pedro_nonualco">San Pedro Nonualco</option>
+              <option value="san_rafael_obrajuelo">San Rafael Obrajuelo</option>
+              <option value="santa_maria_ostuma">Santa María Ostuma</option>
+              <option value="santiago_nonualco">Santiago Nonualco</option>
+              <option value="tapalhuaca">Tapalhuaca</option>
+              <option value="zacatecoluca">Zacatecoluca</option>
+            </optgroup>
+
+            <optgroup label="La Unión">
+              <option value="anamoros">Anamorós</option>
+              <option value="bolivar">Bolívar</option>
+              <option value="concepcion_de_oriente">
+                Concepción de Oriente
+              </option>
+              <option value="conchagua">Conchagua</option>
+              <option value="el_carmen_la_union">El Carmen</option>
+              <option value="el_sauce">El Sauce</option>
+              <option value="intipuca">Intipucá</option>
+              <option value="la_union">La Unión</option>
+              <option value="lislique">Lislique</option>
+              <option value="meanguera_del_golfo">Meanguera del Golfo</option>
+              <option value="nueva_esparta">Nueva Esparta</option>
+              <option value="pasaquina">Pasaquina</option>
+              <option value="poloros">Polorós</option>
+              <option value="san_alejo">San Alejo</option>
+              <option value="san_jose_la_union">San José</option>
+              <option value="yayuantique">Yayuantique</option>
+              <option value="yucuaiquin">Yucuaiquín</option>
+            </optgroup>
+
+            <optgroup label="Morazán">
+              <option value="arambala">Arambala</option>
+              <option value="cacaopera">Cacaopera</option>
+              <option value="chilanga">Chilanga</option>
+              <option value="corinto">Corinto</option>
+              <option value="delicias_de_concepcion">
+                Delicias de Concepción
+              </option>
+              <option value="el_divisadero">El Divisadero</option>
+              <option value="el_rosario_morazan">El Rosario</option>
+              <option value="gualococti">Gualococti</option>
+              <option value="guatajiagua">Guatajiagua</option>
+              <option value="joateca">Joateca</option>
+              <option value="jocoaitique">Jocoaitique</option>
+              <option value="jocoro">Jocoro</option>
+              <option value="lololique">Lololique</option>
+              <option value="meanguera_morazan">Meanguera</option>
+              <option value="osicala">Osicala</option>
+              <option value="perquin">Perquín</option>
+              <option value="san_carlos">San Carlos</option>
+              <option value="san_fernando_morazan">San Fernando</option>
+              <option value="san_francisco_gotera">San Francisco Gotera</option>
+              <option value="san_isidro_morazan">San Isidro</option>
+              <option value="san_simon">San Simón</option>
+              <option value="sensembra">Sensembra</option>
+              <option value="sociedad">Sociedad</option>
+              <option value="torola">Torola</option>
+              <option value="yamabal">Yamabal</option>
+              <option value="yoloaiquin">Yoloaiquín</option>
+            </optgroup>
+
+            <optgroup label="San Miguel">
+              <option value="carolina">Carolina</option>
+              <option value="chapeltique">Chapeltique</option>
+              <option value="chinameca">Chinameca</option>
+              <option value="chirilagua">Chirilagua</option>
+              <option value="ciudad_barrios">Ciudad Barrios</option>
+              <option value="comacaran">Comacarán</option>
+              <option value="el_transito">El Tránsito</option>
+              <option value="lolotique">Lolotique</option>
+              <option value="moncagua">Moncagua</option>
+              <option value="nueva_guadalupe">Nueva Guadalupe</option>
+              <option value="nuevo_eden_de_san_juan">
+                Nuevo Edén de San Juan
+              </option>
+              <option value="quelepa">Quelepa</option>
+              <option value="san_antonio_san_miguel">San Antonio</option>
+              <option value="san_gerardo">San Gerardo</option>
+              <option value="san_jorge">San Jorge</option>
+              <option value="san_luis_de_la_reina">San Luis de la Reina</option>
+              <option value="san_miguel">San Miguel</option>
+              <option value="san_rafael_oriente">San Rafael Oriente</option>
+              <option value="sesori">Sesori</option>
+              <option value="uluazapa">Uluazapa</option>
+            </optgroup>
+
+            <optgroup label="San Salvador">
+              <option value="aguilares">Aguilares</option>
+              <option value="apopa">Apopa</option>
+              <option value="ayutuxtepeque">Ayutuxtepeque</option>
+              <option value="cuscatancingo">Cuscatancingo</option>
+              <option value="delgado">Delgado</option>
+              <option value="el_paisnal">El Paisnal</option>
+              <option value="guazapa">Guazapa</option>
+              <option value="ilopango">Ilopango</option>
+              <option value="mejicanos">Mejicanos</option>
+              <option value="nejapa">Nejapa</option>
+              <option value="panchimalco">Panchimalco</option>
+              <option value="rosario_de_mora">Rosario de Mora</option>
+              <option value="san_marcos">San Marcos</option>
+              <option value="san_martin">San Martín</option>
+              <option value="san_salvador">San Salvador</option>
+              <option value="santiago_texacuangos">Santiago Texacuangos</option>
+              <option value="santo_tomas">Santo Tomás</option>
+              <option value="soyapango">Soyapango</option>
+              <option value="tonacatepeque">Tonacatepeque</option>
+            </optgroup>
+
+            <optgroup label="San Vicente">
+              <option value="apastepeque">Apastepeque</option>
+              <option value="guadalupe">Guadalupe</option>
+              <option value="san_cayetano_istepeque">
+                San Cayetano Istepeque
+              </option>
+              <option value="san_esteban_catarina">San Esteban Catarina</option>
+              <option value="san_ildefonso">San Ildefonso</option>
+              <option value="san_lorenzo_san_vicente">San Lorenzo</option>
+              <option value="san_sebastian">San Sebastián</option>
+              <option value="san_vicente">San Vicente</option>
+              <option value="santa_clara">Santa Clara</option>
+              <option value="santo_domingo">Santo Domingo</option>
+              <option value="tecoluca">Tecoluca</option>
+              <option value="tepetitan">Tepetitán</option>
+              <option value="verapaz">Verapaz</option>
+            </optgroup>
+
+            <optgroup label="Santa Ana">
+              <option value="candelaria_de_la_frontera">
+                Candelaria de la Frontera
+              </option>
+              <option value="chalchuapa">Chalchuapa</option>
+              <option value="coatepeque">Coatepeque</option>
+              <option value="el_congo">El Congo</option>
+              <option value="el_porvenir">El Porvenir</option>
+              <option value="masahuat">Masahuat</option>
+              <option value="metapan">Metapán</option>
+              <option value="san_antonio_pajonal">San Antonio Pajonal</option>
+              <option value="san_sebastian_salitrillo">
+                San Sebastián Salitrillo
+              </option>
+              <option value="santa_ana">Santa Ana</option>
+              <option value="santa_rosa_guachipilin">
+                Santa Rosa Guachipilín
+              </option>
+              <option value="santiago_de_la_frontera">
+                Santiago de la Frontera
+              </option>
+              <option value="texistepeque">Texistepeque</option>
+            </optgroup>
+
+            <optgroup label="Sonsonate">
+              <option value="acajutla">Acajutla</option>
+              <option value="armenia">Armenia</option>
+              <option value="caluco">Caluco</option>
+              <option value="cuisnahuat">Cuisnahuat</option>
+              <option value="izalco">Izalco</option>
+              <option value="juayua">Juayúa</option>
+              <option value="nahuizalco">Nahuizalco</option>
+              <option value="nahulingo">Nahulingo</option>
+              <option value="salcoatitan">Salcoatitán</option>
+              <option value="san_antonio_del_monte">
+                San Antonio del Monte
+              </option>
+              <option value="santa_catarina_masahuat">
+                Santa Catarina Masahuat
+              </option>
+              <option value="santa_isabel_ishuatan">
+                Santa Isabel Ishuatán
+              </option>
+              <option value="santo_domingo_de_guzman">
+                Santo Domingo de Guzmán
+              </option>
+              <option value="sonsonate">Sonsonate</option>
+              <option value="sonzacate">Sonzacate</option>
+            </optgroup>
+
+            <optgroup label="Usulután">
+              <option value="alegria">Alegría</option>
+              <option value="berlin">Berlín</option>
+              <option value="california">California</option>
+              <option value="concepcion_batres">Concepción Batres</option>
+              <option value="el_triunfo">El Triunfo</option>
+              <option value="ereguayquin">Ereguayquín</option>
+              <option value="estanzuelas">Estanzuelas</option>
+              <option value="jiquilisco">Jiquilisco</option>
+              <option value="jucuapa">Jucuapa</option>
+              <option value="jucualan">Jucuarán</option>
+              <option value="mercedes_umana">Mercedes Umaña</option>
+              <option value="nueva_granada">Nueva Granada</option>
+              <option value="ozatlan">Ozatlán</option>
+              <option value="puerto_el_triunfo">Puerto El Triunfo</option>
+              <option value="san_agustin">San Agustín</option>
+              <option value="san_dionisio">San Dionisio</option>
+              <option value="san_francisco_javier">San Francisco Javier</option>
+              <option value="santa_elena">Santa Elena</option>
+              <option value="santa_maria">Santa María</option>
+              <option value="santiago_de_maria">Santiago de María</option>
+              <option value="tecapan">Tecapán</option>
+              <option value="usulutan">Usulután</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="telefono" class="form-label fw-semibold"
+            >Cellphone number</label
+          >
+          <div class="input-group">
+            <span class="input-group-text">+503</span>
+            <input
+              type="tel"
+              class="form-control"
+              name="telefono"
+              id="telefono"
+              placeholder="0000-0000"
+              pattern="[267][0-9]{3}-?[0-9]{4}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="foto_perfil" class="form-label fw-semibold"
+            >profile image</label
+          >
+          <input
+            type="file"
+            class="form-control"
+            name="foto_perfil"
+            id="foto_perfil"
+            accept="image/png, image/jpeg, image/webp"
+            required
+          />
+          <div class="form-text">
+            Select a compatible image from your device (JPG, PNG o WebP).
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
+          Register
+        </button>
+      </form>
+
+      <p class="mt-3 small mb-0">
+        Already have an account?
+        <a
+          href="#"
+          class="text-warning fw-bold text-decoration-none"
+          onclick="loadSection('login')"
+          >Sign In</a
+        >
+      </p>
+    </div>
+  </div>
+</div>
