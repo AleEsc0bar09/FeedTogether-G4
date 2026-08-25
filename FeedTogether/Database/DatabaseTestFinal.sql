@@ -2,8 +2,8 @@ CREATE DATABASE Feedtogether;
 
 USE Feedtogether;
 
-CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE solicitudes(
     fecha_limite DATE NULL,
     estado ENUM('activa','cerrada') DEFAULT 'activa',
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_solicitud_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+    CONSTRAINT fk_solicitud_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
 -- Tabla de imágenes asociadas a solicitudes
@@ -71,7 +71,7 @@ CREATE TABLE compromisos_donacion(
     fecha_compromiso DATETIME DEFAULT CURRENT_TIMESTAMP,
     estado ENUM('pendiente','completado','cancelado') DEFAULT 'pendiente',
     CONSTRAINT fk_compromiso_solicitud FOREIGN KEY (id_solicitud) REFERENCES solicitudes(id_solicitud),
-    CONSTRAINT fk_compromiso_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+    CONSTRAINT fk_compromiso_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
 -- Tabla de feedback
@@ -81,5 +81,5 @@ CREATE TABLE feedback(
     calificacion TINYINT NOT NULL,
     comentario TEXT NOT NULL,
     fecha_feedback DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_feedback_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+    CONSTRAINT fk_feedback_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );

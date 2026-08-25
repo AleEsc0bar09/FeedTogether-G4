@@ -2,7 +2,7 @@
 // config/conexion.php
 
 $host = 'localhost';
-$dbname = 'DatabaseTestFinal'; // Nombre de tu base de datos
+$dbname = 'feedtogether'; // Nombre de tu base de datos
 $username = 'root';            // Usuario por defecto en entornos locales (XAMPP/WAMP)
 $password = '';                // Contraseña (vacía por defecto en XAMPP)
 
