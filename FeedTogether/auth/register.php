@@ -53,7 +53,7 @@ if (!isset($_FILES['foto_perfil']) || $_FILES['foto_perfil']['error'] !== UPLOAD
 
 try {
     // 1. Verificar si el correo ya existe
-    $stmtCheck = $conexion->prepare("SELECT id FROM usuarios WHERE email = :email");
+    $stmtCheck = $conexion->prepare("SELECT id FROM usuario WHERE email = :email");
     $stmtCheck->execute([':email' => $email]);
 
     if ($stmtCheck->fetch()) {
@@ -76,7 +76,7 @@ try {
     }
 
     // 4. Insertar el nuevo usuario en DatabaseTestFinal
-    $stmtInsert = $conexion->prepare("INSERT INTO usuarios (nombre, email, password, departamento, distrito, telefono, foto_perfil, rol) VALUES (:nombre, :email, :password, :departamento, :distrito, :telefono, :foto_perfil, :rol)");
+    $stmtInsert = $conexion->prepare("INSERT INTO usuario (nombre, email, password, departamento, distrito, telefono, foto_perfil, rol) VALUES (:nombre, :email, :password, :departamento, :distrito, :telefono, :foto_perfil, :rol)");
     $stmtInsert->execute([
         ':nombre' => $nombre,
         ':email' => $email,
