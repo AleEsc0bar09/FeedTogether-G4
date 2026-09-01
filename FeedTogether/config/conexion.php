@@ -13,9 +13,10 @@ try {
     ]);
 } catch (PDOException $e) {
     http_response_code(500);
+    error_log('Error de conexión a la base de datos: ' . $e->getMessage());
     echo json_encode([
         'status' => 'error',
-        'message' => 'Error de conexión a la base de datos: ' . $e->getMessage()
+        'message' => 'No se pudo conectar a la base de datos. Inténtalo más tarde.'
     ]);
     exit;
 }
