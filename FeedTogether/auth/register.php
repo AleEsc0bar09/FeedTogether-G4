@@ -53,7 +53,7 @@ if (!isset($_FILES['foto_perfil']) || $_FILES['foto_perfil']['error'] !== UPLOAD
 
 try {
     // 1. Verificar si el correo ya existe
-    $stmtCheck = $conexion->prepare("SELECT id FROM usuario WHERE email = :email");
+    $stmtCheck = $conexion->prepare("SELECT id_usuario FROM usuario WHERE email = :email");
     $stmtCheck->execute([':email' => $email]);
 
     if ($stmtCheck->fetch()) {
@@ -94,10 +94,9 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    error_log('Error al registrar usuario: ' . $e->getMessage());
     echo json_encode([
         'status' => 'error',
-        'message' => 'Ocurrió un error al registrar el usuario. Inténtalo de nuevo más tarde.'
+        'message' => 'DEBUG: ' . $e->getMessage()
     ]);
 }
 ?>
