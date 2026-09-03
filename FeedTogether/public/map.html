@@ -1,178 +1,57 @@
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FeedTogether</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles/styles.css" />
+<h3 class="fw-bold mb-3 text-success">Coverage & Support Network Map</h3>
+<p class="text-muted mb-4">Find active community kitchens, churches, and NGOs distributing or requesting food support across El Salvador.</p>
 
-    <!--Leaflet map link-->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <style>
-      #mapa-prueba {
-        height: 400px;
-        width: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <nav
-      class="navbar navbar-expand-lg bg-white custom-navbar border-bottom shadow-sm py-2"
-    >
-      <div class="container">
-        <a
-          class="navbar-brand d-flex align-items-center gap-2"
-          href="#"
-          onclick="loadSection('home')"
-        >
-          <img
-            src="img/horizontal_logo.png"
-            alt="FeedTogether Logo"
-            class="brand-logo"
-            style="height: 70px; width: auto"
-          />
-        </a>
-
-        <button
-          class="navbar-toggler border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-center gap-lg-3">
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('request')"
-                >Requests</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('volunteer')"
-                >Volunteering</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('stories')"
-                >Stories</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('map')"
-                >Needs Map</a
-              >
-            </li>
-
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('About Us')"
-                >About Us</a
-              >
-            </li>
-            <li class="nav-item ms-lg-2">
-              <a
-                class="btn btn-login-nav text-white fw-bold px-3 py-1"
-                href="#"
-                onclick="loadSection('login')"
-                >Login</a
-              >
-            </li>
-          </ul>
+<div class="row">
+  <div class="col-lg-8">
+    <div id="mapa-sv" class="rounded-4 border shadow-sm" style="height: 420px; width: 100%; z-index: 1;"></div>
+    
+    <div class="row g-2 mt-2">
+      <div class="col-6">
+        <select class="form-select">
+          <option selected>All Regions</option>
+          <option>Central Zone</option>
+          <option>Western Zone</option>
+          <option>Eastern Zone</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <select class="form-select">
+          <option selected>All Organization Types</option>
+          <option>Community Kitchens</option>
+          <option>Churches & Parishes</option>
+          <option>Local Relief NGOs</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4 mt-4 mt-lg-0">
+    <div class="card border-0 shadow-sm p-3 bg-white">
+      <h5 class="fw-bold mb-3">Organization Status</h5>
+      
+      <div class="d-flex align-items-center mb-3">
+        <span class="badge rounded-circle bg-danger me-2 p-2"> </span>
+        <div>
+          <strong class="d-block text-dark">High Priority Needs</strong>
+          <small class="text-muted">Requires urgent food basket donations.</small>
         </div>
       </div>
-    </nav>
-
-    <!--Mapa-->
-    <div class="row">
-      <div class="col-lg-8">
-        <div
-          id="mapa-sv"
-          class="rounded-4 border shadow-sm m-2"
-          style="height: 200px; width: 100%"
-        ></div>
-
-        <div class="row g-2 m-2">
-          <div class="col-6 m-2">
-            <select class="form-select">
-              <option>All Regions</option>
-            </select>
-          </div>
-          <div class="col-6 m-2">
-            <select class="form-select">
-              <option>All Districts</option>
-            </select>
-          </div>
+      
+      <div class="d-flex align-items-center mb-3">
+        <span class="badge rounded-circle bg-warning me-2 p-2"> </span>
+        <div>
+          <strong class="d-block text-dark">Active Collection Point</strong>
+          <small class="text-muted">Receiving and distributing surplus meals.</small>
         </div>
       </div>
-
-      <div class="col-lg-4 mt-4 mt-lg-0">
-        <div class="card border-0 shadow-sm p-3 m-2">
-          <h5 class="fw-bold mb-3">Priority Level</h5>
-          <div class="d-flex align-items-center mb-2">
-            <span class="badge rounded-circle bg-danger me-2 p-2"> </span
-            ><span>High Priority</span>
-          </div>
-          <div class="d-flex align-items-center mb-2 ">
-            <span class="badge rounded-circle bg-warning me-2 p-2"> </span
-            ><span>Medium Priority</span>
-          </div>
-          <div class="d-flex align-items-center">
-            <span class="badge rounded-circle bg-success me-2 p-2"> </span
-            ><span>Low Priority</span>
-          </div>
+      
+      <div class="d-flex align-items-center">
+        <span class="badge rounded-circle bg-success me-2 p-2"> </span>
+        <div>
+          <strong class="d-block text-dark">Partner Church / NGO</strong>
+          <small class="text-muted">Logistics & volunteer distribution hub.</small>
         </div>
       </div>
     </div>
-
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
-      <div class="container">
-        <small>&copy; 2026 FeedTogether. Todos los derechos reservados.</small>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="scripts/scripts.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-      var map = L.map("mapa-sv").setView([13.7942, -88.8965], 8);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "© OpenStreetMap",
-      }).addTo(map);
-      L.marker([13.7942, -88.8965]).addTo(map).bindPopup("¡Funciona!");
-    </script>
-  </body>
-</html>
+  </div>
+</div>

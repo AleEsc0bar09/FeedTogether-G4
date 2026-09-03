@@ -46,6 +46,8 @@ function loadSection(sectionName) {
 
       if (sectionName === "register") {
         initRegisterForm();
+      } else if (sectionName === 'map') {
+       initNeedsMap();
       }
     })
     .catch((error) => {
@@ -177,4 +179,46 @@ function loadStoryDetail(storyKey) {
   }, 50);
 }
 
+function initNeedsMap() {
+  const mapElement = document.getElementById("mapa-sv");
+  if (!mapElement) return;
+
+  const map = L.map("mapa-sv").setView([13.6929, -89.2182], 9);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap"
+  }).addTo(map);
+
+  const locations = [
+    {
+      coords: [13.6980, -89.1914],
+      title: "Iglesia San Francisco - Comedor Comunitario",
+      type: "High Priority Needs",
+      desc: "Serves daily lunches to elderly residents in San Salvador."
+    },
+    {
+      coords: [13.9942, -89.5597],
+      title: "Centro Parroquial Santa Ana",
+      type: "Active Collection Point",
+      desc: "Receiving dry grains for rural family distribution."
+    },
+    {
+      coords: [13.3440, -88.1780],
+      title: "Red Comunitaria Usulután",
+      type: "Partner Church / NGO",
+      desc: "Logistics hub for mountain community kits."
+    }
+  ];
+
+  locations.forEach(loc => {
+    L.marker(loc.coords)
+      .addTo(map)
+      .bindPopup(`<strong>${loc.title}</strong><br><small>${loc.desc}</small>`);
+  });
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 200);
+}
 
