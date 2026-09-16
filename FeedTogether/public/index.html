@@ -1,118 +1,162 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FeedTogether</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles/styles.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  </head>
 
-  <body>
-    <nav
-      class="navbar navbar-expand-lg bg-white custom-navbar border-bottom shadow-sm py-2"
-    >
-      <div class="container">
-        <a
-          class="navbar-brand d-flex align-items-center gap-2"
-          href="#"
-          onclick="loadSection('home')"
-        >
-          <img
-            src="img/horizontal_logo.png"
-            alt="FeedTogether Logo"
-            class="brand-logo"
-            style="height: 70px; width: auto"
-          />
-        </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeedTogether</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
 
-        <button
-          class="navbar-toggler border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<body>
+  <nav class="navbar navbar-expand-lg bg-white custom-navbar border-bottom shadow-sm py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="img/horizontal_logo.png" alt="FeedTogether Logo" class="brand-logo"
+          style="height: 70px; width: auto" />
+      </a>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-center gap-lg-3">
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('request')"
-                >Requests</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('volunteer')"
-                >Volunteering</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('stories')"
-                >Stories</a
-              >
-            </li>
-            <a
-              class="nav-link fw-semibold"
-              href="#"
-              onclick="loadSection('map')"
-              >Needs Map</a>
-            </li>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            <li class="nav-item">
-              <a
-                class="nav-link fw-semibold"
-                href="#"
-                onclick="loadSection('About Us')"
-                >About Us</a
-              >
-            </li>
-            <li class="nav-item ms-lg-2">
-              <a
-                class="btn btn-login-nav text-white fw-bold px-3 py-1"
-                href="#"
-                onclick="loadSection('login')"
-                >Login</a
-              >
-            </li>
-          </ul>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="request.html">Requests</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="volunteer.html">Volunteering</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="stories.html">Stories</a>
+          </li>
+          <a class="nav-link fw-semibold" href="map.html">Needs Map</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="About Us.html">About Us</a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-login-nav text-white fw-bold px-3 py-1" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="row align-items-center mb-5">
+      <div class="col-lg-6">
+        <h1 class="display-4 mb-3">
+          <span class="text-green">Connecting Food Supplies</span>
+          <span class="text-orange">with Those in Need</span>
+        </h1>
+        <p class="lead text-dark mb-4">A collaborative platform uniting communities, local businesses, and volunteers to
+          reduce hunger and food waste.</p>
+        <div class="d-flex gap-3">
+          <button class="btn btn-green btn-lg px-4" onclick="loadSection('roles')">I Want to Help</button>
+          <button class="btn btn-orange btn-lg px-4" onclick="loadSection('roles')">I Need Help</button>
         </div>
       </div>
-    </nav>
-
-    <main id="main-content" class="container py-4"></main>
-
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
-      <div class="container">
-        <small>&copy; 2026 FeedTogether. Todos los derechos reservados.</small>
+      <div class="col-lg-6 mt-4 mt-lg-0 text-center">
+        <div class="main-banner-container rounded-4 shadow overflow-hidden">
+          <img src="img/cover.jpg" class="img-fluid" alt="woman feeding a little kid">
+        </div>
       </div>
-    </footer>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="scripts/scripts.js"></script>
-  </body>
+    <div class="row g-3 text-center my-5">
+      <div class="col-6 col-md-3">
+        <div class="card metric-card border-0 shadow-sm p-3">
+          <i class="bi bi-heart fs-2 mb-2"></i>
+          <h3 class="mb-0">50+</h3>
+          <small>Families Supported</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card metric-card border-0 shadow-sm p-3">
+          <i class="bi bi-building fs-2 mb-2"></i>
+          <h3 class="mb-0">15+</h3>
+          <small>Organizations</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card metric-card border-0 shadow-sm p-3">
+          <i class="bi bi-people fs-2 mb-2"></i>
+          <h3 class="mb-0">35+</h3>
+          <small>Volunteers</small>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card metric-card border-0 shadow-sm p-3">
+          <i class="bi bi-geo-alt fs-2 mb-2"></i>
+          <h3 class="mb-0">25+</h3>
+          <small>Communities</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Recent Requests</h3>
+      <a href="#" class="text-green text-decoration-none" onclick="loadSection('request')">View All</a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <img src="img/ElRosarioChurch.jpg" class="rounded-3 card-img-custom w-50" alt="El Rosario Church"
+              height="140" width="100">
+            <div>
+              <h5 class="mb-1">El Rosario Church</h5>
+              <p class="text-muted small mb-2">San Miguel</p>
+              <div class="d-flex flex-wrap gap-1 mb-2">
+                <span class="badge bg-light text-dark border">Rice</span>
+                <span class="badge bg-light text-dark border">Beans</span>
+                <span class="badge bg-light text-dark border">Milk</span>
+              </div>
+              <button class="btn btn-sm btn-outline-success" onclick="loadSection('details')">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <img src="img/ComunidadNuevoIsrael.jpg" class="rounded-3 card-img-custom w-50 h-auto"
+              alt="Community Shelter">
+            <div>
+              <h5 class="mb-1">Nuevo Israel Community</h5>
+              <p class="text-muted small mb-2">San Salvador</p>
+              <div class="d-flex flex-wrap gap-1 mb-2">
+                <span class="badge bg-light text-dark border">Sugar</span>
+                <span class="badge bg-light text-dark border">Cooking Oil</span>
+                <span class="badge bg-light text-dark border">Flour</span>
+              </div>
+              <button class="btn btn-sm btn-outline-success" onclick="loadSection('details')">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <small>&copy; 2026 FeedTogether. Todos los derechos reservados.</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts/scripts.js"></script>
+</body>
+
 </html>

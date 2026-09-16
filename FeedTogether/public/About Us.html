@@ -1,46 +1,112 @@
-<h1 class="fw-bold fs-1">
-Meet FeedTogether
-</h1>
+<!doctype html>
+<html lang="es">
 
-<div class="card border-0 shadow-sm p-3">
-  <div class="row align-items-center">
-    <div class="col-md-4">
-      <img
-        src="img/LogoFeedTogether.jpg"
-        class="img-fluid rounded-3 w-100 h-auto"
-        alt="Logo de FeedTogether"
-      />
-    </div>
-    <div class="col-md-8 mt-3 mt-md-0">
-      <h2 class="fw-bold mb-1">What is FeedTogether?</h2>
-      <p class="text-body fs-4 mb-2">
-        FeedTogether is a collaborative web platform designed to bridge the gap between solidarity and community need. We connect businesses, local establishments, and individual donors with shelters, soup kitchens, and volunteers. Our goal is to optimize the redistribution of food and essential supplies, transforming surplus into opportunities and tangible support for those who need it most.
-      </p>
-    </div>
-  </div>
-</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeedTogether</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
 
-<div class="card border-0 shadow-sm p-3">
-  <div class="row align-items-center">
-    <div class="col-md-6 mt-3 mt-md-0 p-5 text-center">
-      <img
-        src="img/Mision.png"
-        class="img-fluid mx-auto d-block mb-3" style="max-width: 120px;" 
-        alt="flag"/>
-      <h2 class="fw-bold mb-1 text-center">Our Mission</h2>
-      <p class="text-body fs-4 mb-2 text-center">
-        Streamline and accelerate donation management through an accessible, interactive platform, ensuring that food and essential resources reach vulnerable communities and support centers in a dignified, rapid, and transparent manner.
-      </p>
+<body>
+  <nav class="navbar navbar-expand-lg bg-white custom-navbar border-bottom shadow-sm py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="img/horizontal_logo.png" alt="FeedTogether Logo" class="brand-logo"
+          style="height: 70px; width: auto" />
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="request.html">Requests</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="volunteer.html">Volunteering</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="stories.html">Stories</a>
+          </li>
+          <a class="nav-link fw-semibold" href="map.html">Needs Map</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="About Us.html">About Us</a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-login-nav text-white fw-bold px-3 py-1" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="col-md-6 mt-3 mt-md-0 p-5 text-center">
-        <img
-        src="img/Vision.png"
-        class="img-fluid mx-auto d-block mb-3" style="max-width: 120px;" 
-        alt="Eye"/>
-      <h2 class="fw-bold mb-1 text-center">Our Vision</h2>
-      <p class="text-body fs-4 mb-2 text-center">
-       To be the leading community network for management and social impact in the eradication of hunger at the local level, fostering a culture of zero waste, active collaboration, and sustainable development among citizens, organizations, and volunteers.
-      </p>
+  </nav>
+
+  <main class="container py-4">
+    <h1 class="fw-bold fs-1">
+      Meet FeedTogether
+    </h1>
+
+    <div class="card border-0 shadow-sm p-3">
+      <div class="row align-items-center">
+        <div class="col-md-4">
+          <img src="img/LogoFeedTogether.jpg" class="img-fluid rounded-3 w-100 h-auto" alt="Logo de FeedTogether" />
+        </div>
+        <div class="col-md-8 mt-3 mt-md-0">
+          <h2 class="fw-bold mb-1">What is FeedTogether?</h2>
+          <p class="text-body fs-4 mb-2">
+            FeedTogether is a collaborative web platform designed to bridge the gap between solidarity and community
+            need. We connect businesses, local establishments, and individual donors with shelters, soup kitchens, and
+            volunteers. Our goal is to optimize the redistribution of food and essential supplies, transforming surplus
+            into opportunities and tangible support for those who need it most.
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div class="card border-0 shadow-sm p-3">
+      <div class="row align-items-center">
+        <div class="col-md-6 mt-3 mt-md-0 p-5 text-center">
+          <img src="img/Mision.png" class="img-fluid mx-auto d-block mb-3" style="max-width: 120px;" alt="flag" />
+          <h2 class="fw-bold mb-1 text-center">Our Mission</h2>
+          <p class="text-body fs-4 mb-2 text-center">
+            Streamline and accelerate donation management through an accessible, interactive platform, ensuring that
+            food and essential resources reach vulnerable communities and support centers in a dignified, rapid, and
+            transparent manner.
+          </p>
+        </div>
+        <div class="col-md-6 mt-3 mt-md-0 p-5 text-center">
+          <img src="img/Vision.png" class="img-fluid mx-auto d-block mb-3" style="max-width: 120px;" alt="Eye" />
+          <h2 class="fw-bold mb-1 text-center">Our Vision</h2>
+          <p class="text-body fs-4 mb-2 text-center">
+            To be the leading community network for management and social impact in the eradication of hunger at the
+            local level, fostering a culture of zero waste, active collaboration, and sustainable development among
+            citizens, organizations, and volunteers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <small>&copy; 2026 FeedTogether. Todos los derechos reservados.</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts/scripts.js"></script>
+</body>
+
+</html>
