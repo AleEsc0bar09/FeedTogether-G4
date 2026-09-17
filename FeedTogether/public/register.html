@@ -17,8 +17,9 @@
         method="POST"
         enctype="multipart/form-data"
       >
+
         <div class="mb-3 text-start">
-          <label for="nombre" class="form-label fw-semibold">Full Name</label>
+          <label for="nombre" class="form-label fw-semibold">Representant's Name</label>
           <input
             type="text"
             id="nombre"
@@ -26,6 +27,18 @@
             class="form-control"
             required
             placeholder="Your name"
+          />
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="nombre" class="form-label fw-semibold">Organization's Name</label>
+          <input
+            type="text"
+            id="n-organizacion"
+            name="n-organizacion"
+            class="form-control"
+            required
+            placeholder="The name of your organization"
           />
         </div>
 
@@ -56,9 +69,7 @@
         </div>
 
         <div class="mb-3 text-start">
-          <label for="confirm_password" class="form-label fw-semibold"
-            >Confirm Password</label
-          >
+          <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
           <input
             type="password"
             id="confirm_password"
@@ -70,9 +81,7 @@
         </div>
 
         <div class="mb-3 text-start">
-          <label for="departamento" class="form-label fw-semibold"
-            >your local department</label
-          >
+          <label for="departamento" class="form-label fw-semibold">your local department</label>
 
           <select
             class="form-select"
@@ -453,6 +462,18 @@
               <option value="usulutan">Usulután</option>
             </optgroup>
           </select>
+        </div>
+
+        <div class="mb-3 text-start">
+          <label for="nombre" class="form-label fw-semibold">Direction</label>
+          <input
+            type="text"
+            id="direccion"
+            name="direccion"
+            class="form-control"
+            required
+            placeholder="Your Direction"
+          />
         </div>
 
         <div class="mb-3 text-start">
