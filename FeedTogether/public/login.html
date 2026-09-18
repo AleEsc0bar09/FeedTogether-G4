@@ -6,14 +6,16 @@
       alt="FeedTogether Logo">
       <h3 class="fw-bold">Welcome Back</h3>
       <p class="text-muted small mb-4">Sign in to continue making an impact.</p>
-      <form onsubmit="event.preventDefault(); loginAs('donor');">
+      <form id="formLogin" onsubmit="event.preventDefault(); loginAs('donor');">
         <div class="mb-3 text-start">
           <label class="form-label fw-semibold">Email address</label>
-          <input type="email" class="form-control" required placeholder="name@example.com">
+          <input name="correo"
+            id="correo" type="email" class="form-control" required placeholder="name@example.com">
         </div>
         <div class="mb-3 text-start">
           <label class="form-label fw-semibold">Password</label>
-          <input type="password" class="form-control" required placeholder="••••••••">
+          <input name="contra"
+            id="contra" type="password" class="form-control" required placeholder="••••••••">
         </div>
         <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Sign In</button>
       </form>

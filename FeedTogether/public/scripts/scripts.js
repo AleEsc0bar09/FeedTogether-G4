@@ -101,16 +101,33 @@ function initRegisterForm() {
   });
 }
 
-function loginAs(role) {
-  if (role === "requester") {
-    alert("Logged in as Requester. Redirecting to active requests...");
-    loadSection("myrequest");
-  } else if (role === "donor") {
-    alert("Logged in as Donor. Redirecting to explore requests...");
-    loadSection("request");
-  } else {
-    loadSection("home");
-  }
+function loginAs() {
+  
+  const formLogin = document.getElementById("formLogin");
+
+  const formData = new FormData(formLogin);
+
+  fetch("../auth/login.php", {
+      method: "POST",
+      body: formData,
+    })
+
+    .then((response) => response.json())
+      .then((data) => {
+        alert(data.message);
+
+        //AQUI EL INICIO DE SESION ES EXITOSO
+
+        location.href = "inicio.html" 
+
+      })
+      .catch((error) => {
+        console.error("Error al registrar el usuario:", error);
+        alert("Ocurrió un error al procesar el registro. Inténtalo de nuevo.");
+      });
+
+
+
 }
 
 const storiesData = {

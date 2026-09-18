@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Obtener datos enviados (Soporta JSON o $_POST)
 $inputData = json_decode(file_get_contents('php://input'), true);
 
-$email = trim($inputData['email'] ?? $_POST['email'] ?? '');
-$password = trim($inputData['password'] ?? $_POST['password'] ?? '');
+$email = trim($inputData['correo'] ?? $_POST['correo'] ?? '');
+$password = trim($inputData['contra'] ?? $_POST['contra'] ?? '');
 
 if (empty($email) || empty($password)) {
     echo json_encode(['status' => 'error', 'message' => 'Por favor, llena todos los campos.']);
@@ -23,7 +23,7 @@ if (empty($email) || empty($password)) {
 
 try {
     // Buscar el usuario por email
-    $stmt = $conexion->prepare("SELECT id, nombre, email, password FROM usuarios WHERE email = :email");
+    $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password FROM usuario WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $usuario = $stmt->fetch();
 
@@ -31,7 +31,7 @@ try {
     if ($usuario && password_verify($password, $usuario['password'])) {
         
         // Guardar información relevante en la sesión
-        $_SESSION['usuario_id'] = $usuario['id'];
+        $_SESSION['usuario_id'] = $usuario['id_usuario'];
         $_SESSION['usuario_nombre'] = $usuario['nombre'];
         $_SESSION['usuario_email'] = $usuario['email'];
 
@@ -39,7 +39,7 @@ try {
             'status' => 'success',
             'message' => 'Inicio de sesión exitoso.',
             'usuario' => [
-                'id' => $usuario['id'],
+                'id_usuario' => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
                 'email' => $usuario['email']
             ]
