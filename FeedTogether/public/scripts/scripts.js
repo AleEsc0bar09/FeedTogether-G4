@@ -93,6 +93,7 @@ function initRegisterForm() {
       .then((response) => response.json())
       .then((data) => {
         alert(data.message);
+        loadSection('login')
       })
       .catch((error) => {
         console.error("Error al registrar el usuario:", error);

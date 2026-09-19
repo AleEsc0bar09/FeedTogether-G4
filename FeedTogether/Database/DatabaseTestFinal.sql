@@ -83,3 +83,11 @@ CREATE TABLE feedback(
     fecha_feedback DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_feedback_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
+
+INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`) VALUES 
+(1, 'Víveres básicos'),
+(2, 'Alimentos infantiles'),
+(3, 'Agua potable'),
+(4, 'Frutas y verduras'),
+(5, 'Alimentos no perecederos'),
+(6, 'Otro');
