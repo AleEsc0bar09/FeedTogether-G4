@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
 </head>
+
 <body>
 
   <nav class="navbar navbar-expand-lg bg-white custom-navbar border-bottom shadow-sm py-2">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="loadSection('home')">
-        <img src="img/horizontal_logo.png" alt="FeedTogether Logo" class="brand-logo" style="height: 70px; width: auto;">
+        <img src="img/horizontal_logo.png" alt="FeedTogether Logo" class="brand-logo"
+          style="height: 70px; width: auto;">
       </a>
 
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -41,14 +44,49 @@
             <a class="nav-link fw-semibold" href="#" onclick="loadSection('About Us')">About Us</a>
           </li>
           <li class="nav-item ms-lg-2">
-            <a class="btn btn-login-nav text-white fw-bold px-3 py-1" href="#" onclick="loadSection('index')">Log out</a>
+            <a class="btn btn-login-nav text-white fw-bold px-3 py-1" href="#" onclick="loadSection('index')">Log
+              out</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main id="main-content" class="container py-4">
+  <main class="container py-4">
+    <div class="text-center mb-5">
+      <h1 class="fw-bold">Panel del Donante</h1>
+      <p class="text-muted">Selecciona una opción para continuar</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+
+      <!-- Opción 1: Solicitudes de donación creadas -->
+      <div class="col-md-6 col-lg-5">
+        <a href="#" class="text-decoration-none text-reset">
+          <div class="card h-100 shadow-sm border-0 hub-card">
+            <div class="card-body text-center p-4">
+              <i class="bi bi-list-check display-4 text-primary mb-3"></i>
+              <h5 class="card-title fw-semibold">Solicitudes de Donación</h5>
+              <p class="card-text text-muted">Consulta las solicitudes de donación que has creado y su estado.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Opción 2: Mapa -->
+      <div class="col-md-6 col-lg-5">
+        <a href="#" class="text-decoration-none text-reset">
+          <div class="card h-100 shadow-sm border-0 hub-card">
+            <div class="card-body text-center p-4">
+              <i class="bi bi-geo-alt display-4 text-success mb-3"></i>
+              <h5 class="card-title fw-semibold">Ver Mapa</h5>
+              <p class="card-text text-muted">Visualiza en el mapa los puntos de donación y entrega disponibles.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
   </main>
 
   <footer class="bg-dark text-white text-center py-3 mt-auto">
@@ -60,4 +98,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/donorUser.js"></script>
 </body>
+
 </html>

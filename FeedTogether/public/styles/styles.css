@@ -1,11 +1,11 @@
 :root {
-  --primary-yellow: #FFCE2D;
-  --secondary-green: #44930F;
-  --accent-orange: #DD6E10;
+  --primary-yellow: #ffce2d;
+  --secondary-green: #44930f;
+  --accent-orange: #dd6e10;
   --dark-text: #000000;
-  --bg-porcelana: #F5F5EF;
-  --font-title: 'Arimo', sans-serif;
-  --font-body: 'Roboto', sans-serif;
+  --bg-porcelana: #f5f5ef;
+  --font-title: "Arimo", sans-serif;
+  --font-body: "Roboto", sans-serif;
 }
 
 body {
@@ -21,8 +21,18 @@ main#main-content {
   flex: 1;
 }
 
-h1, h2, h3, h4, h5, h6,
-.display-1, .display-2, .display-3, .display-4, .display-5, .display-6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6,
 .navbar-brand,
 .card-title {
   font-family: var(--font-title) !important;
@@ -67,15 +77,18 @@ h1, h2, h3, h4, h5, h6,
   color: #ffffff !important;
 }
 
-.text-yellow, .title-yellow {
+.text-yellow,
+.title-yellow {
   color: var(--primary-yellow) !important;
 }
 
-.text-green, .title-green {
+.text-green,
+.title-green {
   color: var(--secondary-green) !important;
 }
 
-.text-orange, .title-orange {
+.text-orange,
+.title-orange {
   color: var(--accent-orange) !important;
 }
 
@@ -130,9 +143,10 @@ h1, h2, h3, h4, h5, h6,
 .card-custom {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   background-color: #ffffff;
 }
+
 .btn-warning,
 .bg-warning {
   background-color: var(--accent-orange) !important;
@@ -152,4 +166,18 @@ h1, h2, h3, h4, h5, h6,
   background-color: var(--secondary-green) !important;
   border-color: var(--secondary-green) !important;
   color: #ffffff !important;
+}
+
+/* Estilos para los hub*/
+
+.hub-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hub-card:hover,
+.hub-card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12) !important;
 }
