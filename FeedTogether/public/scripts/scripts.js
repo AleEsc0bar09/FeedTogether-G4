@@ -47,7 +47,7 @@ function loadSection(sectionName) {
       if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
-       initNeedsMap();
+        initNeedsMap();
       }
     })
     .catch((error) => {
@@ -103,31 +103,35 @@ function initRegisterForm() {
 }
 
 function loginAs() {
-  
+
   const formLogin = document.getElementById("formLogin");
 
   const formData = new FormData(formLogin);
 
   fetch("../auth/login.php", {
-      method: "POST",
-      body: formData,
-    })
+    method: "POST",
+    body: formData,
+  })
 
     .then((response) => response.json())
-      .then((data) => {
-        alert(data.message);
+    .then((data) => {
+       console.log("RESPUESTA DEL SERVIDOR:", data);
+       
+      alert(data.message);
 
-        //AQUI EL INICIO DE SESION ES EXITOSO
+      if (data.status === 'success') {
+        if (data.usuario.rol === 'donor') {
+          location.href = "donorUser.html";
+        } else if (data.usuario.rol === 'requester') {
+          location.href = "neederUser.html";
+        }
+      }
 
-        location.href = "inicio.html" 
-
-      })
-      .catch((error) => {
-        console.error("Error al registrar el usuario:", error);
-        alert("Ocurrió un error al procesar el registro. Inténtalo de nuevo.");
-      });
-
-
+    })
+    .catch((error) => {
+      console.error("Error al iniciar sesión:", error);
+      alert("Ocurrió un error al procesar el inicio de sesión. Inténtalo de nuevo.");
+    });
 
 }
 

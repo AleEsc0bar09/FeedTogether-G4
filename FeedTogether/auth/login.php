@@ -23,7 +23,7 @@ if (empty($email) || empty($password)) {
 
 try {
     // Buscar el usuario por email
-    $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password FROM usuario WHERE email = :email");
+       $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password, rol FROM usuario WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $usuario = $stmt->fetch();
 
@@ -41,7 +41,8 @@ try {
             'usuario' => [
                 'id_usuario' => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
-                'email' => $usuario['email']
+                'email' => $usuario['email'],
+                'rol' => $usuario['rol']
             ]
         ]);
     } else {
