@@ -24,6 +24,8 @@ function loadSection(sectionName) {
 
       if (sectionName === "map") {
         initNeedsMap();
+      } else if (sectionName === "inicioRequester") {
+        initSolicitudForm();
       }
     })
     .catch((error) => {
@@ -61,18 +63,6 @@ function logoutUser() {
     });
 }
 
-function initNeedsMap() {
-  const mapElement = document.getElementById("mapa-sv");
-  if (!mapElement) return;
-
-  const map = L.map("mapa-sv").setView([13.6929, -89.2182], 9);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "© OpenStreetMap"
-  }).addTo(map);
-
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 200);
+function volverAtras() {
+  loadSection("homeNeeder");
 }
