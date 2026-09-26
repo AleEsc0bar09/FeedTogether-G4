@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadSection("homeNeeder");
+  cargarFotoPerfil();
 });
 
 let historialSecciones = [];
@@ -33,6 +34,9 @@ function loadSection(sectionName, guardarEnHistorial = true) {
       } else if (sectionName === 'map') {
         initNeedsMap();
       }
+      else if (sectionName === 'profile') {
+        cargarDatosPerfil();
+      }
     })
     .catch((error) => {
       console.error("Error loading dynamic section:", error);
@@ -49,10 +53,8 @@ function volverAtras() {
   if (historialSecciones.length <= 1) {
     return;
   }
-
   historialSecciones.pop();
   const anterior = historialSecciones[historialSecciones.length - 1];
-
   loadSection(anterior, false);
 }
 
@@ -80,6 +82,45 @@ function logoutUser() {
     });
 }
 
-function volverAtras() {
-  loadSection("homeNeeder");
+function cargarFotoPerfil() {
+  const wrapper = document.getElementById("perfil-icono-wrapper");
+  if (!wrapper) return;
+
+  fetch("../auth/perfil.php", { cache: "no-store" })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success" && data.usuario.foto_perfil) {
+        wrapper.innerHTML = `<img src="uploads/${data.usuario.foto_perfil}" alt="Perfil" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
+      }
+    })
+    .catch((error) => {
+      console.error("Error al cargar foto de perfil:", error);
+    });
+}
+
+function cargarDatosPerfil() {
+  fetch("../auth/perfil.php", { cache: "no-store" })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") return;
+
+      const u = data.usuario;
+
+      document.getElementById("perfil-nombre").textContent = u.nombre || "—";
+      document.getElementById("perfil-rol").textContent = u.rol || "—";
+      document.getElementById("perfil-email").textContent = u.email || "—";
+      document.getElementById("perfil-telefono").textContent = u.telefono || "No especificado";
+      document.getElementById("perfil-departamento").textContent = u.departamento || "No especificado";
+      document.getElementById("perfil-distrito").textContent = u.distrito || "No especificado";
+
+      if (u.foto_perfil) {
+        const img = document.getElementById("perfil-foto-grande");
+        img.src = `uploads/${u.foto_perfil}`;
+        img.style.display = "inline-block";
+        document.getElementById("perfil-icono-grande").style.display = "none";
+      }
+    })
+    .catch((error) => {
+      console.error("Error al cargar datos de perfil:", error);
+    });
 }

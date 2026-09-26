@@ -22,8 +22,8 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    // Buscar el usuario por email (incluyendo el rol)
-    $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password, rol FROM usuario WHERE email = :email");
+    // Buscar el usuario por email (incluyendo rol, foto y datos de contacto)
+    $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password, rol, foto_perfil, departamento, distrito, telefono FROM usuario WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $usuario = $stmt->fetch();
 
@@ -35,6 +35,10 @@ try {
         $_SESSION['usuario_nombre'] = $usuario['nombre'];
         $_SESSION['usuario_email'] = $usuario['email'];
         $_SESSION['usuario_rol'] = $usuario['rol'];
+        $_SESSION['usuario_foto_perfil'] = $usuario['foto_perfil'];
+        $_SESSION['usuario_departamento'] = $usuario['departamento'];
+        $_SESSION['usuario_distrito'] = $usuario['distrito'];
+        $_SESSION['usuario_telefono'] = $usuario['telefono'];
 
         echo json_encode([
             'status' => 'success',
@@ -43,7 +47,11 @@ try {
                 'id_usuario' => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
                 'email' => $usuario['email'],
-                'rol' => $usuario['rol']
+                'rol' => $usuario['rol'],
+                'foto_perfil' => $usuario['foto_perfil'],
+                'departamento' => $usuario['departamento'],
+                'distrito' => $usuario['distrito'],
+                'telefono' => $usuario['telefono']
             ]
         ]);
     } else {
