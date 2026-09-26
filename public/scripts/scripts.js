@@ -17,7 +17,9 @@ function initRegisterForm() {
   });
 }
 
-function loadSection(sectionName) {
+let historialSecciones = [];
+
+function loadSection(sectionName, guardarEnHistorial = true) {
   const mainContent = document.getElementById("main-content");
 
   if (!mainContent) {
@@ -25,7 +27,11 @@ function loadSection(sectionName) {
     return;
   }
 
-  fetch(`${sectionName}.html`)
+  if (guardarEnHistorial) {
+    historialSecciones.push(sectionName);
+  }
+
+  fetch(`${sectionName}.html` ,{ cache: 'no-store' })
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to load section: ${response.statusText}`);
@@ -40,7 +46,7 @@ function loadSection(sectionName) {
       if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
-       initNeedsMap();
+        initNeedsMap();
       }
     })
     .catch((error) => {
@@ -52,6 +58,17 @@ function loadSection(sectionName) {
         </div>
       `;
     });
+}
+
+function volverAtras() {
+  if (historialSecciones.length <= 1) {
+    return;
+  }
+
+  historialSecciones.pop();
+  const anterior = historialSecciones[historialSecciones.length - 1];
+
+  loadSection(anterior, false);
 }
 
 function updateActiveNavLink(activeSection) {
@@ -124,7 +141,4 @@ function loginAs() {
     });
 
 }
-
-
-
 
