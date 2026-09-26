@@ -31,7 +31,7 @@ function loadSection(sectionName, guardarEnHistorial = true) {
     historialSecciones.push(sectionName);
   }
 
-  fetch(`${sectionName}.html`)
+  fetch(`${sectionName}.html` ,{ cache: 'no-store' })
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to load section: ${response.statusText}`);
