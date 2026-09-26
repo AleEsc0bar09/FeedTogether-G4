@@ -24,6 +24,82 @@ function submitPledge(event) {
     });
 }
 
+let solicitudActual = null;
+
+const requestsData = {
+  "el-rosario": {
+    title: "El Rosario Church",
+    location: "San Miguel",
+    posted: "Posted 3 days ago",
+    img: "img/ElRosarioChurch.jpg",
+    overview: "Local church community seeking food supplies to support families currently facing temporary shortages.",
+    supplies: [
+      { name: "Rice", amount: "50 kg" },
+      { name: "Beans", amount: "40 kg" },
+      { name: "Milk", amount: "20 units" }
+    ],
+    beneficiaries: 90,
+    deadline: "May 30, 2026",
+    locationDetail: "El Rosario Church Center",
+    phone: "+503 7537-1280",
+    email: "info@feedtogether.org"
+  },
+  "nuevo-israel": {
+    title: "Nuevo Israel Community",
+    location: "San Salvador",
+    posted: "Posted 5 days ago",
+    img: "img/ComunidadNuevoIsrael.jpg",
+    overview: "Local community center seeking food supplies to support families currently facing temporary shortages.",
+    supplies: [
+      { name: "Sugar", amount: "30 kg" },
+      { name: "Cooking Oil", amount: "20 L" },
+      { name: "Flour", amount: "25 kg" }
+    ],
+    beneficiaries: 120,
+    deadline: "June 30, 2026",
+    locationDetail: "Main Community Center",
+    phone: "+503 7537-1280",
+    email: "info@feedtogether.org"
+  }
+};
+
+function loadRequestDetail(requestKey) {
+  solicitudActual = requestKey;
+  loadSection("details");
+
+  setTimeout(() => {
+    const req = requestsData[requestKey];
+    if (!req) return;
+
+    document.getElementById("detail-req-title").innerText = req.title;
+    document.getElementById("detail-req-location").innerText = `${req.location} - ${req.posted}`;
+    document.getElementById("detail-req-img").src = req.img;
+    document.getElementById("detail-req-overview").innerText = req.overview;
+    document.getElementById("detail-req-beneficiaries").innerText = req.beneficiaries;
+    document.getElementById("detail-req-deadline").innerText = req.deadline;
+    document.getElementById("detail-req-locationdetail").innerText = req.locationDetail;
+    document.getElementById("detail-req-phone").innerText = req.phone;
+    document.getElementById("detail-req-email").innerText = req.email;
+
+    const suppliesList = document.getElementById("detail-req-supplies");
+    suppliesList.innerHTML = req.supplies.map(s => `
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        ${s.name} <span class="fw-bold">${s.amount}</span>
+      </li>
+    `).join("");
+  }, 50);
+}
+
+function loadPledgeForm() {
+  loadSection("donates");
+
+  setTimeout(() => {
+    const req = requestsData[solicitudActual];
+    if (!req) return;
+    document.getElementById("pledge-title").innerText = `Pledge Support for ${req.title}`;
+  }, 50);
+}
+
 const storiesData = {
   "anna-usulutan": {
     badge: "Impact Story • Berlín, Usulután",
