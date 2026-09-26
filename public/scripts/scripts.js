@@ -17,12 +17,18 @@ function initRegisterForm() {
   });
 }
 
-function loadSection(sectionName) {
+let historialSecciones = [];
+
+function loadSection(sectionName, guardarEnHistorial = true) {
   const mainContent = document.getElementById("main-content");
 
   if (!mainContent) {
     console.error("Target container #main-content not found.");
     return;
+  }
+
+  if (guardarEnHistorial) {
+    historialSecciones.push(sectionName);
   }
 
   fetch(`${sectionName}.html`)
@@ -40,7 +46,7 @@ function loadSection(sectionName) {
       if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
-       initNeedsMap();
+        initNeedsMap();
       }
     })
     .catch((error) => {
@@ -52,6 +58,17 @@ function loadSection(sectionName) {
         </div>
       `;
     });
+}
+
+function volverAtras() {
+  if (historialSecciones.length <= 1) {
+    return;
+  }
+
+  historialSecciones.pop();
+  const anterior = historialSecciones[historialSecciones.length - 1];
+
+  loadSection(anterior, false);
 }
 
 function updateActiveNavLink(activeSection) {
@@ -124,7 +141,4 @@ function loginAs() {
     });
 
 }
-
-
-
 
