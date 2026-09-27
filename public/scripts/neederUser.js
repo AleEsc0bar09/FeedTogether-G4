@@ -26,6 +26,8 @@ function loadSection(sectionName) {
         initNeedsMap();
       } else if (sectionName === "inicioRequester") {
         initSolicitudForm();
+      } else if (sectionName === "request") {
+        cargarSolicitudes();
       }
     })
     .catch((error) => {

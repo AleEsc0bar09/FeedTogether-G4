@@ -1,57 +1,12 @@
-<button class="btn btn-link text-muted text-decoration-none p-0 mb-3" onclick="volverAtras()">
-  <i class="bi bi-arrow-left"></i> Back
-</button>
-
 <h3 class="fw-bold mb-3">Active Requests</h3>
 <div class="mb-4">
   <div class="input-group">
     <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-    <input type="text" class="form-control" placeholder="Search requests...">
+    <input type="text" class="form-control" id="buscarSolicitud" placeholder="Search requests...">
   </div>
 </div>
 
-<div class="row g-3">
-  <div class="col-md-6">
-    <div class="card border-0 shadow-sm p-3 h-100">
-      <div class="d-flex gap-3 align-items-center">
-        <img src="img/ElRosarioChurch.jpg" class="rounded-3 card-img-custom object-fit-cover"
-          style="width: 160px; height: 140px; flex-shrink: 0;" alt="El Rosario Church">
-        <div class="w-100">
-          <h5 class="fw-bold mb-1">El Rosario Church</h5>
-          <p class="text-muted small mb-2">San Miguel - Posted 3 days ago</p>
-          <div class="d-flex flex-wrap gap-1 mb-3">
-            <span class="badge bg-light text-dark border">Rice</span>
-            <span class="badge bg-light text-dark border">Beans</span>
-            <span class="badge bg-light text-dark border">Milk</span>
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail('el-rosario')">View Details</button>
-            <button class="btn btn-sm btn-success" onclick="loadRequestDetail('el-rosario')">Pledge Support</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="card border-0 shadow-sm p-3 h-100">
-      <div class="d-flex gap-3 align-items-center">
-        <img src="img/ComunidadNuevoIsrael.jpg" class="rounded-3 card-img-custom object-fit-cover"
-          style="width: 160px; height: 140px; flex-shrink: 0;" alt="Nuevo Israel Community">
-        <div class="w-100">
-          <h5 class="fw-bold mb-1">Nuevo Israel Community</h5>
-          <p class="text-muted small mb-2">San Salvador - Posted 5 days ago</p>
-          <div class="d-flex flex-wrap gap-1 mb-3">
-            <span class="badge bg-light text-dark border">Sugar</span>
-            <span class="badge bg-light text-dark border">Oil</span>
-            <span class="badge bg-light text-dark border">Flour</span>
-          </div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail('nuevo-israel')">View Details</button>
-            <button class="btn btn-sm btn-success" onclick="loadRequestDetail('nuevo-israel')">Pledge Support</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="row g-3" id="listaSolicitudes">
+  <!-- Se llena dinámicamente -->
+  <p class="text-muted">Cargando solicitudes...</p>
 </div>

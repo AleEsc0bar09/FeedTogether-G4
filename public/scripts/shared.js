@@ -26,65 +26,92 @@ function submitPledge(event) {
 
 let solicitudActual = null;
 
-const requestsData = {
-  "el-rosario": {
-    title: "El Rosario Church",
-    location: "San Miguel",
-    posted: "Posted 3 days ago",
-    img: "img/ElRosarioChurch.jpg",
-    overview: "Local church community seeking food supplies to support families currently facing temporary shortages.",
-    supplies: [
-      { name: "Rice", amount: "50 kg" },
-      { name: "Beans", amount: "40 kg" },
-      { name: "Milk", amount: "20 units" }
-    ],
-    beneficiaries: 90,
-    deadline: "May 30, 2026",
-    locationDetail: "El Rosario Church Center",
-    phone: "+503 7537-1280",
-    email: "info@feedtogether.org"
-  },
-  "nuevo-israel": {
-    title: "Nuevo Israel Community",
-    location: "San Salvador",
-    posted: "Posted 5 days ago",
-    img: "img/ComunidadNuevoIsrael.jpg",
-    overview: "Local community center seeking food supplies to support families currently facing temporary shortages.",
-    supplies: [
-      { name: "Sugar", amount: "30 kg" },
-      { name: "Cooking Oil", amount: "20 L" },
-      { name: "Flour", amount: "25 kg" }
-    ],
-    beneficiaries: 120,
-    deadline: "June 30, 2026",
-    locationDetail: "Main Community Center",
-    phone: "+503 7537-1280",
-    email: "info@feedtogether.org"
-  }
-};
+let requestsData = {};
 
-function loadRequestDetail(requestKey) {
-  solicitudActual = requestKey;
+function cargarSolicitudes() {
+  const contenedor = document.getElementById("listaSolicitudes");
+  if (!contenedor) return;
+
+  fetch("../solicitudes/listar.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success" || data.solicitudes.length === 0) {
+        contenedor.innerHTML = `<p class="text-muted">No hay solicitudes activas por el momento.</p>`;
+        return;
+      }
+
+      requestsData = {};
+      contenedor.innerHTML = "";
+
+      data.solicitudes.forEach(sol => {
+        requestsData[sol.id_solicitud] = sol;
+
+        const badges = sol.productos.map(p => 
+          `<span class="badge bg-light text-dark border">${p.producto}</span>`
+        ).join(" ");
+
+        const imagen = sol.imagen 
+          ? `../${sol.imagen}` 
+          : "img/ElRosarioChurch.jpg"; // imagen por defecto si no subieron una
+
+        const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
+
+        contenedor.innerHTML += `
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3 h-100">
+              <div class="d-flex gap-3 align-items-center">
+                <img src="${imagen}" 
+                     class="rounded-3 card-img-custom object-fit-cover" 
+                     style="width: 120px; height: 100px; flex-shrink: 0;" 
+                     alt="${sol.titulo}">
+                <div class="w-100">
+                  <h5 class="fw-bold mb-1">${sol.titulo}</h5>
+                  <p class="text-muted small mb-2">${sol.ubicacion || "Ubicación no especificada"} - ${fecha}</p>
+                  <div class="d-flex flex-wrap gap-1 mb-3">
+                    ${badges}
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail(${sol.id_solicitud})">View Details</button>
+                    <button class="btn btn-sm btn-success" onclick="loadRequestDetail(${sol.id_solicitud})">Pledge Support</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    })
+    .catch(error => {
+      console.error("Error cargando solicitudes:", error);
+      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar las solicitudes.</p>`;
+    });
+}
+
+function loadRequestDetail(idSolicitud) {
+  solicitudActual = idSolicitud;
   loadSection("details");
 
   setTimeout(() => {
-    const req = requestsData[requestKey];
+    const req = requestsData[idSolicitud];
     if (!req) return;
 
-    document.getElementById("detail-req-title").innerText = req.title;
-    document.getElementById("detail-req-location").innerText = `${req.location} - ${req.posted}`;
-    document.getElementById("detail-req-img").src = req.img;
-    document.getElementById("detail-req-overview").innerText = req.overview;
-    document.getElementById("detail-req-beneficiaries").innerText = req.beneficiaries;
-    document.getElementById("detail-req-deadline").innerText = req.deadline;
-    document.getElementById("detail-req-locationdetail").innerText = req.locationDetail;
-    document.getElementById("detail-req-phone").innerText = req.phone;
-    document.getElementById("detail-req-email").innerText = req.email;
+    const imagen = req.imagen ? `../${req.imagen}` : "img/ElRosarioChurch.jpg";
+    const fecha = new Date(req.fecha_publicacion).toLocaleDateString();
+
+    document.getElementById("detail-req-title").innerText = req.titulo;
+    document.getElementById("detail-req-location").innerText = `${req.ubicacion || "Ubicación no especificada"} - ${fecha}`;
+    document.getElementById("detail-req-img").src = imagen;
+    document.getElementById("detail-req-overview").innerText = req.descripcion;
+    document.getElementById("detail-req-beneficiaries").innerText = req.cantidad_beneficiados || "N/A";
+    document.getElementById("detail-req-deadline").innerText = req.fecha_limite || "Sin fecha límite";
+    document.getElementById("detail-req-locationdetail").innerText = req.ubicacion || "No especificada";
+    document.getElementById("detail-req-phone").innerText = "+503 7537-1280"; // dato de contacto general de la plataforma
+    document.getElementById("detail-req-email").innerText = "info@feedtogether.org";
 
     const suppliesList = document.getElementById("detail-req-supplies");
-    suppliesList.innerHTML = req.supplies.map(s => `
+    suppliesList.innerHTML = req.productos.map(p => `
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        ${s.name} <span class="fw-bold">${s.amount}</span>
+        ${p.producto} <span class="fw-bold">${p.cantidad_requerida}</span>
       </li>
     `).join("");
   }, 50);
@@ -363,3 +390,20 @@ function initSolicitudForm() {
         mensajeSolicitud.textContent = "";
     }
 }
+
+function volverDesdeDetalle() {
+  fetch("../auth/check_session.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.logueado) {
+        loadSection('request');
+      } else {
+        loadSection('home');
+      }
+    })
+    .catch(error => {
+      console.error("Error verificando sesión:", error);
+      loadSection('home');
+    });
+}
+
