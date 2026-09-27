@@ -100,6 +100,11 @@ function cargarFotoPerfil() {
     });
 }
 
+function formatearTexto(texto) {
+  if (!texto) return texto;
+  return texto.replace(/_/g, ' ');
+}
+
 function cargarDatosPerfil() {
   fetch("../auth/perfil.php", { cache: "no-store" })
     .then((response) => response.json())
@@ -112,8 +117,8 @@ function cargarDatosPerfil() {
       document.getElementById("perfil-rol").textContent = u.rol || "—";
       document.getElementById("perfil-email").textContent = u.email || "—";
       document.getElementById("perfil-telefono").textContent = u.telefono || "No especificado";
-      document.getElementById("perfil-departamento").textContent = u.departamento || "No especificado";
-      document.getElementById("perfil-distrito").textContent = u.distrito || "No especificado";
+      document.getElementById("perfil-departamento").textContent = formatearTexto(u.departamento) || "No especificado";
+      document.getElementById("perfil-distrito").textContent = formatearTexto(u.distrito) || "No especificado";
 
       if (u.foto_perfil) {
         const img = document.getElementById("perfil-foto-grande");

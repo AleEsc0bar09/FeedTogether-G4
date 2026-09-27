@@ -1,7 +1,5 @@
 <?php
 // auth/perfil.php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 session_start();
 header('Content-Type: application/json; charset=utf-8');
@@ -18,7 +16,10 @@ echo json_encode([
         'nombre' => $_SESSION['usuario_nombre'],
         'email' => $_SESSION['usuario_email'],
         'rol' => $_SESSION['usuario_rol'],
-        'foto_perfil' => $_SESSION['usuario_foto_perfil']
+        'foto_perfil' => $_SESSION['usuario_foto_perfil'],
+        'departamento' => $_SESSION['usuario_departamento'] ?? null,
+        'distrito' => $_SESSION['usuario_distrito'] ?? null,
+        'telefono' => $_SESSION['usuario_telefono'] ?? null
     ]
 ]);
 ?>
