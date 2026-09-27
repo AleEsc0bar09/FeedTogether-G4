@@ -36,6 +36,20 @@ try {
         echo json_encode(['status' => 'error', 'message' => 'Esta solicitud ya no está disponible.']);
         exit;
     }
+        // Verificar que el usuario no se haya comprometido ya con esta solicitud
+    $stmtDuplicado = $conexion->prepare("
+        SELECT id_compromiso FROM compromisos_donacion 
+        WHERE id_solicitud = :id_solicitud AND id_usuario = :id_usuario
+    ");
+    $stmtDuplicado->execute([
+        ':id_solicitud' => $idSolicitud,
+        ':id_usuario' => $idUsuario
+    ]);
+
+    if ($stmtDuplicado->fetch()) {
+        echo json_encode(['status' => 'error', 'message' => 'Ya te has comprometido con esta solicitud anteriormente.']);
+        exit;
+    }
 
     $stmtInsert = $conexion->prepare("
         INSERT INTO compromisos_donacion (id_solicitud, id_usuario, mensaje, estado)

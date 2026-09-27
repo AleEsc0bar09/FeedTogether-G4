@@ -94,7 +94,7 @@ function cargarSolicitudes() {
         ).join(" ");
 
         const imagen = sol.imagen 
-          ? `../${sol.imagen}` 
+          ? sol.imagen
           : "img/ElRosarioChurch.jpg"; // imagen por defecto si no subieron una
 
         const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
@@ -138,7 +138,7 @@ function loadRequestDetail(idSolicitud) {
     const req = requestsData[idSolicitud];
     if (!req) return;
 
-    const imagen = req.imagen ? `../${req.imagen}` : "img/ElRosarioChurch.jpg";
+    const imagen = req.imagen ? req.imagen : "img/ElRosarioChurch.jpg";
     const fecha = new Date(req.fecha_publicacion).toLocaleDateString();
 
     document.getElementById("detail-req-title").innerText = req.titulo;
@@ -602,7 +602,7 @@ function cargarRecentRequestsHome() {
           `<span class="badge bg-light text-dark border">${p.producto}</span>`
         ).join(" ");
 
-        const imagen = sol.imagen ? `../${sol.imagen}` : "img/ElRosarioChurch.jpg";
+        const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
 
         contenedor.innerHTML += `
           <div class="col-md-6">
@@ -644,7 +644,7 @@ function cargarRankingDonantes() {
       contenedor.innerHTML = data.ranking.map((donante, index) => {
         const destacado = index === 0 ? "bg-warning bg-opacity-25 rounded-3" : "";
         const foto = donante.foto_perfil 
-          ? `../public/uploads/${donante.foto_perfil}` 
+          ? `uploads/${donante.foto_perfil}` 
           : null;
 
         const avatar = foto
@@ -668,4 +668,3 @@ function cargarRankingDonantes() {
       contenedor.innerHTML = `<p class="text-danger text-center">No se pudo cargar el ranking.</p>`;
     });
 }
-
