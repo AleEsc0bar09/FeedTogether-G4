@@ -197,3 +197,15 @@ footer {
     background-position: 100% 50%;
   }
 }
+
+/*hovers menus*/
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: #44930F;
+  color: #ffffff;
+}
+
+.dropdown-menu .dropdown-item:hover i,
+.dropdown-menu .dropdown-item:focus i {
+  color: #ffffff;
+}
