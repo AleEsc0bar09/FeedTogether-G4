@@ -28,7 +28,6 @@ function loadSection(sectionName, guardarEnHistorial = true) {
       mainContent.innerHTML = htmlContent;
       updateActiveNavLink(sectionName);
       window.scrollTo(0, 0);
-
       if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
@@ -38,6 +37,9 @@ function loadSection(sectionName, guardarEnHistorial = true) {
       }
       else if (sectionName === 'profile') {
         cargarDatosPerfil();
+      }
+      else if (sectionName === 'mydonations') {
+        cargarMisCompromisos();
       }
     })
     .catch((error) => {

@@ -40,8 +40,10 @@ function loadSection(sectionName, guardarEnHistorial = true) {
         cargarSolicitudes();
       } else if (sectionName === 'profile') {
         cargarDatosPerfil();
-
-      }
+       } else if (sectionName === "myrequest") {
+        cargarMisSolicitudes();
+       } 
+      
     })
     .catch((error) => {
       console.error("Error loading dynamic section:", error);

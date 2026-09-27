@@ -18,6 +18,7 @@
     <div class="card border-0 shadow-sm p-4 bg-success text-white rounded-4">
       <h4 class="fw-bold mb-3">Pledge Details</h4>
       <form onsubmit="submitPledge(event);">
+       <input type="hidden" id="pledge-id-solicitud" name="id_solicitud" value="">  
         <div class="mb-3">
           <label class="form-label small">Organization / Entity Type</label>
           <select class="form-select">
@@ -58,6 +59,7 @@
             <label class="form-check-label" for="produce">Fresh Produce</label>
           </div>
         </div>
+        <div id="mensajePledge" class="alert d-none" role="alert"></div>
         <button type="submit" class="btn btn-light text-success w-100 fw-bold py-2">Confirm Pledge</button>
       </form>
     </div>

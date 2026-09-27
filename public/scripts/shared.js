@@ -13,7 +13,7 @@ function submitPledge(event) {
     .then((response) => response.json())
     .then((data) => {
       if (data.logueado) {
-        loadSection('mydonations');
+        enviarCompromiso(event.target);
       } else {
         loadRegister('donor');
       }
@@ -21,6 +21,49 @@ function submitPledge(event) {
     .catch((error) => {
       console.error("Error verificando sesión:", error);
       loadRegister('donor');
+    });
+}
+
+function enviarCompromiso(form) {
+  const mensajeDiv = document.getElementById("mensajePledge");
+  const btnSubmit = form.querySelector('button[type="submit"]');
+
+  mensajeDiv.classList.add("d-none");
+  btnSubmit.disabled = true;
+  btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Enviando...`;
+
+  const formData = new FormData(form);
+
+  fetch("../solicitudes/comprometer.php", {
+    method: "POST",
+    body: formData,
+    credentials: "include"
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        mensajeDiv.className = "alert alert-success";
+        mensajeDiv.textContent = data.message + " Redirigiendo a Mis Compromisos...";
+        mensajeDiv.classList.remove("d-none");
+
+        setTimeout(() => {
+          loadSection('mydonations');
+        }, 1800);
+      } else {
+        mensajeDiv.className = "alert alert-danger";
+        mensajeDiv.textContent = data.message || "No se pudo enviar tu compromiso.";
+        mensajeDiv.classList.remove("d-none");
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "Confirm Pledge";
+      }
+    })
+    .catch(error => {
+      console.error("Error al enviar compromiso:", error);
+      mensajeDiv.className = "alert alert-danger";
+      mensajeDiv.textContent = "No se pudo conectar con el servidor.";
+      mensajeDiv.classList.remove("d-none");
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = "Confirm Pledge";
     });
 }
 
@@ -123,7 +166,8 @@ function loadPledgeForm() {
   setTimeout(() => {
     const req = requestsData[solicitudActual];
     if (!req) return;
-    document.getElementById("pledge-title").innerText = `Pledge Support for ${req.title}`;
+    document.getElementById("pledge-title").innerText = `Pledge Support for ${req.titulo}`;
+    document.getElementById("pledge-id-solicitud").value = solicitudActual;
   }, 50);
 }
 
@@ -405,5 +449,134 @@ function volverDesdeDetalle() {
       console.error("Error verificando sesión:", error);
       loadSection('home');
     });
+}
+let compromisosData = [];
+
+function cargarMisCompromisos() {
+  const contenedor = document.getElementById("listaCompromisos");
+  if (!contenedor) return;
+
+  fetch("../solicitudes/mis_compromisos.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success") {
+        contenedor.innerHTML = `<p class="text-danger">${data.message}</p>`;
+        return;
+      }
+
+      compromisosData = data.compromisos;
+      pintarCompromisos(compromisosData);
+    })
+    .catch(error => {
+      console.error("Error cargando compromisos:", error);
+      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar tus compromisos.</p>`;
+    });
+}
+
+function pintarCompromisos(lista) {
+  const contenedor = document.getElementById("listaCompromisos");
+
+  if (lista.length === 0) {
+    contenedor.innerHTML = `<p class="text-muted">Aún no tienes compromisos de donación.</p>`;
+    return;
+  }
+
+  const badgeClase = {
+    pendiente: "bg-warning text-dark",
+    completado: "bg-success",
+    cancelado: "bg-danger"
+  };
+
+  const badgeTexto = {
+    pendiente: "In Progress",
+    completado: "Completed",
+    cancelado: "Cancelled"
+  };
+
+  contenedor.innerHTML = lista.map(c => {
+    const fecha = new Date(c.fecha_compromiso).toLocaleDateString();
+    return `
+      <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
+        <div>
+          <h5 class="fw-bold mb-1">${c.titulo}</h5>
+          <p class="text-muted small mb-0">${c.ubicacion || "Ubicación no especificada"} - ${fecha}</p>
+        </div>
+        <span class="badge ${badgeClase[c.estado]} px-3 py-2">${badgeTexto[c.estado]}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+function filtrarCompromisos(estado) {
+  document.querySelectorAll("#main-content .nav-tabs .nav-link").forEach(link => link.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if (estado === "all") {
+    pintarCompromisos(compromisosData);
+  } else {
+    pintarCompromisos(compromisosData.filter(c => c.estado === estado));
+  }
+}
+let misSolicitudesData = [];
+
+function cargarMisSolicitudes() {
+  const contenedor = document.getElementById("listaMisSolicitudes");
+  if (!contenedor) return;
+
+  fetch("../solicitudes/mis_solicitudes.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success") {
+        contenedor.innerHTML = `<p class="text-danger">${data.message}</p>`;
+        return;
+      }
+
+      misSolicitudesData = data.solicitudes;
+      pintarMisSolicitudes(misSolicitudesData);
+    })
+    .catch(error => {
+      console.error("Error cargando mis solicitudes:", error);
+      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar tus solicitudes.</p>`;
+    });
+}
+
+function pintarMisSolicitudes(lista) {
+  const contenedor = document.getElementById("listaMisSolicitudes");
+
+  if (lista.length === 0) {
+    contenedor.innerHTML = `<p class="text-muted">Aún no has creado ninguna solicitud.</p>`;
+    return;
+  }
+
+  const badgeClase = {
+    activa: "bg-success",
+    cerrada: "bg-danger"
+  };
+
+  const badgeTexto = {
+    activa: "Active",
+    cerrada: "Closed"
+  };
+
+  contenedor.innerHTML = lista.map(s => `
+    <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
+      <div>
+        <h5 class="fw-bold mb-1">${s.titulo}</h5>
+        <p class="text-muted small mb-0">${s.ubicacion || "Sin ubicación"} - ${s.cantidad_beneficiados || "N/A"} Beneficiaries · ${s.total_compromisos} pledge(s)</p>
+      </div>
+      <span class="badge ${badgeClase[s.estado]} px-3 py-2">${badgeTexto[s.estado]}</span>
+    </div>
+  `).join("");
+}
+
+function filtrarMisSolicitudes(estado) {
+  document.querySelectorAll("#main-content .nav-tabs .nav-link").forEach(link => link.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if (estado === "all") {
+    pintarMisSolicitudes(misSolicitudesData);
+  } else {
+    pintarMisSolicitudes(misSolicitudesData.filter(s => s.estado === estado));
+  }
 }
 
