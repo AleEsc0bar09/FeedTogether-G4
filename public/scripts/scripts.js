@@ -43,11 +43,18 @@ function loadSection(sectionName, guardarEnHistorial = true) {
       updateActiveNavLink(sectionName);
       window.scrollTo(0, 0);
 
-      if (sectionName === "register") {
+             if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
         initNeedsMap();
+     } else if (sectionName === 'home') {
+     cargarRecentRequestsHome();
+     cargarRankingDonantes();
+     }
+      else if (sectionName === 'request') {
+        cargarSolicitudes();
       }
+      
     })
     .catch((error) => {
       console.error("Error loading dynamic section:", error);

@@ -580,3 +580,92 @@ function filtrarMisSolicitudes(estado) {
   }
 }
 
+function cargarRecentRequestsHome() {
+  const contenedor = document.getElementById("recentRequestsHome");
+  if (!contenedor) return;
+
+  fetch("../solicitudes/listar.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success" || data.solicitudes.length === 0) {
+        contenedor.innerHTML = `<p class="text-muted">No hay solicitudes activas por el momento.</p>`;
+        return;
+      }
+
+      const recientes = data.solicitudes.slice(0, 2); // solo las 2 más recientes
+      contenedor.innerHTML = "";
+
+      recientes.forEach(sol => {
+        requestsData[sol.id_solicitud] = sol;
+
+        const badges = sol.productos.map(p => 
+          `<span class="badge bg-light text-dark border">${p.producto}</span>`
+        ).join(" ");
+
+        const imagen = sol.imagen ? `../${sol.imagen}` : "img/ElRosarioChurch.jpg";
+
+        contenedor.innerHTML += `
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-3 h-100">
+              <div class="d-flex align-items-center gap-3">
+                <img src="${imagen}" class="rounded-3 card-img-custom w-50" style="width: 100px; height: 100px; object-fit: cover;" alt="${sol.titulo}">
+                <div>
+                  <h5 class="mb-1">${sol.titulo}</h5>
+                  <p class="text-muted small mb-2">${sol.ubicacion || "Sin ubicación"}</p>
+                  <div class="d-flex flex-wrap gap-1 mb-2">
+                    ${badges}
+                  </div>
+                  <button class="btn btn-sm btn-outline-success" onclick="loadRequestDetail(${sol.id_solicitud})">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    })
+    .catch(error => {
+      console.error("Error cargando recent requests:", error);
+      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar las solicitudes.</p>`;
+    });
+}
+
+function cargarRankingDonantes() {
+  const contenedor = document.getElementById("ranking-donantes");
+  if (!contenedor) return;
+
+  fetch("../actividad/ranking_donantes.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success" || data.ranking.length === 0) {
+        contenedor.innerHTML = `<p class="text-muted text-center">Aún no hay donantes este mes. ¡Sé el primero!</p>`;
+        return;
+      }
+
+      contenedor.innerHTML = data.ranking.map((donante, index) => {
+        const destacado = index === 0 ? "bg-warning bg-opacity-25 rounded-3" : "";
+        const foto = donante.foto_perfil 
+          ? `../public/uploads/${donante.foto_perfil}` 
+          : null;
+
+        const avatar = foto
+          ? `<img src="${foto}" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;" alt="${donante.nombre}">`
+          : `<div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;"><i class="bi bi-person-fill text-secondary"></i></div>`;
+
+        return `
+          <div class="d-flex justify-content-between align-items-center p-2 mb-2 ${destacado}">
+            <div class="d-flex align-items-center">
+              <span class="fw-bold text-muted me-3" style="width: 20px;">${index + 1}</span>
+              ${avatar}
+              <span class="fw-semibold">${donante.nombre}</span>
+            </div>
+            <span class="badge bg-success rounded-pill">${donante.total_compromisos} pledge${donante.total_compromisos != 1 ? 's' : ''}</span>
+          </div>
+        `;
+      }).join("");
+    })
+    .catch(error => {
+      console.error("Error cargando ranking:", error);
+      contenedor.innerHTML = `<p class="text-danger text-center">No se pudo cargar el ranking.</p>`;
+    });
+}
+

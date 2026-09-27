@@ -52,39 +52,13 @@
   <h3>Recent Requests</h3>
   <a href="#" class="text-green text-decoration-none" onclick="loadSection('request')">View All</a>
 </div>
-<div class="row g-4">
-  <div class="col-md-6">
-    <div class="card border-0 shadow-sm p-3 h-100">
-      <div class="d-flex align-items-center gap-3">
-        <img src="img/ElRosarioChurch.jpg" class="rounded-3" style="width: 100px; height: 100px; object-fit: cover;" alt="El Rosario Church">
-        <div>
-          <h5 class="mb-1">El Rosario Church</h5>
-          <p class="text-muted small mb-2">San Miguel</p>
-          <div class="d-flex flex-wrap gap-1 mb-2">
-            <span class="badge bg-light text-dark border">Rice</span>
-            <span class="badge bg-light text-dark border">Beans</span>
-            <span class="badge bg-light text-dark border">Milk</span>
-          </div>
-          <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail('el-rosario')">View Details</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card border-0 shadow-sm p-3 h-100">
-      <div class="d-flex align-items-center gap-3">
-        <img src="img/ComunidadNuevoIsrael.jpg" class="rounded-3" style="width: 100px; height: 100px; object-fit: cover;" alt="Community Shelter">
-        <div>
-          <h5 class="mb-1">Nuevo Israel Community</h5>
-          <p class="text-muted small mb-2">San Salvador</p>
-          <div class="d-flex flex-wrap gap-1 mb-2">
-            <span class="badge bg-light text-dark border">Sugar</span>
-            <span class="badge bg-light text-dark border">Cooking Oil</span>
-            <span class="badge bg-light text-dark border">Flour</span>
-          </div>
-          <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail('nuevo-israel')">View Details</button>
-        </div>
-      </div>
-    </div>
+<div class="row g-4" id="recentRequestsHome">
+  <p class="text-muted">Cargando...</p>
+</div>
+
+<div class="card border-0 shadow-sm p-4 mb-5 mt-5">
+  <h3 class="fw-bold text-center mb-4">🏆 Donor Ranking This Month</h3>
+  <div id="ranking-donantes">
+    <p class="text-muted text-center">Cargando ranking...</p>
   </div>
 </div>
