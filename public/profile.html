@@ -1,15 +1,66 @@
-<button class="btn btn-link text-muted text-decoration-none p-0 mb-3" onclick="volverAtras()">
-  <i class="bi bi-arrow-left"></i> Back
-</button>
+<div class="profile-page">
 
-<h3 class="fw-bold mb-3">My Profile</h3>
-<div class="card border-0 shadow-sm p-4">
-  <div class="d-flex align-items-center gap-3 mb-4">
-    <i class="bi bi-person-circle display-4 text-success"></i>
-    <div>
-      <h5 class="fw-bold mb-0">FeedTogether Member</h5>
-      <p class="text-muted small mb-0">user@example.com</p>
+  <!-- Portada / Banner -->
+  <div class="profile-cover">
+    <div class="profile-avatar-wrapper">
+      <img id="perfil-foto-grande" src="" alt="Foto de perfil" class="profile-avatar" style="display: none;">
+      <i id="perfil-icono-grande" class="bi bi-person-circle profile-avatar-icon"></i>
     </div>
   </div>
-  <p class="text-muted">Manage your personal information and notification preferences here.</p>
+
+  <!-- Encabezado con nombre y rol -->
+  <div class="text-center profile-header">
+    <h3 id="perfil-nombre" class="fw-bold mb-1">—</h3>
+    <span id="perfil-rol" class="badge rounded-pill profile-badge">—</span>
+  </div>
+
+  <button class="btn btn-link text-muted text-decoration-none d-block mx-auto mb-4" onclick="volverAtras()">
+    <i class="bi bi-arrow-left"></i> Back
+  </button>
+
+  <!-- Información detallada -->
+  <div class="row justify-content-center g-3 px-3">
+
+    <div class="col-md-5">
+      <div class="info-tile">
+        <i class="bi bi-envelope-fill info-icon text-primary"></i>
+        <div>
+          <p class="info-label">Email</p>
+          <p id="perfil-email" class="info-value">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="info-tile">
+        <i class="bi bi-telephone-fill info-icon text-success"></i>
+        <div>
+          <p class="info-label">Teléfono</p>
+          <p id="perfil-telefono" class="info-value">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="info-tile">
+        <i class="bi bi-map-fill info-icon text-warning"></i>
+        <div>
+          <p class="info-label">Departamento</p>
+          <p id="perfil-departamento" class="info-value">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="info-tile">
+        <i class="bi bi-geo-alt-fill info-icon text-info"></i>
+        <div>
+          <p class="info-label">Distrito</p>
+          <p id="perfil-distrito" class="info-value">—</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
