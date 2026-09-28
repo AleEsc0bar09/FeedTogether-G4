@@ -133,3 +133,59 @@ function cargarDatosPerfil() {
       console.error("Error al cargar datos de perfil:", error);
     });
 }
+
+// 1. Rellenar el modal con los datos actuales cada vez que se abre
+document.addEventListener("show.bs.modal", function (event) {
+  if (event.target.id !== "modalEditarPerfil") return;
+ 
+  fetch("../auth/perfil.php", { cache: "no-store" })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status !== "success") return;
+ 
+      const u = data.usuario;
+ 
+      document.getElementById("edit-nombre").value = u.nombre || "";
+      document.getElementById("edit-email").value = u.email || "";
+      document.getElementById("edit-departamento").value = u.departamento || "";
+      document.getElementById("edit-distrito").value = u.distrito || "";
+      document.getElementById("edit-telefono").value = u.telefono || "";
+      document.getElementById("edit-foto_perfil").value = "";
+    })
+    .catch((error) => {
+      console.error("Error al cargar los datos en el modal de edición:", error);
+    });
+});
+ 
+// 2. Enviar los cambios a auth/editar_perfil.php
+document.addEventListener("submit", function (event) {
+  if (event.target.id !== "formEditarPerfil") return;
+ 
+  event.preventDefault();
+ 
+  const form = event.target;
+  const boton = document.getElementById("btnGuardarPerfil");
+  boton.disabled = true;
+ 
+  fetch("../auth/editar_perfil.php", {
+    method: "POST",
+    body: new FormData(form),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      alert(data.message);
+ 
+      if (data.status === "success") {
+        const modalEl = document.getElementById("modalEditarPerfil");
+        bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+        cargarDatosPerfil();
+      }
+    })
+    .catch((error) => {
+      console.error("Error al editar el perfil:", error);
+      alert("No se pudo conectar con el servidor. Inténtalo nuevamente.");
+    })
+    .finally(() => {
+      boton.disabled = false;
+    });
+});

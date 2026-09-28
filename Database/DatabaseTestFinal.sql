@@ -1,7 +1,8 @@
-CREATE DATABASE Feedtogether;
+CREATE DATABASE IF NOT EXISTS Feedtogether;
 
 USE Feedtogether;
 
+-- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -16,7 +17,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabla de categorías
-CREATE TABLE categoria(
+CREATE TABLE IF NOT EXISTS categoria(
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre_categoria ENUM(
         'Víveres básicos',
@@ -29,7 +30,7 @@ CREATE TABLE categoria(
 );
 
 -- Tabla de solicitudes
-CREATE TABLE solicitudes(
+CREATE TABLE IF NOT EXISTS solicitudes(
     id_solicitud INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     titulo VARCHAR(150) NOT NULL,
@@ -39,14 +40,13 @@ CREATE TABLE solicitudes(
     fecha_limite DATE NULL,
     estado ENUM('activa','cerrada') DEFAULT 'activa',
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    latitud DECIMAL(10,7) NULL,
+    longitud DECIMAL(10,7) NULL,
     CONSTRAINT fk_solicitud_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-    ALTER TABLE solicitudes
-   ADD COLUMN latitud DECIMAL(10,7) NULL,
-   ADD COLUMN longitud DECIMAL(10,7) NULL;
 );
 
 -- Tabla de imágenes asociadas a solicitudes
-CREATE TABLE imagen_solicitud(
+CREATE TABLE IF NOT EXISTS imagen_solicitud(
     id_imagen INT AUTO_INCREMENT PRIMARY KEY,
     id_solicitud INT NOT NULL,
     ruta_imagen VARCHAR(255) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE imagen_solicitud(
 );
 
 -- Tabla de detalles de solicitud
-CREATE TABLE detalles_solicitud(
+CREATE TABLE IF NOT EXISTS detalles_solicitud(
     id_detalles INT AUTO_INCREMENT PRIMARY KEY,
     id_solicitud INT NOT NULL,
     id_categoria INT NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE detalles_solicitud(
 );
 
 -- Tabla de compromisos de donación
-CREATE TABLE compromisos_donacion(
+CREATE TABLE IF NOT EXISTS compromisos_donacion(
     id_compromiso INT AUTO_INCREMENT PRIMARY KEY,
     id_solicitud INT NOT NULL,
     id_usuario INT NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE compromisos_donacion(
 );
 
 -- Tabla de feedback
-CREATE TABLE feedback(
+CREATE TABLE IF NOT EXISTS feedback(
     id_feedback INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NULL,
     calificacion TINYINT NOT NULL,
@@ -87,7 +87,8 @@ CREATE TABLE feedback(
     CONSTRAINT fk_feedback_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
-INSERT INTO `categoria` (`id_categoria`, `nombre_categoria`) VALUES 
+-- Datos de categorías (los ids deben ser 1 a 6, como en el formulario)
+INSERT IGNORE INTO `categoria` (`id_categoria`, `nombre_categoria`) VALUES
 (1, 'Víveres básicos'),
 (2, 'Alimentos infantiles'),
 (3, 'Agua potable'),
