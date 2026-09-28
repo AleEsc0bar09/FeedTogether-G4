@@ -40,6 +40,9 @@ CREATE TABLE solicitudes(
     estado ENUM('activa','cerrada') DEFAULT 'activa',
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_solicitud_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    ALTER TABLE solicitudes
+   ADD COLUMN latitud DECIMAL(10,7) NULL,
+   ADD COLUMN longitud DECIMAL(10,7) NULL;
 );
 
 -- Tabla de imágenes asociadas a solicitudes

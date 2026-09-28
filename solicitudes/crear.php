@@ -169,6 +169,37 @@ if ($fechaLimite !== '') {
     $fechaLimite = null;
 }
 
+// =====================================================
+// 5.1 VALIDAR COORDENADAS (opcionales)
+// =====================================================
+
+$latitud = trim($_POST['latitud'] ?? '');
+$longitud = trim($_POST['longitud'] ?? '');
+
+if ($latitud !== '' && $longitud !== '') {
+
+    if (
+        !is_numeric($latitud) ||
+        !is_numeric($longitud) ||
+        (float)$latitud < 13.0 || (float)$latitud > 14.6 ||
+        (float)$longitud < -90.2 || (float)$longitud > -87.6
+    ) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'La ubicación seleccionada en el mapa no es válida.'
+        ]);
+        exit;
+    }
+
+    $latitud = (float)$latitud;
+    $longitud = (float)$longitud;
+
+} else {
+
+    $latitud = null;
+    $longitud = null;
+}
+
 
 // =====================================================
 // 6. VALIDAR PRODUCTOS
@@ -372,7 +403,6 @@ try {
     // =================================================
     // 10. INSERTAR SOLICITUD
     // =================================================
-
     $sqlSolicitud = "
         INSERT INTO solicitudes
         (
@@ -381,7 +411,9 @@ try {
             descripcion,
             cantidad_beneficiados,
             ubicacion,
-            fecha_limite
+            fecha_limite,
+            latitud,
+            longitud
         )
         VALUES
         (
@@ -390,7 +422,9 @@ try {
             :descripcion,
             :cantidad_beneficiados,
             :ubicacion,
-            :fecha_limite
+            :fecha_limite,
+            :latitud,
+            :longitud
         )
     ";
 
@@ -419,7 +453,13 @@ try {
                 : null,
 
         ':fecha_limite' =>
-            $fechaLimite
+            $fechaLimite,
+
+        ':latitud' =>
+            $latitud,
+
+        ':longitud' =>
+            $longitud
 
     ]);
 

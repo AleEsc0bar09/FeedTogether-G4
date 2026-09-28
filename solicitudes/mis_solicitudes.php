@@ -30,6 +30,20 @@ try {
     $stmt->execute([':id_usuario' => $idUsuario]);
     $solicitudes = $stmt->fetchAll();
 
+    $stmtComp = $conexion->prepare("
+                SELECT u.nombre, u.foto_perfil, u.telefono, u.email, cd.mensaje, cd.fecha_compromiso, cd.estado
+        FROM compromisos_donacion cd
+        JOIN usuario u ON cd.id_usuario = u.id_usuario
+        WHERE cd.id_solicitud = :id_solicitud
+        ORDER BY cd.fecha_compromiso DESC
+    ");
+
+    foreach ($solicitudes as &$sol) {
+        $stmtComp->execute([':id_solicitud' => $sol['id_solicitud']]);
+        $sol['donantes'] = $stmtComp->fetchAll();
+    }
+    unset($sol);
+
     echo json_encode([
         'status' => 'success',
         'solicitudes' => $solicitudes

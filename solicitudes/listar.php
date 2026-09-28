@@ -15,6 +15,8 @@ try {
             s.fecha_limite,
             s.fecha_publicacion,
             s.estado,
+            s.latitud,
+            s.longitud,
             u.nombre AS nombre_usuario,
             (SELECT ruta_imagen FROM imagen_solicitud 
              WHERE id_solicitud = s.id_solicitud 

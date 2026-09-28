@@ -1,3 +1,11 @@
+function escapeHtml(texto) {
+  return String(texto ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 let rolSeleccionado = null;
 
@@ -89,13 +97,11 @@ function cargarSolicitudes() {
       data.solicitudes.forEach(sol => {
         requestsData[sol.id_solicitud] = sol;
 
-        const badges = sol.productos.map(p => 
-          `<span class="badge bg-light text-dark border">${p.producto}</span>`
+        const badges = sol.productos.map(p =>
+          `<span class="badge bg-light text-dark border">${escapeHtml(p.producto)}</span>`
         ).join(" ");
 
-        const imagen = sol.imagen 
-          ? sol.imagen
-          : "img/ElRosarioChurch.jpg"; // imagen por defecto si no subieron una
+        const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
 
         const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
 
@@ -103,13 +109,13 @@ function cargarSolicitudes() {
           <div class="col-md-6">
             <div class="card border-0 shadow-sm p-3 h-100">
               <div class="d-flex gap-3 align-items-center">
-                <img src="${imagen}" 
-                     class="rounded-3 card-img-custom object-fit-cover" 
-                     style="width: 120px; height: 100px; flex-shrink: 0;" 
-                     alt="${sol.titulo}">
+                <img src="${escapeHtml(imagen)}"
+                     class="rounded-3 card-img-custom object-fit-cover"
+                     style="width: 120px; height: 100px; flex-shrink: 0;"
+                     alt="${escapeHtml(sol.titulo)}">
                 <div class="w-100">
-                  <h5 class="fw-bold mb-1">${sol.titulo}</h5>
-                  <p class="text-muted small mb-2">${sol.ubicacion || "Ubicación no especificada"} - ${fecha}</p>
+                  <h5 class="fw-bold mb-1">${escapeHtml(sol.titulo)}</h5>
+                  <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
                   <div class="d-flex flex-wrap gap-1 mb-3">
                     ${badges}
                   </div>
@@ -154,7 +160,7 @@ function loadRequestDetail(idSolicitud) {
     const suppliesList = document.getElementById("detail-req-supplies");
     suppliesList.innerHTML = req.productos.map(p => `
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        ${p.producto} <span class="fw-bold">${p.cantidad_requerida}</span>
+        ${escapeHtml(p.producto)} <span class="fw-bold">${escapeHtml(p.cantidad_requerida)}</span>
       </li>
     `).join("");
   }, 50);
@@ -245,34 +251,32 @@ function initNeedsMap() {
     attribution: "© OpenStreetMap"
   }).addTo(map);
 
-  const locations = [
-    {
-      coords: [13.6980, -89.1914],
-      title: "Iglesia San Francisco - Comedor Comunitario",
-      desc: "Serves daily lunches to elderly residents in San Salvador."
-    },
-    {
-      coords: [13.9942, -89.5597],
-      title: "Centro Parroquial Santa Ana",
-      desc: "Receiving dry grains for rural family distribution."
-    },
-    {
-      coords: [13.3440, -88.1780],
-      title: "Red Comunitaria Usulután",
-      desc: "Logistics hub for mountain community kits."
-    }
-  ];
+  fetch("../solicitudes/listar.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success") return;
 
-  locations.forEach(loc => {
-    L.marker(loc.coords)
-      .addTo(map)
-      .bindPopup(`<strong>${loc.title}</strong><br><small>${loc.desc}</small>`);
-  });
+      data.solicitudes.forEach(sol => {
+        if (sol.latitud == null || sol.longitud == null) return;
+
+        requestsData[sol.id_solicitud] = sol;
+
+        L.marker([parseFloat(sol.latitud), parseFloat(sol.longitud)])
+          .addTo(map)
+          .bindPopup(`
+            <strong>${escapeHtml(sol.titulo)}</strong><br>
+            <small>${escapeHtml(sol.ubicacion) || "Ubicación no especificada"}</small><br>
+            <button class="btn btn-sm btn-success mt-2" onclick="loadRequestDetail(${sol.id_solicitud})">View Details</button>
+          `);
+      });
+    })
+    .catch(error => console.error("Error cargando puntos del mapa:", error));
 
   setTimeout(() => {
     map.invalidateSize();
   }, 300);
 }
+
 function initSolicitudForm() {
 
     const formSolicitud = document.getElementById("formSolicitud");
@@ -283,6 +287,40 @@ function initSolicitudForm() {
 
     if (!formSolicitud) {
         return;
+    }
+
+    // Selector de ubicación en el mapa
+    const selectorEl = document.getElementById("mapa-selector");
+    let marcador = null;
+
+    if (selectorEl && typeof L !== "undefined") {
+        const mapaSel = L.map("mapa-selector").setView([13.6929, -89.2182], 9);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: "© OpenStreetMap"
+        }).addTo(mapaSel);
+
+        mapaSel.on("click", (e) => {
+            if (marcador) {
+                marcador.setLatLng(e.latlng);
+            } else {
+                marcador = L.marker(e.latlng).addTo(mapaSel);
+            }
+            document.getElementById("latitud").value = e.latlng.lat.toFixed(7);
+            document.getElementById("longitud").value = e.latlng.lng.toFixed(7);
+        });
+
+        formSolicitud.addEventListener("reset", () => {
+            if (marcador) {
+                mapaSel.removeLayer(marcador);
+                marcador = null;
+            }
+            document.getElementById("latitud").value = "";
+            document.getElementById("longitud").value = "";
+        });
+
+        setTimeout(() => mapaSel.invalidateSize(), 300);
     }
 
     btnAgregarProducto.addEventListener("click", () => {
@@ -450,6 +488,7 @@ function volverDesdeDetalle() {
       loadSection('home');
     });
 }
+
 let compromisosData = [];
 
 function cargarMisCompromisos() {
@@ -460,7 +499,7 @@ function cargarMisCompromisos() {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success") {
-        contenedor.innerHTML = `<p class="text-danger">${data.message}</p>`;
+        contenedor.innerHTML = `<p class="text-danger">${escapeHtml(data.message)}</p>`;
         return;
       }
 
@@ -498,8 +537,8 @@ function pintarCompromisos(lista) {
     return `
       <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
         <div>
-          <h5 class="fw-bold mb-1">${c.titulo}</h5>
-          <p class="text-muted small mb-0">${c.ubicacion || "Ubicación no especificada"} - ${fecha}</p>
+          <h5 class="fw-bold mb-1">${escapeHtml(c.titulo)}</h5>
+          <p class="text-muted small mb-0">${escapeHtml(c.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
         </div>
         <span class="badge ${badgeClase[c.estado]} px-3 py-2">${badgeTexto[c.estado]}</span>
       </div>
@@ -517,6 +556,7 @@ function filtrarCompromisos(estado) {
     pintarCompromisos(compromisosData.filter(c => c.estado === estado));
   }
 }
+
 let misSolicitudesData = [];
 
 function cargarMisSolicitudes() {
@@ -527,7 +567,7 @@ function cargarMisSolicitudes() {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success") {
-        contenedor.innerHTML = `<p class="text-danger">${data.message}</p>`;
+        contenedor.innerHTML = `<p class="text-danger">${escapeHtml(data.message)}</p>`;
         return;
       }
 
@@ -558,15 +598,88 @@ function pintarMisSolicitudes(lista) {
     cerrada: "Closed"
   };
 
-  contenedor.innerHTML = lista.map(s => `
-    <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
-      <div>
-        <h5 class="fw-bold mb-1">${s.titulo}</h5>
-        <p class="text-muted small mb-0">${s.ubicacion || "Sin ubicación"} - ${s.cantidad_beneficiados || "N/A"} Beneficiaries · ${s.total_compromisos} pledge(s)</p>
+  contenedor.innerHTML = lista.map((s, index) => {
+    const donantesHtml = s.donantes.length === 0
+      ? `<p class="text-muted small mb-0 mt-2">Nadie se ha comprometido aún.</p>`
+      : s.donantes.map(d => {
+          const foto = d.foto_perfil
+            ? `<img src="uploads/${escapeHtml(d.foto_perfil)}" class="rounded-circle me-2" style="width: 28px; height: 28px; object-fit: cover;" alt="${escapeHtml(d.nombre)}">`
+            : `<div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;"><i class="bi bi-person-fill text-secondary small"></i></div>`;
+          const fecha = new Date(d.fecha_compromiso).toLocaleDateString();
+          return `
+            <div class="d-flex align-items-center mb-2 mt-2">
+              ${foto}
+              <div>
+                <span class="fw-semibold small">${escapeHtml(d.nombre)}</span>
+                <span class="text-muted small"> - ${fecha}</span>
+                <div class="small">
+                  <i class="bi bi-telephone me-1"></i>${escapeHtml(d.telefono) || "—"}
+                  <span class="mx-1">·</span>
+                  <i class="bi bi-envelope me-1"></i>${escapeHtml(d.email) || "—"}
+                </div>
+                ${d.mensaje ? `<p class="text-muted small mb-0 fst-italic">"${escapeHtml(d.mensaje)}"</p>` : ""}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+    return `
+      <div class="card border-0 shadow-sm p-3">
+        <div class="d-flex justify-content-between align-items-center" style="cursor: pointer;" onclick="toggleDonantes(${index})">
+          <div>
+            <h5 class="fw-bold mb-1">${escapeHtml(s.titulo)}</h5>
+            <p class="text-muted small mb-0">${escapeHtml(s.ubicacion) || "Sin ubicación"} - ${s.cantidad_beneficiados || "N/A"} Beneficiaries · ${s.total_compromisos} pledge(s)</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge ${badgeClase[s.estado]} px-3 py-2">${badgeTexto[s.estado]}</span>
+            <i class="bi bi-chevron-down"></i>
+          </div>
+        </div>
+        <div id="donantes-${index}" class="d-none border-top mt-2 pt-2">
+          ${donantesHtml}
+          ${s.estado === "activa" ? `
+            <div class="text-end mt-3">
+              <button class="btn btn-sm btn-outline-danger" onclick="cerrarSolicitud(${s.id_solicitud})">
+                <i class="bi bi-x-circle me-1"></i> Close request
+              </button>
+            </div>
+          ` : ""}
+        </div>
       </div>
-      <span class="badge ${badgeClase[s.estado]} px-3 py-2">${badgeTexto[s.estado]}</span>
-    </div>
-  `).join("");
+    `;
+  }).join("");
+}
+
+function toggleDonantes(index) {
+  const panel = document.getElementById(`donantes-${index}`);
+  if (panel) panel.classList.toggle("d-none");
+}
+
+function cerrarSolicitud(idSolicitud) {
+  if (!confirm("¿Seguro que quieres cerrar esta solicitud? Ya no recibirá más compromisos.")) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_solicitud", idSolicitud);
+
+  fetch("../solicitudes/cerrar.php", {
+    method: "POST",
+    body: formData,
+    credentials: "include"
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        cargarMisSolicitudes();
+      } else {
+        alert(data.message || "No se pudo cerrar la solicitud.");
+      }
+    })
+    .catch(error => {
+      console.error("Error al cerrar solicitud:", error);
+      alert("No se pudo conectar con el servidor.");
+    });
 }
 
 function filtrarMisSolicitudes(estado) {
@@ -598,8 +711,8 @@ function cargarRecentRequestsHome() {
       recientes.forEach(sol => {
         requestsData[sol.id_solicitud] = sol;
 
-        const badges = sol.productos.map(p => 
-          `<span class="badge bg-light text-dark border">${p.producto}</span>`
+        const badges = sol.productos.map(p =>
+          `<span class="badge bg-light text-dark border">${escapeHtml(p.producto)}</span>`
         ).join(" ");
 
         const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
@@ -608,10 +721,10 @@ function cargarRecentRequestsHome() {
           <div class="col-md-6">
             <div class="card border-0 shadow-sm p-3 h-100">
               <div class="d-flex align-items-center gap-3">
-                <img src="${imagen}" class="rounded-3 card-img-custom w-50" style="width: 100px; height: 100px; object-fit: cover;" alt="${sol.titulo}">
+                <img src="${escapeHtml(imagen)}" class="rounded-3 card-img-custom w-50" style="width: 100px; height: 100px; object-fit: cover;" alt="${escapeHtml(sol.titulo)}">
                 <div>
-                  <h5 class="mb-1">${sol.titulo}</h5>
-                  <p class="text-muted small mb-2">${sol.ubicacion || "Sin ubicación"}</p>
+                  <h5 class="mb-1">${escapeHtml(sol.titulo)}</h5>
+                  <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Sin ubicación"}</p>
                   <div class="d-flex flex-wrap gap-1 mb-2">
                     ${badges}
                   </div>
@@ -643,12 +756,12 @@ function cargarRankingDonantes() {
 
       contenedor.innerHTML = data.ranking.map((donante, index) => {
         const destacado = index === 0 ? "bg-warning bg-opacity-25 rounded-3" : "";
-        const foto = donante.foto_perfil 
-          ? `uploads/${donante.foto_perfil}` 
+        const foto = donante.foto_perfil
+          ? `uploads/${donante.foto_perfil}`
           : null;
 
         const avatar = foto
-          ? `<img src="${foto}" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;" alt="${donante.nombre}">`
+          ? `<img src="${escapeHtml(foto)}" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;" alt="${escapeHtml(donante.nombre)}">`
           : `<div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;"><i class="bi bi-person-fill text-secondary"></i></div>`;
 
         return `
@@ -656,7 +769,7 @@ function cargarRankingDonantes() {
             <div class="d-flex align-items-center">
               <span class="fw-bold text-muted me-3" style="width: 20px;">${index + 1}</span>
               ${avatar}
-              <span class="fw-semibold">${donante.nombre}</span>
+              <span class="fw-semibold">${escapeHtml(donante.nombre)}</span>
             </div>
             <span class="badge bg-success rounded-pill">${donante.total_compromisos} pledge${donante.total_compromisos != 1 ? 's' : ''}</span>
           </div>

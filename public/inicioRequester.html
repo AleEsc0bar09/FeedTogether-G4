@@ -45,6 +45,14 @@
             <input type="text" class="form-control" id="ubicacion" name="ubicacion" maxlength="200" placeholder="Ej. Antiguo Cuscatlán, La Libertad">
           </div>
 
+           <div class="mb-4">
+            <label class="form-label fw-semibold">Ubicación de referencia en el mapa (opcional)</label>
+            <div id="mapa-selector" class="rounded-3 border" style="height: 280px; width: 100%; z-index: 1;"></div>
+            <div class="form-text">Haz clic en el mapa para marcar un punto de referencia de tu comunidad (por ejemplo, una iglesia o centro comunal), no tu domicilio. Así tu solicitud aparecerá en el mapa de necesidades.</div>
+            <input type="hidden" id="latitud" name="latitud">
+            <input type="hidden" id="longitud" name="longitud">
+          </div>
+
           <hr class="my-4">
 
           <div class="d-flex justify-content-between align-items-center mb-3">
