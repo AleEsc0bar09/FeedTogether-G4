@@ -6,9 +6,9 @@
       <div class="card-body p-4 p-md-5">
 
         <div class="text-center mb-5">
-          <h2 class="fw-bold">Crear una solicitud</h2>
+          <h2 class="fw-bold">Create a new request</h2>
           <p class="text-muted">
-            Describe los alimentos que necesitas y las personas que serán beneficiadas.
+            Describe the foods you need and the people who will benefit.
           </p>
         </div>
 
@@ -16,39 +16,44 @@
 
           <h5 class="fw-bold mb-4">
             <i class="bi bi-file-earmark-text me-2"></i>
-            Información de la solicitud
+            Request's Information
           </h5>
 
           <div class="mb-3">
-            <label for="titulo" class="form-label fw-semibold">Título de la solicitud</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" maxlength="150" placeholder="Ej. Alimentos para familias de la comunidad" required>
+            <label for="titulo" class="form-label fw-semibold">Request's title</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" maxlength="150"
+              placeholder="Ej. Alimentos para familias de la comunidad" required>
           </div>
 
           <div class="mb-3">
-            <label for="descripcion" class="form-label fw-semibold">Descripción</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="5" maxlength="2000" placeholder="Explica qué situación tienen y para qué necesitan los alimentos..." required></textarea>
+            <label for="descripcion" class="form-label fw-semibold">Description</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="5" maxlength="2000"
+              placeholder="Explica qué situación tienen y para qué necesitan los alimentos..." required></textarea>
           </div>
 
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="cantidad_beneficiados" class="form-label fw-semibold">Personas beneficiadas</label>
-              <input type="number" class="form-control" id="cantidad_beneficiados" name="cantidad_beneficiados" min="1" placeholder="Ej. 25">
+              <label for="cantidad_beneficiados" class="form-label fw-semibold">Benefited people</label>
+              <input type="number" class="form-control" id="cantidad_beneficiados" name="cantidad_beneficiados" min="1"
+                placeholder="Ej. 25">
             </div>
             <div class="col-md-6 mb-3">
-              <label for="fecha_limite" class="form-label fw-semibold">Fecha límite</label>
+              <label for="fecha_limite" class="form-label fw-semibold">Request's Deadline</label>
               <input type="date" class="form-control" id="fecha_limite" name="fecha_limite">
             </div>
           </div>
 
           <div class="mb-4">
-            <label for="ubicacion" class="form-label fw-semibold">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion" maxlength="200" placeholder="Ej. Antiguo Cuscatlán, La Libertad">
+            <label for="ubicacion" class="form-label fw-semibold">Location</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" maxlength="200"
+              placeholder="Ej. Antiguo Cuscatlán, La Libertad">
           </div>
 
-           <div class="mb-4">
-            <label class="form-label fw-semibold">Ubicación de referencia en el mapa (opcional)</label>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Map reference location (optional)</label>
             <div id="mapa-selector" class="rounded-3 border" style="height: 280px; width: 100%; z-index: 1;"></div>
-            <div class="form-text">Haz clic en el mapa para marcar un punto de referencia de tu comunidad (por ejemplo, una iglesia o centro comunal), no tu domicilio. Así tu solicitud aparecerá en el mapa de necesidades.</div>
+            <div class="form-text">Click on the map to mark a landmark of your community (for example, a church or
+              community center), not your residence. This way, your request will appear on the map of needs.</div>
             <input type="hidden" id="latitud" name="latitud">
             <input type="hidden" id="longitud" name="longitud">
           </div>
@@ -59,13 +64,13 @@
             <div>
               <h5 class="fw-bold mb-1">
                 <i class="bi bi-basket me-2"></i>
-                Alimentos necesarios
+                Food needed
               </h5>
-              <small class="text-muted">Agrega todos los productos que necesitas.</small>
+              <small class="text-muted">Add all the products that you need</small>
             </div>
             <button type="button" class="btn btn-outline-primary" id="btnAgregarProducto">
               <i class="bi bi-plus-lg me-1"></i>
-              Agregar producto
+              Add product
             </button>
           </div>
 
@@ -73,28 +78,30 @@
             <div class="producto-item card bg-light border mb-3">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h6 class="fw-bold mb-0">Producto #1</h6>
+                  <h6 class="fw-bold mb-0">Product #1</h6>
                 </div>
                 <div class="row">
                   <div class="col-md-4 mb-3">
-                    <label class="form-label">Categoría</label>
+                    <label class="form-label">Category</label>
                     <select class="form-select" name="id_categoria[]" required>
-                      <option value="" selected disabled>Selecciona una categoría</option>
-                      <option value="1">Víveres básicos</option>
-                      <option value="2">Alimentos infantiles</option>
-                      <option value="3">Agua potable</option>
-                      <option value="4">Frutas y verduras</option>
-                      <option value="5">Alimentos no perecederos</option>
-                      <option value="6">Otro</option>
+                      <option value="" selected disabled>Select a category</option>
+                      <option value="1">Basic supplies</option>
+                      <option value="2">Child food</option>
+                      <option value="3">Potable water</option>
+                      <option value="4">Fruits and vegetables</option>
+                      <option value="5">Non-perishable foods</option>
+                      <option value="6">Other</option>
                     </select>
                   </div>
                   <div class="col-md-4 mb-3">
-                    <label class="form-label">Producto</label>
-                    <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="Ej. Arroz" required>
+                    <label class="form-label">Product</label>
+                    <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="Ej. Arroz"
+                      required>
                   </div>
                   <div class="col-md-4 mb-3">
-                    <label class="form-label">Cantidad requerida</label>
-                    <input type="text" class="form-control" name="cantidad_requerida[]" maxlength="100" placeholder="Ej. 20 libras" required>
+                    <label class="form-label">Required amount</label>
+                    <input type="text" class="form-control" name="cantidad_requerida[]" maxlength="100"
+                      placeholder="Ej. 20 libras" required>
                   </div>
                 </div>
               </div>
@@ -105,22 +112,22 @@
 
           <h5 class="fw-bold mb-3">
             <i class="bi bi-image me-2"></i>
-            Imagen
+            Image
           </h5>
 
           <div class="mb-4">
-            <label for="imagen" class="form-label">Imagen de la solicitud</label>
+            <label for="imagen" class="form-label">Request's image</label>
             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp">
-            <div class="form-text">Formatos permitidos: JPG, PNG y WEBP.</div>
+            <div class="form-text">JPG, PNG and WEBP are allow.</div>
           </div>
 
           <div id="mensajeSolicitud" class="alert d-none" role="alert"></div>
 
           <div class="d-flex justify-content-end gap-2">
-            <button type="reset" class="btn btn-outline-secondary px-4">Limpiar</button>
+            <button type="reset" class="btn btn-outline-secondary px-4">Clean</button>
             <button type="submit" class="btn btn-primary px-4" id="btnPublicar">
               <i class="bi bi-send me-2"></i>
-              Publicar solicitud
+              Publish request
             </button>
           </div>
 
