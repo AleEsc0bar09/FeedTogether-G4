@@ -79,6 +79,79 @@ let solicitudActual = null;
 
 let requestsData = {};
 
+let solicitudesCargadas = [];
+
+// Quita tildes y mayúsculas para que "colon" encuentre "Colón"
+function normalizarTexto(texto) {
+  return String(texto ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function pintarSolicitudes(lista) {
+  const contenedor = document.getElementById("listaSolicitudes");
+  if (!contenedor) return;
+
+  if (lista.length === 0) {
+    contenedor.innerHTML = `<p class="text-muted">No se encontraron solicitudes con esa búsqueda.</p>`;
+    return;
+  }
+
+  contenedor.innerHTML = lista.map(sol => {
+    const badges = sol.productos.map(p =>
+      `<span class="badge bg-light text-dark border">${escapeHtml(p.producto)}</span>`
+    ).join(" ");
+
+    const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
+    const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
+
+    return `
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+          <div class="d-flex gap-3 align-items-center">
+            <img src="${escapeHtml(imagen)}"
+                 class="rounded-3 card-img-custom object-fit-cover"
+                 style="width: 120px; height: 100px; flex-shrink: 0;"
+                 alt="${escapeHtml(sol.titulo)}">
+            <div class="w-100">
+              <h5 class="fw-bold mb-1">${escapeHtml(sol.titulo)}</h5>
+              <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
+              <div class="d-flex flex-wrap gap-1 mb-3">
+                ${badges}
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail(${Number(sol.id_solicitud)})">View Details</button>
+                <button class="btn btn-sm btn-success" onclick="loadRequestDetail(${Number(sol.id_solicitud)})">Pledge Support</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function filtrarSolicitudes(texto) {
+  const busqueda = normalizarTexto(texto).trim();
+
+  if (busqueda === "") {
+    pintarSolicitudes(solicitudesCargadas);
+    return;
+  }
+
+  const filtradas = solicitudesCargadas.filter(sol => {
+    const productos = sol.productos.map(p => p.producto).join(" ");
+    const categorias = sol.productos.map(p => p.nombre_categoria).join(" ");
+    const contenido = normalizarTexto(
+      `${sol.titulo} ${sol.descripcion} ${sol.ubicacion} ${productos} ${categorias}`
+    );
+    return contenido.includes(busqueda);
+  });
+
+  pintarSolicitudes(filtradas);
+}
+
 function cargarSolicitudes() {
   const contenedor = document.getElementById("listaSolicitudes");
   if (!contenedor) return;
@@ -91,44 +164,22 @@ function cargarSolicitudes() {
         return;
       }
 
+      solicitudesCargadas = data.solicitudes;
       requestsData = {};
-      contenedor.innerHTML = "";
-
-      data.solicitudes.forEach(sol => {
+      solicitudesCargadas.forEach(sol => {
         requestsData[sol.id_solicitud] = sol;
-
-        const badges = sol.productos.map(p =>
-          `<span class="badge bg-light text-dark border">${escapeHtml(p.producto)}</span>`
-        ).join(" ");
-
-        const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
-
-        const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
-
-        contenedor.innerHTML += `
-          <div class="col-md-6">
-            <div class="card border-0 shadow-sm p-3 h-100">
-              <div class="d-flex gap-3 align-items-center">
-                <img src="${escapeHtml(imagen)}"
-                     class="rounded-3 card-img-custom object-fit-cover"
-                     style="width: 120px; height: 100px; flex-shrink: 0;"
-                     alt="${escapeHtml(sol.titulo)}">
-                <div class="w-100">
-                  <h5 class="fw-bold mb-1">${escapeHtml(sol.titulo)}</h5>
-                  <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
-                  <div class="d-flex flex-wrap gap-1 mb-3">
-                    ${badges}
-                  </div>
-                  <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-secondary" onclick="loadRequestDetail(${sol.id_solicitud})">View Details</button>
-                    <button class="btn btn-sm btn-success" onclick="loadRequestDetail(${sol.id_solicitud})">Pledge Support</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
       });
+
+      pintarSolicitudes(solicitudesCargadas);
+
+      // Conectar el buscador (si ya había texto escrito, se aplica)
+      const buscador = document.getElementById("buscarSolicitud");
+      if (buscador) {
+        buscador.addEventListener("input", () => filtrarSolicitudes(buscador.value));
+        if (buscador.value.trim() !== "") {
+          filtrarSolicitudes(buscador.value);
+        }
+      }
     })
     .catch(error => {
       console.error("Error cargando solicitudes:", error);
@@ -154,8 +205,13 @@ function loadRequestDetail(idSolicitud) {
     document.getElementById("detail-req-beneficiaries").innerText = req.cantidad_beneficiados || "N/A";
     document.getElementById("detail-req-deadline").innerText = req.fecha_limite || "Sin fecha límite";
     document.getElementById("detail-req-locationdetail").innerText = req.ubicacion || "No especificada";
-    document.getElementById("detail-req-phone").innerText = "+503 7537-1280"; // dato de contacto general de la plataforma
-    document.getElementById("detail-req-email").innerText = "info@feedtogether.org";
+
+    // Contacto real del solicitante (el servidor solo lo envía con sesión iniciada)
+    const sinSesion = "Inicia sesión para ver el contacto";
+    document.getElementById("detail-req-phone").innerText =
+      req.telefono_contacto ? `+503 ${req.telefono_contacto}` : sinSesion;
+    document.getElementById("detail-req-email").innerText =
+      req.email_contacto || sinSesion;
 
     const suppliesList = document.getElementById("detail-req-supplies");
     suppliesList.innerHTML = req.productos.map(p => `
@@ -238,43 +294,6 @@ function loadStoryDetail(storyKey) {
       document.getElementById("detail-disclaimer").innerText = story.disclaimer;
     }
   }, 50);
-}
-
-function initNeedsMap() {
-  const mapElement = document.getElementById("mapa-sv");
-  if (!mapElement) return;
-
-  const map = L.map("mapa-sv").setView([13.6929, -89.2182], 9);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "© OpenStreetMap"
-  }).addTo(map);
-
-  fetch("../solicitudes/listar.php")
-    .then(response => response.json())
-    .then(data => {
-      if (data.status !== "success") return;
-
-      data.solicitudes.forEach(sol => {
-        if (sol.latitud == null || sol.longitud == null) return;
-
-        requestsData[sol.id_solicitud] = sol;
-
-        L.marker([parseFloat(sol.latitud), parseFloat(sol.longitud)])
-          .addTo(map)
-          .bindPopup(`
-            <strong>${escapeHtml(sol.titulo)}</strong><br>
-            <small>${escapeHtml(sol.ubicacion) || "Ubicación no especificada"}</small><br>
-            <button class="btn btn-sm btn-success mt-2" onclick="loadRequestDetail(${sol.id_solicitud})">View Details</button>
-          `);
-      });
-    })
-    .catch(error => console.error("Error cargando puntos del mapa:", error));
-
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 300);
 }
 
 function initSolicitudForm() {
@@ -490,12 +509,26 @@ function volverDesdeDetalle() {
 }
 
 let compromisosData = [];
+let filtroCompromisosActual = "all";
 
-function cargarMisCompromisos() {
+// Estado que ve el donante: si la solicitud fue cerrada y su compromiso
+// seguía pendiente, se muestra como "Closed"
+function estadoCompromiso(c) {
+  if (c.estado === "pendiente" && c.estado_solicitud === "cerrada") {
+    return "cerrada";
+  }
+  return c.estado;
+}
+
+function cargarMisCompromisos(mantenerFiltro = false) {
   const contenedor = document.getElementById("listaCompromisos");
   if (!contenedor) return;
 
-  fetch("../solicitudes/mis_compromisos.php")
+  if (!mantenerFiltro) {
+    filtroCompromisosActual = "all";
+  }
+
+  fetch("../solicitudes/mis_compromisos.php", { cache: "no-store" })
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success") {
@@ -504,7 +537,7 @@ function cargarMisCompromisos() {
       }
 
       compromisosData = data.compromisos;
-      pintarCompromisos(compromisosData);
+      aplicarFiltroCompromisos();
     })
     .catch(error => {
       console.error("Error cargando compromisos:", error);
@@ -512,49 +545,113 @@ function cargarMisCompromisos() {
     });
 }
 
+function aplicarFiltroCompromisos() {
+  const lista = filtroCompromisosActual === "all"
+    ? compromisosData
+    : compromisosData.filter(c => estadoCompromiso(c) === filtroCompromisosActual);
+
+  pintarCompromisos(lista);
+}
+
 function pintarCompromisos(lista) {
   const contenedor = document.getElementById("listaCompromisos");
+  if (!contenedor) return;
 
   if (lista.length === 0) {
-    contenedor.innerHTML = `<p class="text-muted">Aún no tienes compromisos de donación.</p>`;
+    const mensaje = compromisosData.length === 0
+      ? "Aún no tienes compromisos de donación."
+      : "No tienes compromisos en esta categoría.";
+    contenedor.innerHTML = `<p class="text-muted">${mensaje}</p>`;
     return;
   }
 
   const badgeClase = {
     pendiente: "bg-warning text-dark",
     completado: "bg-success",
-    cancelado: "bg-danger"
+    cancelado: "bg-danger",
+    cerrada: "bg-secondary"
   };
 
   const badgeTexto = {
     pendiente: "In Progress",
     completado: "Completed",
-    cancelado: "Cancelled"
+    cancelado: "Cancelled",
+    cerrada: "Closed"
   };
 
   contenedor.innerHTML = lista.map(c => {
+    const estado = estadoCompromiso(c);
     const fecha = new Date(c.fecha_compromiso).toLocaleDateString();
+
+    // Solo se puede completar o cancelar mientras siga en progreso
+    const acciones = estado === "pendiente" ? `
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <button class="btn btn-sm btn-success" onclick="actualizarCompromiso(${Number(c.id_compromiso)}, 'completado')">
+          <i class="bi bi-check-circle me-1"></i> Mark as completed
+        </button>
+        <button class="btn btn-sm btn-outline-danger" onclick="actualizarCompromiso(${Number(c.id_compromiso)}, 'cancelado')">
+          <i class="bi bi-x-circle me-1"></i> Cancel pledge
+        </button>
+      </div>
+    ` : "";
+
+    const nota = estado === "cerrada"
+      ? `<p class="text-muted small fst-italic mb-0 mt-1">The requester closed this request.</p>`
+      : "";
+
     return `
       <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
         <div>
           <h5 class="fw-bold mb-1">${escapeHtml(c.titulo)}</h5>
           <p class="text-muted small mb-0">${escapeHtml(c.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
+          ${nota}
+          ${acciones}
         </div>
-        <span class="badge ${badgeClase[c.estado]} px-3 py-2">${badgeTexto[c.estado]}</span>
+        <span class="badge ${badgeClase[estado]} px-3 py-2">${badgeTexto[estado]}</span>
       </div>
     `;
   }).join("");
+}
+
+function actualizarCompromiso(idCompromiso, nuevoEstado) {
+  const pregunta = nuevoEstado === "completado"
+    ? "¿Confirmas que ya entregaste esta donación?"
+    : "¿Seguro que quieres cancelar este compromiso?";
+
+  if (!confirm(pregunta)) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_compromiso", idCompromiso);
+  formData.append("estado", nuevoEstado);
+
+  fetch("../solicitudes/actualizar_compromiso.php", {
+    method: "POST",
+    body: formData,
+    credentials: "include"
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        cargarMisCompromisos(true);
+      } else {
+        alert(data.message || "No se pudo actualizar el compromiso.");
+        cargarMisCompromisos(true);
+      }
+    })
+    .catch(error => {
+      console.error("Error al actualizar compromiso:", error);
+      alert("No se pudo conectar con el servidor.");
+    });
 }
 
 function filtrarCompromisos(estado) {
   document.querySelectorAll("#main-content .nav-tabs .nav-link").forEach(link => link.classList.remove("active"));
   event.target.classList.add("active");
 
-  if (estado === "all") {
-    pintarCompromisos(compromisosData);
-  } else {
-    pintarCompromisos(compromisosData.filter(c => c.estado === estado));
-  }
+  filtroCompromisosActual = estado;
+  aplicarFiltroCompromisos();
 }
 
 let misSolicitudesData = [];
@@ -771,7 +868,7 @@ function cargarRankingDonantes() {
               ${avatar}
               <span class="fw-semibold">${escapeHtml(donante.nombre)}</span>
             </div>
-            <span class="badge bg-success rounded-pill">${donante.total_compromisos} pledge${donante.total_compromisos != 1 ? 's' : ''}</span>
+            <span class="badge bg-success rounded-pill">${donante.total_compromisos} donation${donante.total_compromisos != 1 ? 's' : ''}</span>
           </div>
         `;
       }).join("");
@@ -780,4 +877,95 @@ function cargarRankingDonantes() {
       console.error("Error cargando ranking:", error);
       contenedor.innerHTML = `<p class="text-danger text-center">No se pudo cargar el ranking.</p>`;
     });
+}
+
+function estadoPinSolicitud(sol) {
+  if (Number(sol.total_compromisos) > 0) return "pledged";
+
+  if (sol.fecha_limite) {
+    const limite = new Date(sol.fecha_limite + "T23:59:59");
+    const dias = (limite - new Date()) / (1000 * 60 * 60 * 24);
+    if (dias <= 7) return "urgent";
+  }
+
+  return "open";
+}
+
+function initNeedsMap() {
+  const mapElement = document.getElementById("mapa-sv");
+  if (!mapElement) return;
+
+  const map = L.map("mapa-sv").setView([13.6929, -89.2182], 9);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap"
+  }).addTo(map);
+
+  const capa = L.layerGroup().addTo(map);
+  const colores = { urgent: "#dc3545", open: "#dd6e10", pledged: "#44930f" };
+  const textos = { urgent: "Urgent", open: "Open", pledged: "Has pledges" };
+
+  const selEstado = document.getElementById("filtro-estado");
+  const selCategoria = document.getElementById("filtro-categoria");
+  const contador = document.getElementById("mapa-contador");
+
+  let solicitudesMapa = [];
+
+  function pintarPines() {
+    capa.clearLayers();
+
+    const estado = selEstado ? selEstado.value : "all";
+    const categoria = selCategoria ? selCategoria.value : "all";
+    let mostrados = 0;
+
+    solicitudesMapa.forEach(sol => {
+      const estadoPin = estadoPinSolicitud(sol);
+
+      if (estado !== "all" && estado !== estadoPin) return;
+      if (categoria !== "all" && !sol.productos.some(p => p.nombre_categoria === categoria)) return;
+
+      L.circleMarker([parseFloat(sol.latitud), parseFloat(sol.longitud)], {
+        radius: 10,
+        color: "#ffffff",
+        weight: 2,
+        fillColor: colores[estadoPin],
+        fillOpacity: 0.95
+      })
+        .addTo(capa)
+        .bindPopup(`
+          <strong>${escapeHtml(sol.titulo)}</strong><br>
+          <small>${escapeHtml(sol.ubicacion) || "Ubicación no especificada"}</small><br>
+          <small class="text-muted">${textos[estadoPin]}</small><br>
+          <button class="btn btn-sm btn-success mt-2" onclick="loadRequestDetail(${Number(sol.id_solicitud)})">View Details</button>
+        `);
+
+      mostrados++;
+    });
+
+    if (contador) {
+      contador.textContent = `${mostrados} request(s) on the map`;
+    }
+  }
+
+  fetch("../solicitudes/listar.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success") return;
+
+      solicitudesMapa = data.solicitudes.filter(sol => sol.latitud != null && sol.longitud != null);
+      solicitudesMapa.forEach(sol => {
+        requestsData[sol.id_solicitud] = sol;
+      });
+
+      pintarPines();
+    })
+    .catch(error => console.error("Error cargando puntos del mapa:", error));
+
+  if (selEstado) selEstado.addEventListener("change", pintarPines);
+  if (selCategoria) selCategoria.addEventListener("change", pintarPines);
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
 }

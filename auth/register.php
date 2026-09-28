@@ -51,6 +51,32 @@ if (!isset($_FILES['foto_perfil']) || $_FILES['foto_perfil']['error'] !== UPLOAD
     exit;
 }
 
+// Validar tamaño (máx. 5 MB)
+if ($_FILES['foto_perfil']['size'] > 5 * 1024 * 1024) {
+    echo json_encode(['status' => 'error', 'message' => 'La foto no puede superar los 5 MB.']);
+    exit;
+}
+
+// Validar el tipo REAL del archivo (no la extensión que manda el navegador)
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$tipoImagen = $finfo->file($_FILES['foto_perfil']['tmp_name']);
+
+$tiposPermitidos = [
+    'image/jpeg' => 'jpg',
+    'image/png'  => 'png',
+    'image/webp' => 'webp'
+];
+
+if (!isset($tiposPermitidos[$tipoImagen])) {
+    echo json_encode(['status' => 'error', 'message' => 'La foto debe ser JPG, PNG o WEBP.']);
+    exit;
+}
+
+// La extensión sale de la tabla de arriba, nunca del nombre que envía el usuario
+$extension = $tiposPermitidos[$tipoImagen];
+
+$rutaDestino = null;
+
 try {
     // 1. Verificar si el correo ya existe
     $stmtCheck = $conexion->prepare("SELECT id_usuario FROM usuario WHERE email = :email");
@@ -64,18 +90,18 @@ try {
     // 2. Encriptar contraseña por seguridad
     $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-    // 3. Procesar la subida de la foto de perfil
+    // 3. Guardar la foto de perfil (el nombre se arma DESPUÉS de validar)
     $carpetaDestino = '../public/uploads/';
-    $extension = strtolower(pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION));
     $nombreArchivo = uniqid('perfil_', true) . '.' . $extension;
     $rutaDestino = $carpetaDestino . $nombreArchivo;
 
     if (!move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $rutaDestino)) {
+        $rutaDestino = null;
         echo json_encode(['status' => 'error', 'message' => 'Ocurrió un error al subir la foto de perfil.']);
         exit;
     }
 
-    // 4. Insertar el nuevo usuario en DatabaseTestFinal
+    // 4. Insertar el nuevo usuario
     $stmtInsert = $conexion->prepare("INSERT INTO usuario (nombre, email, password, departamento, distrito, telefono, foto_perfil, rol) VALUES (:nombre, :email, :password, :departamento, :distrito, :telefono, :foto_perfil, :rol)");
     $stmtInsert->execute([
         ':nombre' => $nombre,
@@ -94,9 +120,16 @@ try {
     ]);
 
 } catch (PDOException $e) {
+
+    // Si la foto ya se guardó pero el registro falló, se borra para no dejar archivos huérfanos
+    if ($rutaDestino !== null && is_file($rutaDestino)) {
+        unlink($rutaDestino);
+    }
+
+    error_log('Error al registrar usuario: ' . $e->getMessage());
     echo json_encode([
         'status' => 'error',
-        'message' => 'DEBUG: ' . $e->getMessage()
+        'message' => 'No se pudo completar el registro. Inténtalo nuevamente.'
     ]);
 }
 ?>

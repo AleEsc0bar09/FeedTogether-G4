@@ -5,17 +5,19 @@ header('Content-Type: application/json; charset=utf-8');
 require_once '../config/conexion.php';
 
 try {
+    // Solo cuentan las donaciones completadas para el ranking
     $stmt = $conexion->prepare("
         SELECT 
-        u.nombre,
-        u.foto_perfil,
-        COUNT(cd.id_compromiso) AS total_compromisos
+            u.nombre,
+            u.foto_perfil,
+            COUNT(cd.id_compromiso) AS total_compromisos
         FROM compromisos_donacion cd
         JOIN usuario u ON cd.id_usuario = u.id_usuario
         WHERE u.rol = 'donor'
+          AND cd.estado = 'completado'
           AND MONTH(cd.fecha_compromiso) = MONTH(CURRENT_DATE())
           AND YEAR(cd.fecha_compromiso) = YEAR(CURRENT_DATE())
-        GROUP BY u.id_usuario, u.nombre
+        GROUP BY u.id_usuario, u.nombre, u.foto_perfil
         ORDER BY total_compromisos DESC
         LIMIT 10
     ");

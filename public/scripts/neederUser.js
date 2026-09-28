@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
 let historialSecciones = [];
 
 function loadSection(sectionName, guardarEnHistorial = true) {
+  // El needer no tiene acceso al mapa
+  if (sectionName === "map") {
+    return;
+  }
+
   const mainContent = document.getElementById("main-content");
 
   if (!mainContent) {
@@ -31,19 +36,16 @@ function loadSection(sectionName, guardarEnHistorial = true) {
 
       if (sectionName === "register") {
         initRegisterForm();
-      } else if (sectionName === 'map') {
-        initNeedsMap();
-
       } else if (sectionName === "inicioRequester") {
         initSolicitudForm();
       } else if (sectionName === "request") {
         cargarSolicitudes();
       } else if (sectionName === 'profile') {
         cargarDatosPerfil();
-       } else if (sectionName === "myrequest") {
+      } else if (sectionName === "myrequest") {
         cargarMisSolicitudes();
-       } 
-      
+      }
+
     })
     .catch((error) => {
       console.error("Error loading dynamic section:", error);

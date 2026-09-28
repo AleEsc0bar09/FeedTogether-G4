@@ -1,10 +1,5 @@
-<button class="btn btn-link text-muted text-decoration-none p-0 mb-3" onclick="volverAtras()">
-  <i class="bi bi-arrow-left"></i> Back
-</button>
-
 <h3 class="fw-bold mb-3 text-success">Coverage & Support Network Map</h3>
-<p class="text-muted mb-4">Find active community kitchens, churches, and NGOs distributing or requesting food support
-  across El Salvador.</p>
+<p class="text-muted mb-4">Each pin is a community asking for food support. Tap a pin to see the request and pledge your help.</p>
 
 <div class="row">
   <div class="col-lg-8">
@@ -12,49 +7,53 @@
 
     <div class="row g-2 mt-2">
       <div class="col-6">
-        <select class="form-select">
-          <option selected>All Regions</option>
-          <option>Central Zone</option>
-          <option>Western Zone</option>
-          <option>Eastern Zone</option>
+        <select class="form-select" id="filtro-estado">
+          <option value="all" selected>All statuses</option>
+          <option value="urgent">Urgent (deadline within 7 days)</option>
+          <option value="open">Open, no pledges yet</option>
+          <option value="pledged">Already has pledges</option>
         </select>
       </div>
       <div class="col-6">
-        <select class="form-select">
-          <option selected>All Organization Types</option>
-          <option>Community Kitchens</option>
-          <option>Churches & Parishes</option>
-          <option>Local Relief NGOs</option>
+        <select class="form-select" id="filtro-categoria">
+          <option value="all" selected>All categories</option>
+          <option value="Víveres básicos">Víveres básicos</option>
+          <option value="Alimentos infantiles">Alimentos infantiles</option>
+          <option value="Agua potable">Agua potable</option>
+          <option value="Frutas y verduras">Frutas y verduras</option>
+          <option value="Alimentos no perecederos">Alimentos no perecederos</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
     </div>
+    <small id="mapa-contador" class="text-muted d-block mt-2"></small>
   </div>
 
   <div class="col-lg-4 mt-4 mt-lg-0">
     <div class="card border-0 shadow-sm p-3 bg-white">
-      <h5 class="fw-bold mb-3">Organization Status</h5>
+      <h5 class="fw-bold mb-3">Request Status</h5>
 
       <div class="d-flex align-items-center mb-3">
         <span class="badge rounded-circle bg-danger me-2 p-2"> </span>
         <div>
-          <strong class="d-block text-dark">High Priority Needs</strong>
-          <small class="text-muted">Requires urgent food basket donations.</small>
+          <strong class="d-block text-dark">Urgent</strong>
+          <small class="text-muted">No pledges yet and the deadline is within 7 days.</small>
         </div>
       </div>
 
       <div class="d-flex align-items-center mb-3">
         <span class="badge rounded-circle bg-warning me-2 p-2"> </span>
         <div>
-          <strong class="d-block text-dark">Active Collection Point</strong>
-          <small class="text-muted">Receiving and distributing surplus meals.</small>
+          <strong class="d-block text-dark">Open</strong>
+          <small class="text-muted">Waiting for its first pledge.</small>
         </div>
       </div>
 
       <div class="d-flex align-items-center">
         <span class="badge rounded-circle bg-success me-2 p-2"> </span>
         <div>
-          <strong class="d-block text-dark">Partner Church / NGO</strong>
-          <small class="textf-muted">Logistics & volunteer distribution hub.</small>
+          <strong class="d-block text-dark">Has pledges</strong>
+          <small class="text-muted">At least one donor is already helping.</small>
         </div>
       </div>
     </div>

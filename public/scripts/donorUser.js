@@ -32,6 +32,8 @@ function loadSection(sectionName, guardarEnHistorial = true) {
         initRegisterForm();
       } else if (sectionName === 'map') {
         initNeedsMap();
+      } else if (sectionName === "homeDonor") {
+        cargarRankingDonantes();
       } else if (sectionName === "request") {
         cargarSolicitudes();
       }

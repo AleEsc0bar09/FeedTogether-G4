@@ -21,7 +21,8 @@ try {
             cd.fecha_compromiso,
             cd.mensaje,
             s.titulo,
-            s.ubicacion
+            s.ubicacion,
+            s.estado AS estado_solicitud
         FROM compromisos_donacion cd
         JOIN solicitudes s ON cd.id_solicitud = s.id_solicitud
         WHERE cd.id_usuario = :id_usuario
