@@ -26,8 +26,9 @@ if (!$idCompromiso) {
     exit;
 }
 
-// Solo se permite pasar de "pendiente" a "completado" o "cancelado"
-if (!in_array($nuevoEstado, ['completado', 'cancelado'], true)) {
+// Solo se permite pasar de "pendiente" a "entregado" o "cancelado".
+// "completado" solo lo puede poner el solicitante (confirmar_entrega.php)
+if (!in_array($nuevoEstado, ['entregado', 'cancelado'], true)) {
     echo json_encode(['status' => 'error', 'message' => 'Estado no válido.']);
     exit;
 }
@@ -59,13 +60,13 @@ try {
         ]);
         exit;
     }
-
+     
     echo json_encode([
-        'status' => 'success',
-        'message' => $nuevoEstado === 'completado'
-            ? '¡Gracias por completar tu donación!'
-            : 'Compromiso cancelado.'
-    ]);
+    'status' => 'success',
+    'message' => $nuevoEstado === 'entregado'
+        ? 'Marcado como entregado. Esperando la confirmación del solicitante.'
+        : 'Compromiso cancelado.'
+]);
 
 } catch (PDOException $e) {
     error_log('Error al actualizar compromiso: ' . $e->getMessage());

@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS compromisos_donacion(
     id_usuario INT NOT NULL,
     mensaje TEXT NULL,
     fecha_compromiso DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('pendiente','completado','cancelado') DEFAULT 'pendiente',
+    estado ENUM('pendiente','entregado','completado','cancelado') NOT NULL DEFAULT 'pendiente',
     CONSTRAINT fk_compromiso_solicitud FOREIGN KEY (id_solicitud) REFERENCES solicitudes(id_solicitud),
     CONSTRAINT fk_compromiso_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );

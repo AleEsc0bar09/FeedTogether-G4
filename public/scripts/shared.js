@@ -512,9 +512,9 @@ let compromisosData = [];
 let filtroCompromisosActual = "all";
 
 // Estado que ve el donante: si la solicitud fue cerrada y su compromiso
-// seguía pendiente, se muestra como "Closed"
+// seguía sin confirmarse (pendiente o entregado), se muestra como "Closed"
 function estadoCompromiso(c) {
-  if (c.estado === "pendiente" && c.estado_solicitud === "cerrada") {
+  if ((c.estado === "pendiente" || c.estado === "entregado") && c.estado_solicitud === "cerrada") {
     return "cerrada";
   }
   return c.estado;
@@ -567,6 +567,7 @@ function pintarCompromisos(lista) {
 
   const badgeClase = {
     pendiente: "bg-warning text-dark",
+    entregado: "bg-info text-dark",
     completado: "bg-success",
     cancelado: "bg-danger",
     cerrada: "bg-secondary"
@@ -574,6 +575,7 @@ function pintarCompromisos(lista) {
 
   const badgeTexto = {
     pendiente: "In Progress",
+    entregado: "Delivered - Awaiting confirmation",
     completado: "Completed",
     cancelado: "Cancelled",
     cerrada: "Closed"
@@ -583,11 +585,11 @@ function pintarCompromisos(lista) {
     const estado = estadoCompromiso(c);
     const fecha = new Date(c.fecha_compromiso).toLocaleDateString();
 
-    // Solo se puede completar o cancelar mientras siga en progreso
+    // Mientras está en progreso, el donor puede marcarla como entregada o cancelarla
     const acciones = estado === "pendiente" ? `
       <div class="d-flex flex-wrap gap-2 mt-2">
-        <button class="btn btn-sm btn-success" onclick="actualizarCompromiso(${Number(c.id_compromiso)}, 'completado')">
-          <i class="bi bi-check-circle me-1"></i> Mark as completed
+        <button class="btn btn-sm btn-success" onclick="actualizarCompromiso(${Number(c.id_compromiso)}, 'entregado')">
+          <i class="bi bi-check-circle me-1"></i> Mark as delivered
         </button>
         <button class="btn btn-sm btn-outline-danger" onclick="actualizarCompromiso(${Number(c.id_compromiso)}, 'cancelado')">
           <i class="bi bi-x-circle me-1"></i> Cancel pledge
@@ -595,9 +597,12 @@ function pintarCompromisos(lista) {
       </div>
     ` : "";
 
-    const nota = estado === "cerrada"
-      ? `<p class="text-muted small fst-italic mb-0 mt-1">The requester closed this request.</p>`
-      : "";
+    let nota = "";
+    if (estado === "cerrada") {
+      nota = `<p class="text-muted small fst-italic mb-0 mt-1">The requester closed this request.</p>`;
+    } else if (estado === "entregado") {
+      nota = `<p class="text-muted small fst-italic mb-0 mt-1">Waiting for the requester to confirm they received it.</p>`;
+    }
 
     return `
       <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
@@ -614,8 +619,8 @@ function pintarCompromisos(lista) {
 }
 
 function actualizarCompromiso(idCompromiso, nuevoEstado) {
-  const pregunta = nuevoEstado === "completado"
-    ? "¿Confirmas que ya entregaste esta donación?"
+  const pregunta = nuevoEstado === "entregado"
+    ? "¿Confirmas que ya entregaste esta donación? El solicitante deberá confirmarla."
     : "¿Seguro que quieres cancelar este compromiso?";
 
   if (!confirm(pregunta)) {
@@ -660,7 +665,7 @@ function cargarMisSolicitudes() {
   const contenedor = document.getElementById("listaMisSolicitudes");
   if (!contenedor) return;
 
-  fetch("../solicitudes/mis_solicitudes.php")
+  fetch("../solicitudes/mis_solicitudes.php", { cache: "no-store" })
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success") {
@@ -679,6 +684,7 @@ function cargarMisSolicitudes() {
 
 function pintarMisSolicitudes(lista) {
   const contenedor = document.getElementById("listaMisSolicitudes");
+  if (!contenedor) return;
 
   if (lista.length === 0) {
     contenedor.innerHTML = `<p class="text-muted">Aún no has creado ninguna solicitud.</p>`;
@@ -695,7 +701,22 @@ function pintarMisSolicitudes(lista) {
     cerrada: "Closed"
   };
 
+  const donanteBadgeClase = {
+    pendiente: "bg-warning text-dark",
+    entregado: "bg-info text-dark",
+    completado: "bg-success",
+    cancelado: "bg-danger"
+  };
+
+  const donanteBadgeTexto = {
+    pendiente: "In Progress",
+    entregado: "Delivered by donor",
+    completado: "Received ✔",
+    cancelado: "Cancelled"
+  };
+
   contenedor.innerHTML = lista.map((s, index) => {
+
     const donantesHtml = s.donantes.length === 0
       ? `<p class="text-muted small mb-0 mt-2">Nadie se ha comprometido aún.</p>`
       : s.donantes.map(d => {
@@ -703,18 +724,30 @@ function pintarMisSolicitudes(lista) {
             ? `<img src="uploads/${escapeHtml(d.foto_perfil)}" class="rounded-circle me-2" style="width: 28px; height: 28px; object-fit: cover;" alt="${escapeHtml(d.nombre)}">`
             : `<div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;"><i class="bi bi-person-fill text-secondary small"></i></div>`;
           const fecha = new Date(d.fecha_compromiso).toLocaleDateString();
+
+          // El solicitante puede confirmar que recibió la donación
+          // mientras esté en progreso o marcada como entregada por el donante
+          const puedeConfirmar = d.estado === "pendiente" || d.estado === "entregado";
+          const confirmarBtn = puedeConfirmar
+            ? `<button class="btn btn-sm btn-success mt-1" onclick="confirmarEntrega(${Number(d.id_compromiso)})"><i class="bi bi-check2-circle me-1"></i> I received this donation</button>`
+            : "";
+
           return `
             <div class="d-flex align-items-center mb-2 mt-2">
               ${foto}
               <div>
-                <span class="fw-semibold small">${escapeHtml(d.nombre)}</span>
-                <span class="text-muted small"> - ${fecha}</span>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <span class="fw-semibold small">${escapeHtml(d.nombre)}</span>
+                  <span class="text-muted small"> - ${fecha}</span>
+                  <span class="badge ${donanteBadgeClase[d.estado]} small">${donanteBadgeTexto[d.estado]}</span>
+                </div>
                 <div class="small">
                   <i class="bi bi-telephone me-1"></i>${escapeHtml(d.telefono) || "—"}
                   <span class="mx-1">·</span>
                   <i class="bi bi-envelope me-1"></i>${escapeHtml(d.email) || "—"}
                 </div>
                 ${d.mensaje ? `<p class="text-muted small mb-0 fst-italic">"${escapeHtml(d.mensaje)}"</p>` : ""}
+                ${confirmarBtn}
               </div>
             </div>
           `;
@@ -736,7 +769,7 @@ function pintarMisSolicitudes(lista) {
           ${donantesHtml}
           ${s.estado === "activa" ? `
             <div class="text-end mt-3">
-              <button class="btn btn-sm btn-outline-danger" onclick="cerrarSolicitud(${s.id_solicitud})">
+              <button class="btn btn-sm btn-outline-danger" onclick="cerrarSolicitud(${Number(s.id_solicitud)})">
                 <i class="bi bi-x-circle me-1"></i> Close request
               </button>
             </div>
@@ -745,6 +778,32 @@ function pintarMisSolicitudes(lista) {
       </div>
     `;
   }).join("");
+}
+
+function confirmarEntrega(idCompromiso) {
+  if (!confirm("¿Confirmas que recibiste esta donación? Esto marcará el compromiso como completado.")) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_compromiso", idCompromiso);
+
+  fetch("../solicitudes/confirmar_entrega.php", {
+    method: "POST",
+    body: formData,
+    credentials: "include"
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status !== "success") {
+        alert(data.message || "No se pudo confirmar la entrega.");
+      }
+      cargarMisSolicitudes();
+    })
+    .catch(error => {
+      console.error("Error al confirmar entrega:", error);
+      alert("No se pudo conectar con el servidor.");
+    });
 }
 
 function toggleDonantes(index) {
