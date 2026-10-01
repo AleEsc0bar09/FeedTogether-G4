@@ -22,20 +22,20 @@
           <div class="mb-3">
             <label for="titulo" class="form-label fw-semibold">Request's title</label>
             <input type="text" class="form-control" id="titulo" name="titulo" maxlength="150"
-              placeholder="Ej. Alimentos para familias de la comunidad" required>
+              placeholder="E.g. Food for the community's families" required>
           </div>
 
           <div class="mb-3">
             <label for="descripcion" class="form-label fw-semibold">Description</label>
             <textarea class="form-control" id="descripcion" name="descripcion" rows="5" maxlength="2000"
-              placeholder="Explica qué situación tienen y para qué necesitan los alimentos..." required></textarea>
+              placeholder="Explain their situation and why the food is needed..." required></textarea>
           </div>
 
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="cantidad_beneficiados" class="form-label fw-semibold">Benefited people</label>
+              <label for="cantidad_beneficiados" class="form-label fw-semibold">Number of beneficiaries</label>
               <input type="number" class="form-control" id="cantidad_beneficiados" name="cantidad_beneficiados" min="1"
-                placeholder="Ej. 25">
+                placeholder="E.g. 25">
             </div>
             <div class="col-md-6 mb-3">
               <label for="fecha_limite" class="form-label fw-semibold">Request's Deadline</label>
@@ -46,7 +46,7 @@
           <div class="mb-4">
             <label for="ubicacion" class="form-label fw-semibold">Location</label>
             <input type="text" class="form-control" id="ubicacion" name="ubicacion" maxlength="200"
-              placeholder="Ej. Antiguo Cuscatlán, La Libertad">
+              placeholder="E.g. Antiguo Cuscatlán, La Libertad">
           </div>
 
           <div class="mb-4">
@@ -95,13 +95,13 @@
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label">Product</label>
-                    <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="Ej. Arroz"
+                    <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="E.g. Rice"
                       required>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label">Required amount</label>
                     <input type="text" class="form-control" name="cantidad_requerida[]" maxlength="100"
-                      placeholder="Ej. 20 libras" required>
+                      placeholder="E.g. 20 pounds" required>
                   </div>
                 </div>
               </div>
@@ -118,13 +118,13 @@
           <div class="mb-4">
             <label for="imagen" class="form-label">Request's image</label>
             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp">
-            <div class="form-text">JPG, PNG and WEBP are allow.</div>
+            <div class="form-text">JPG, PNG and WEBP are allowed.</div>
           </div>
 
           <div id="mensajeSolicitud" class="alert d-none" role="alert"></div>
 
           <div class="d-flex justify-content-end gap-2">
-            <button type="reset" class="btn btn-outline-secondary px-4">Clean</button>
+            <button type="reset" class="btn btn-outline-secondary px-4">Reset</button>
             <button type="submit" class="btn btn-primary px-4" id="btnPublicar">
               <i class="bi bi-send me-2"></i>
               Publish request

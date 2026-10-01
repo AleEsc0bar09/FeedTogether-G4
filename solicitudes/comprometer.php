@@ -7,13 +7,13 @@ require_once '../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['status' => 'error', 'message' => 'Método no permitido.']);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
     exit;
 }
 
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
-    echo json_encode(['status' => 'error', 'message' => 'Debes iniciar sesión para hacer un compromiso de donación.']);
+    echo json_encode(['status' => 'error', 'message' => 'You must log in to make a donation pledge.']);
     exit;
 }
 
@@ -23,22 +23,23 @@ $idSolicitud = filter_var($_POST['id_solicitud'] ?? '', FILTER_VALIDATE_INT);
 $mensaje = trim($_POST['mensaje'] ?? '');
 
 if (!$idSolicitud) {
-    echo json_encode(['status' => 'error', 'message' => 'Solicitud no válida.']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
     exit;
 }
 
 try {
-    // Verificar que la solicitud exista y esté activa
+    // Check that the request exists and is active
     $stmtCheck = $conexion->prepare("SELECT id_solicitud FROM solicitudes WHERE id_solicitud = :id AND estado = 'activa'");
     $stmtCheck->execute([':id' => $idSolicitud]);
 
     if (!$stmtCheck->fetch()) {
-        echo json_encode(['status' => 'error', 'message' => 'Esta solicitud ya no está disponible.']);
+        echo json_encode(['status' => 'error', 'message' => 'This request is no longer available.']);
         exit;
     }
-        // Verificar que el usuario no se haya comprometido ya con esta solicitud
+
+    // Check that the user has not already pledged to this request
     $stmtDuplicado = $conexion->prepare("
-        SELECT id_compromiso FROM compromisos_donacion 
+        SELECT id_compromiso FROM compromisos_donacion
         WHERE id_solicitud = :id_solicitud AND id_usuario = :id_usuario
     ");
     $stmtDuplicado->execute([
@@ -47,7 +48,7 @@ try {
     ]);
 
     if ($stmtDuplicado->fetch()) {
-        echo json_encode(['status' => 'error', 'message' => 'Ya te has comprometido con esta solicitud anteriormente.']);
+        echo json_encode(['status' => 'error', 'message' => 'You have already pledged to this request.']);
         exit;
     }
 
@@ -63,7 +64,7 @@ try {
 
     echo json_encode([
         'status' => 'success',
-        'message' => '¡Tu compromiso de donación se envió con éxito!'
+        'message' => 'Your donation pledge was sent successfully!'
     ]);
 
 } catch (PDOException $e) {
@@ -71,7 +72,7 @@ try {
     http_response_code(500);
     echo json_encode([
         'status' => 'error',
-        'message' => 'No se pudo registrar tu compromiso. Inténtalo nuevamente.'
+        'message' => 'Your pledge could not be registered. Please try again.'
     ]);
 }
 ?>

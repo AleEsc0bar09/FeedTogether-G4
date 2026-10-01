@@ -38,7 +38,7 @@ function enviarCompromiso(form) {
 
   mensajeDiv.classList.add("d-none");
   btnSubmit.disabled = true;
-  btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Enviando...`;
+  btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Sending...`;
 
   const formData = new FormData(form);
 
@@ -51,7 +51,7 @@ function enviarCompromiso(form) {
     .then(data => {
       if (data.status === "success") {
         mensajeDiv.className = "alert alert-success";
-        mensajeDiv.textContent = data.message + " Redirigiendo a Mis Compromisos...";
+        mensajeDiv.textContent = data.message + " Redirecting to My Commitments...";
         mensajeDiv.classList.remove("d-none");
 
         setTimeout(() => {
@@ -59,7 +59,7 @@ function enviarCompromiso(form) {
         }, 1800);
       } else {
         mensajeDiv.className = "alert alert-danger";
-        mensajeDiv.textContent = data.message || "No se pudo enviar tu compromiso.";
+        mensajeDiv.textContent = data.message || "Your pledge could not be sent.";
         mensajeDiv.classList.remove("d-none");
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = "Confirm Pledge";
@@ -68,7 +68,7 @@ function enviarCompromiso(form) {
     .catch(error => {
       console.error("Error al enviar compromiso:", error);
       mensajeDiv.className = "alert alert-danger";
-      mensajeDiv.textContent = "No se pudo conectar con el servidor.";
+      mensajeDiv.textContent = "Could not connect to the server.";
       mensajeDiv.classList.remove("d-none");
       btnSubmit.disabled = false;
       btnSubmit.innerHTML = "Confirm Pledge";
@@ -94,7 +94,7 @@ function pintarSolicitudes(lista) {
   if (!contenedor) return;
 
   if (lista.length === 0) {
-    contenedor.innerHTML = `<p class="text-muted">No se encontraron solicitudes con esa búsqueda.</p>`;
+    contenedor.innerHTML = `<p class="text-muted">No requests match your search.</p>`;
     return;
   }
 
@@ -104,7 +104,7 @@ function pintarSolicitudes(lista) {
     ).join(" ");
 
     const imagen = sol.imagen ? sol.imagen : "img/ElRosarioChurch.jpg";
-    const fecha = new Date(sol.fecha_publicacion).toLocaleDateString();
+    const fecha = new Date(sol.fecha_publicacion).toLocaleDateString("en-US");
 
     return `
       <div class="col-md-6">
@@ -116,7 +116,7 @@ function pintarSolicitudes(lista) {
                  alt="${escapeHtml(sol.titulo)}">
             <div class="w-100">
               <h5 class="fw-bold mb-1">${escapeHtml(sol.titulo)}</h5>
-              <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
+              <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Location not specified"} - ${fecha}</p>
               <div class="d-flex flex-wrap gap-1 mb-3">
                 ${badges}
               </div>
@@ -160,7 +160,7 @@ function cargarSolicitudes() {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success" || data.solicitudes.length === 0) {
-        contenedor.innerHTML = `<p class="text-muted">No hay solicitudes activas por el momento.</p>`;
+        contenedor.innerHTML = `<p class="text-muted">There are no active requests at the moment.</p>`;
         return;
       }
 
@@ -183,7 +183,7 @@ function cargarSolicitudes() {
     })
     .catch(error => {
       console.error("Error cargando solicitudes:", error);
-      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar las solicitudes.</p>`;
+      contenedor.innerHTML = `<p class="text-danger">Requests could not be loaded.</p>`;
     });
 }
 
@@ -196,18 +196,18 @@ function loadRequestDetail(idSolicitud) {
     if (!req) return;
 
     const imagen = req.imagen ? req.imagen : "img/ElRosarioChurch.jpg";
-    const fecha = new Date(req.fecha_publicacion).toLocaleDateString();
+    const fecha = new Date(req.fecha_publicacion).toLocaleDateString("en-US");
 
     document.getElementById("detail-req-title").innerText = req.titulo;
-    document.getElementById("detail-req-location").innerText = `${req.ubicacion || "Ubicación no especificada"} - ${fecha}`;
+    document.getElementById("detail-req-location").innerText = `${req.ubicacion || "Location not specified"} - ${fecha}`;
     document.getElementById("detail-req-img").src = imagen;
     document.getElementById("detail-req-overview").innerText = req.descripcion;
     document.getElementById("detail-req-beneficiaries").innerText = req.cantidad_beneficiados || "N/A";
-    document.getElementById("detail-req-deadline").innerText = req.fecha_limite || "Sin fecha límite";
-    document.getElementById("detail-req-locationdetail").innerText = req.ubicacion || "No especificada";
+    document.getElementById("detail-req-deadline").innerText = req.fecha_limite || "No deadline";
+    document.getElementById("detail-req-locationdetail").innerText = req.ubicacion || "Not specified";
 
     // Contacto real del solicitante (el servidor solo lo envía con sesión iniciada)
-    const sinSesion = "Inicia sesión para ver el contacto";
+    const sinSesion = "Log in to see the contact info";
     document.getElementById("detail-req-phone").innerText =
       req.telefono_contacto ? `+503 ${req.telefono_contacto}` : sinSesion;
     document.getElementById("detail-req-email").innerText =
@@ -363,36 +363,36 @@ function initSolicitudForm() {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="fw-bold mb-0">
-                        Producto #${numeroProducto}
+                        Product #${numeroProducto}
                     </h6>
                     <button
                         type="button"
                         class="btn btn-sm btn-outline-danger btnEliminarProducto"
                     >
                         <i class="bi bi-trash"></i>
-                        Eliminar
+                        Remove
                     </button>
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Categoría</label>
+                        <label class="form-label">Category</label>
                         <select class="form-select" name="id_categoria[]" required>
-                            <option value="" selected disabled>Selecciona una categoría</option>
-                            <option value="1">Víveres básicos</option>
-                            <option value="2">Alimentos infantiles</option>
-                            <option value="3">Agua potable</option>
-                            <option value="4">Frutas y verduras</option>
-                            <option value="5">Alimentos no perecederos</option>
-                            <option value="6">Otro</option>
+                            <option value="" selected disabled>Select a category</option>
+                            <option value="1">Basic supplies</option>
+                            <option value="2">Child food</option>
+                            <option value="3">Potable water</option>
+                            <option value="4">Fruits and vegetables</option>
+                            <option value="5">Non-perishable foods</option>
+                            <option value="6">Other</option>
                         </select>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="Ej. Arroz" required>
+                        <label class="form-label">Product</label>
+                        <input type="text" class="form-control" name="producto[]" maxlength="150" placeholder="E.g. Rice" required>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label class="form-label">Cantidad requerida</label>
-                        <input type="text" class="form-control" name="cantidad_requerida[]" maxlength="100" placeholder="Ej. 20 libras" required>
+                        <label class="form-label">Required amount</label>
+                        <input type="text" class="form-control" name="cantidad_requerida[]" maxlength="100" placeholder="E.g. 20 pounds" required>
                     </div>
                 </div>
             </div>
@@ -413,7 +413,7 @@ function initSolicitudForm() {
         const productos = productosContainer.querySelectorAll(".producto-item");
 
         if (productos.length <= 1) {
-            mostrarMensaje("Debes tener al menos un producto en la solicitud.", "danger");
+            mostrarMensaje("You must have at least one product in the request.", "danger");
             return;
         }
 
@@ -427,7 +427,7 @@ function initSolicitudForm() {
         productos.forEach((producto, index) => {
             const titulo = producto.querySelector("h6");
             if (titulo) {
-                titulo.textContent = `Producto #${index + 1}`;
+                titulo.textContent = `Product #${index + 1}`;
             }
         });
     }
@@ -440,7 +440,7 @@ function initSolicitudForm() {
         btnPublicar.disabled = true;
         btnPublicar.innerHTML = `
             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-            Publicando...
+            Publishing...
         `;
 
         try {
@@ -467,15 +467,15 @@ function initSolicitudForm() {
 
                 actualizarNumeracion();
             } else {
-                mostrarMensaje(datos.message || "No se pudo crear la solicitud.", "danger");
+                mostrarMensaje(datos.message || "The request could not be created.", "danger");
             }
 
         } catch (error) {
             console.error(error);
-            mostrarMensaje("No se pudo conectar con el servidor.", "danger");
+            mostrarMensaje("Could not connect to the server.", "danger");
         } finally {
             btnPublicar.disabled = false;
-            btnPublicar.innerHTML = `<i class="bi bi-send me-2"></i> Publicar solicitud`;
+            btnPublicar.innerHTML = `<i class="bi bi-send me-2"></i> Publish request`;
         }
     });
 
@@ -541,7 +541,7 @@ function cargarMisCompromisos(mantenerFiltro = false) {
     })
     .catch(error => {
       console.error("Error cargando compromisos:", error);
-      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar tus compromisos.</p>`;
+      contenedor.innerHTML = `<p class="text-danger">Your pledges could not be loaded.</p>`;
     });
 }
 
@@ -559,8 +559,8 @@ function pintarCompromisos(lista) {
 
   if (lista.length === 0) {
     const mensaje = compromisosData.length === 0
-      ? "Aún no tienes compromisos de donación."
-      : "No tienes compromisos en esta categoría.";
+      ? "You don't have any donation pledges yet."
+      : "You have no pledges in this category.";
     contenedor.innerHTML = `<p class="text-muted">${mensaje}</p>`;
     return;
   }
@@ -583,7 +583,7 @@ function pintarCompromisos(lista) {
 
   contenedor.innerHTML = lista.map(c => {
     const estado = estadoCompromiso(c);
-    const fecha = new Date(c.fecha_compromiso).toLocaleDateString();
+    const fecha = new Date(c.fecha_compromiso).toLocaleDateString("en-US");
 
     // Mientras está en progreso, el donor puede marcarla como entregada o cancelarla
     const acciones = estado === "pendiente" ? `
@@ -608,7 +608,7 @@ function pintarCompromisos(lista) {
       <div class="card border-0 shadow-sm p-3 d-flex flex-row justify-content-between align-items-center">
         <div>
           <h5 class="fw-bold mb-1">${escapeHtml(c.titulo)}</h5>
-          <p class="text-muted small mb-0">${escapeHtml(c.ubicacion) || "Ubicación no especificada"} - ${fecha}</p>
+          <p class="text-muted small mb-0">${escapeHtml(c.ubicacion) || "Location not specified"} - ${fecha}</p>
           ${nota}
           ${acciones}
         </div>
@@ -620,8 +620,8 @@ function pintarCompromisos(lista) {
 
 function actualizarCompromiso(idCompromiso, nuevoEstado) {
   const pregunta = nuevoEstado === "entregado"
-    ? "¿Confirmas que ya entregaste esta donación? El solicitante deberá confirmarla."
-    : "¿Seguro que quieres cancelar este compromiso?";
+    ? "Do you confirm you already delivered this donation? The requester will need to confirm it."
+    : "Are you sure you want to cancel this pledge?";
 
   if (!confirm(pregunta)) {
     return;
@@ -641,13 +641,13 @@ function actualizarCompromiso(idCompromiso, nuevoEstado) {
       if (data.status === "success") {
         cargarMisCompromisos(true);
       } else {
-        alert(data.message || "No se pudo actualizar el compromiso.");
+        alert(data.message || "The pledge could not be updated.");
         cargarMisCompromisos(true);
       }
     })
     .catch(error => {
       console.error("Error al actualizar compromiso:", error);
-      alert("No se pudo conectar con el servidor.");
+      alert("Could not connect to the server.");
     });
 }
 
@@ -678,7 +678,7 @@ function cargarMisSolicitudes() {
     })
     .catch(error => {
       console.error("Error cargando mis solicitudes:", error);
-      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar tus solicitudes.</p>`;
+      contenedor.innerHTML = `<p class="text-danger">Your requests could not be loaded.</p>`;
     });
 }
 
@@ -687,7 +687,7 @@ function pintarMisSolicitudes(lista) {
   if (!contenedor) return;
 
   if (lista.length === 0) {
-    contenedor.innerHTML = `<p class="text-muted">Aún no has creado ninguna solicitud.</p>`;
+    contenedor.innerHTML = `<p class="text-muted">You haven't created any requests yet.</p>`;
     return;
   }
 
@@ -718,12 +718,12 @@ function pintarMisSolicitudes(lista) {
   contenedor.innerHTML = lista.map((s, index) => {
 
     const donantesHtml = s.donantes.length === 0
-      ? `<p class="text-muted small mb-0 mt-2">Nadie se ha comprometido aún.</p>`
+      ? `<p class="text-muted small mb-0 mt-2">Nobody has pledged yet.</p>`
       : s.donantes.map(d => {
           const foto = d.foto_perfil
             ? `<img src="uploads/${escapeHtml(d.foto_perfil)}" class="rounded-circle me-2" style="width: 28px; height: 28px; object-fit: cover;" alt="${escapeHtml(d.nombre)}">`
             : `<div class="rounded-circle bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;"><i class="bi bi-person-fill text-secondary small"></i></div>`;
-          const fecha = new Date(d.fecha_compromiso).toLocaleDateString();
+          const fecha = new Date(d.fecha_compromiso).toLocaleDateString("en-US");
 
           // El solicitante puede confirmar que recibió la donación
           // mientras esté en progreso o marcada como entregada por el donante
@@ -758,7 +758,7 @@ function pintarMisSolicitudes(lista) {
         <div class="d-flex justify-content-between align-items-center" style="cursor: pointer;" onclick="toggleDonantes(${index})">
           <div>
             <h5 class="fw-bold mb-1">${escapeHtml(s.titulo)}</h5>
-            <p class="text-muted small mb-0">${escapeHtml(s.ubicacion) || "Sin ubicación"} - ${s.cantidad_beneficiados || "N/A"} Beneficiaries · ${s.total_compromisos} pledge(s)</p>
+            <p class="text-muted small mb-0">${escapeHtml(s.ubicacion) || "No location"} - ${s.cantidad_beneficiados || "N/A"} Beneficiaries · ${s.total_compromisos} pledge(s)</p>
           </div>
           <div class="d-flex align-items-center gap-2">
             <span class="badge ${badgeClase[s.estado]} px-3 py-2">${badgeTexto[s.estado]}</span>
@@ -781,7 +781,7 @@ function pintarMisSolicitudes(lista) {
 }
 
 function confirmarEntrega(idCompromiso) {
-  if (!confirm("¿Confirmas que recibiste esta donación? Esto marcará el compromiso como completado.")) {
+  if (!confirm("Do you confirm you received this donation? This will mark the pledge as completed.")) {
     return;
   }
 
@@ -796,13 +796,13 @@ function confirmarEntrega(idCompromiso) {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success") {
-        alert(data.message || "No se pudo confirmar la entrega.");
+        alert(data.message || "The delivery could not be confirmed.");
       }
       cargarMisSolicitudes();
     })
     .catch(error => {
       console.error("Error al confirmar entrega:", error);
-      alert("No se pudo conectar con el servidor.");
+      alert("Could not connect to the server.");
     });
 }
 
@@ -812,7 +812,7 @@ function toggleDonantes(index) {
 }
 
 function cerrarSolicitud(idSolicitud) {
-  if (!confirm("¿Seguro que quieres cerrar esta solicitud? Ya no recibirá más compromisos.")) {
+  if (!confirm("Are you sure you want to close this request? It will no longer receive pledges.")) {
     return;
   }
 
@@ -829,12 +829,12 @@ function cerrarSolicitud(idSolicitud) {
       if (data.status === "success") {
         cargarMisSolicitudes();
       } else {
-        alert(data.message || "No se pudo cerrar la solicitud.");
+        alert(data.message || "The request could not be closed.");
       }
     })
     .catch(error => {
       console.error("Error al cerrar solicitud:", error);
-      alert("No se pudo conectar con el servidor.");
+      alert("Could not connect to the server.");
     });
 }
 
@@ -857,7 +857,7 @@ function cargarRecentRequestsHome() {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success" || data.solicitudes.length === 0) {
-        contenedor.innerHTML = `<p class="text-muted">No hay solicitudes activas por el momento.</p>`;
+        contenedor.innerHTML = `<p class="text-muted">There are no active requests at the moment.</p>`;
         return;
       }
 
@@ -880,7 +880,7 @@ function cargarRecentRequestsHome() {
                 <img src="${escapeHtml(imagen)}" class="rounded-3 card-img-custom w-50" style="width: 100px; height: 100px; object-fit: cover;" alt="${escapeHtml(sol.titulo)}">
                 <div>
                   <h5 class="mb-1">${escapeHtml(sol.titulo)}</h5>
-                  <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "Sin ubicación"}</p>
+                  <p class="text-muted small mb-2">${escapeHtml(sol.ubicacion) || "No location"}</p>
                   <div class="d-flex flex-wrap gap-1 mb-2">
                     ${badges}
                   </div>
@@ -894,7 +894,7 @@ function cargarRecentRequestsHome() {
     })
     .catch(error => {
       console.error("Error cargando recent requests:", error);
-      contenedor.innerHTML = `<p class="text-danger">No se pudieron cargar las solicitudes.</p>`;
+      contenedor.innerHTML = `<p class="text-danger">Requests could not be loaded.</p>`;
     });
 }
 
@@ -906,7 +906,7 @@ function cargarRankingDonantes() {
     .then(response => response.json())
     .then(data => {
       if (data.status !== "success" || data.ranking.length === 0) {
-        contenedor.innerHTML = `<p class="text-muted text-center">Aún no hay donantes este mes. ¡Sé el primero!</p>`;
+        contenedor.innerHTML = `<p class="text-muted text-center">There are no donors this month yet. Be the first!</p>`;
         return;
       }
 
@@ -934,7 +934,7 @@ function cargarRankingDonantes() {
     })
     .catch(error => {
       console.error("Error cargando ranking:", error);
-      contenedor.innerHTML = `<p class="text-danger text-center">No se pudo cargar el ranking.</p>`;
+      contenedor.innerHTML = `<p class="text-danger text-center">The ranking could not be loaded.</p>`;
     });
 }
 
@@ -994,7 +994,7 @@ function initNeedsMap() {
         .addTo(capa)
         .bindPopup(`
           <strong>${escapeHtml(sol.titulo)}</strong><br>
-          <small>${escapeHtml(sol.ubicacion) || "Ubicación no especificada"}</small><br>
+          <small>${escapeHtml(sol.ubicacion) || "Location not specified"}</small><br>
           <small class="text-muted">${textos[estadoPin]}</small><br>
           <button class="btn btn-sm btn-success mt-2" onclick="loadRequestDetail(${Number(sol.id_solicitud)})">View Details</button>
         `);

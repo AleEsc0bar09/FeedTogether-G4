@@ -7,13 +7,13 @@ require_once '../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['status' => 'error', 'message' => 'Método no permitido.']);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
     exit;
 }
 
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
-    echo json_encode(['status' => 'error', 'message' => 'Debes iniciar sesión.']);
+    echo json_encode(['status' => 'error', 'message' => 'You must log in.']);
     exit;
 }
 
@@ -21,13 +21,13 @@ $idUsuario = (int) $_SESSION['usuario_id'];
 $idCompromiso = filter_var($_POST['id_compromiso'] ?? '', FILTER_VALIDATE_INT);
 
 if (!$idCompromiso) {
-    echo json_encode(['status' => 'error', 'message' => 'Compromiso no válido.']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid pledge.']);
     exit;
 }
 
 try {
-    // Solo el dueño de la solicitud puede confirmar, y solo si el compromiso
-    // sigue en progreso o ya fue marcado como entregado por el donante.
+    // Only the owner of the request can confirm, and only if the pledge
+    // is still in progress or was already marked as delivered by the donor.
     $stmt = $conexion->prepare("
         UPDATE compromisos_donacion cd
         JOIN solicitudes s ON cd.id_solicitud = s.id_solicitud
@@ -44,19 +44,19 @@ try {
     if ($stmt->rowCount() === 0) {
         echo json_encode([
             'status' => 'error',
-            'message' => 'No se pudo confirmar. Puede que ya esté completado o cancelado.'
+            'message' => 'The delivery could not be confirmed. It may already be completed or cancelled.'
         ]);
         exit;
     }
 
     echo json_encode([
         'status' => 'success',
-        'message' => '¡Gracias por confirmar la entrega!'
+        'message' => 'Thanks for confirming the delivery!'
     ]);
 
 } catch (PDOException $e) {
     error_log('Error al confirmar entrega: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'No se pudo confirmar la entrega.']);
+    echo json_encode(['status' => 'error', 'message' => 'The delivery could not be confirmed.']);
 }
 ?>

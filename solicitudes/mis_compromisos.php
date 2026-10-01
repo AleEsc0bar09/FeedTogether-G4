@@ -7,7 +7,7 @@ require_once '../config/conexion.php';
 
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
-    echo json_encode(['status' => 'error', 'message' => 'Debes iniciar sesión.']);
+    echo json_encode(['status' => 'error', 'message' => 'You must log in.']);
     exit;
 }
 
@@ -15,7 +15,7 @@ $idUsuario = (int) $_SESSION['usuario_id'];
 
 try {
     $stmt = $conexion->prepare("
-        SELECT 
+        SELECT
             cd.id_compromiso,
             cd.estado,
             cd.fecha_compromiso,
@@ -38,6 +38,6 @@ try {
 
 } catch (PDOException $e) {
     error_log('Error al listar compromisos: ' . $e->getMessage());
-    echo json_encode(['status' => 'error', 'message' => 'Error al cargar tus compromisos.']);
+    echo json_encode(['status' => 'error', 'message' => 'Error loading your pledges.']);
 }
 ?>

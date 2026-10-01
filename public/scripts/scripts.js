@@ -2,21 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSection("home");
 });
 
-
-function initRegisterForm() {
-  const form = document.getElementById("registerForm");
-
-  if (!form) {
-    console.error("registerForm not found in the DOM.");
-    return;
-  }
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    // Próximo paso: armar el FormData y enviarlo con fetch a auth/register.php
-  });
-}
-
 let historialSecciones = [];
 
 function loadSection(sectionName, guardarEnHistorial = true) {
@@ -31,7 +16,7 @@ function loadSection(sectionName, guardarEnHistorial = true) {
     historialSecciones.push(sectionName);
   }
 
-  fetch(`${sectionName}.html` ,{ cache: 'no-store' })
+  fetch(`${sectionName}.html`, { cache: 'no-store' })
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to load section: ${response.statusText}`);
@@ -43,18 +28,16 @@ function loadSection(sectionName, guardarEnHistorial = true) {
       updateActiveNavLink(sectionName);
       window.scrollTo(0, 0);
 
-             if (sectionName === "register") {
+      if (sectionName === "register") {
         initRegisterForm();
       } else if (sectionName === 'map') {
         initNeedsMap();
-     } else if (sectionName === 'home') {
-     cargarRecentRequestsHome();
-     cargarRankingDonantes();
-     }
-      else if (sectionName === 'request') {
+      } else if (sectionName === 'home') {
+        cargarRecentRequestsHome();
+        cargarRankingDonantes();
+      } else if (sectionName === 'request') {
         cargarSolicitudes();
       }
-      
     })
     .catch((error) => {
       console.error("Error loading dynamic section:", error);
@@ -88,7 +71,7 @@ function updateActiveNavLink(activeSection) {
   });
 }
 
-//Funcion para hacer una revisión de todos los elementos del form:
+// Registration form: builds the FormData and sends it to auth/register.php
 function initRegisterForm() {
   const form = document.getElementById("registerForm");
 
@@ -110,11 +93,11 @@ function initRegisterForm() {
       .then((response) => response.json())
       .then((data) => {
         alert(data.message);
-        loadSection('login')
+        loadSection('login');
       })
       .catch((error) => {
         console.error("Error al registrar el usuario:", error);
-        alert("Ocurrió un error al procesar el registro. Inténtalo de nuevo.");
+        alert("An error occurred while processing the registration. Please try again.");
       });
   });
 }
@@ -144,8 +127,7 @@ function loginAs() {
     })
     .catch((error) => {
       console.error("Error al iniciar sesión:", error);
-      alert("Ocurrió un error al procesar el inicio de sesión. Inténtalo de nuevo.");
+      alert("An error occurred while processing the login. Please try again.");
     });
 
 }
-

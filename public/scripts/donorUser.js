@@ -36,11 +36,9 @@ function loadSection(sectionName, guardarEnHistorial = true) {
         cargarRankingDonantes();
       } else if (sectionName === "request") {
         cargarSolicitudes();
-      }
-      else if (sectionName === 'profile') {
+      } else if (sectionName === 'profile') {
         cargarDatosPerfil();
-      }
-      else if (sectionName === 'mydonations') {
+      } else if (sectionName === 'mydonations') {
         cargarMisCompromisos();
       }
     })
@@ -96,7 +94,7 @@ function cargarFotoPerfil() {
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "success" && data.usuario.foto_perfil) {
-        wrapper.innerHTML = `<img src="uploads/${data.usuario.foto_perfil}" alt="Perfil" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
+        wrapper.innerHTML = `<img src="uploads/${data.usuario.foto_perfil}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
       }
     })
     .catch((error) => {
@@ -120,9 +118,9 @@ function cargarDatosPerfil() {
       document.getElementById("perfil-nombre").textContent = u.nombre || "—";
       document.getElementById("perfil-rol").textContent = u.rol || "—";
       document.getElementById("perfil-email").textContent = u.email || "—";
-      document.getElementById("perfil-telefono").textContent = u.telefono || "No especificado";
-      document.getElementById("perfil-departamento").textContent = formatearTexto(u.departamento) || "No especificado";
-      document.getElementById("perfil-distrito").textContent = formatearTexto(u.distrito) || "No especificado";
+      document.getElementById("perfil-telefono").textContent = u.telefono || "Not specified";
+      document.getElementById("perfil-departamento").textContent = formatearTexto(u.departamento) || "Not specified";
+      document.getElementById("perfil-distrito").textContent = formatearTexto(u.distrito) || "Not specified";
 
       if (u.foto_perfil) {
         const img = document.getElementById("perfil-foto-grande");
@@ -136,17 +134,17 @@ function cargarDatosPerfil() {
     });
 }
 
-// 1. Rellenar el modal con los datos actuales cada vez que se abre
+// 1. Fill the modal with the current data every time it opens
 document.addEventListener("show.bs.modal", function (event) {
   if (event.target.id !== "modalEditarPerfil") return;
- 
+
   fetch("../auth/perfil.php", { cache: "no-store" })
     .then((response) => response.json())
     .then((data) => {
       if (data.status !== "success") return;
- 
+
       const u = data.usuario;
- 
+
       document.getElementById("edit-nombre").value = u.nombre || "";
       document.getElementById("edit-email").value = u.email || "";
       document.getElementById("edit-departamento").value = u.departamento || "";
@@ -158,17 +156,17 @@ document.addEventListener("show.bs.modal", function (event) {
       console.error("Error al cargar los datos en el modal de edición:", error);
     });
 });
- 
-// 2. Enviar los cambios a auth/editar_perfil.php
+
+// 2. Send the changes to auth/editar_perfil.php
 document.addEventListener("submit", function (event) {
   if (event.target.id !== "formEditarPerfil") return;
- 
+
   event.preventDefault();
- 
+
   const form = event.target;
   const boton = document.getElementById("btnGuardarPerfil");
   boton.disabled = true;
- 
+
   fetch("../auth/editar_perfil.php", {
     method: "POST",
     body: new FormData(form),
@@ -176,7 +174,7 @@ document.addEventListener("submit", function (event) {
     .then((response) => response.json())
     .then((data) => {
       alert(data.message);
- 
+
       if (data.status === "success") {
         const modalEl = document.getElementById("modalEditarPerfil");
         bootstrap.Modal.getOrCreateInstance(modalEl).hide();
@@ -185,7 +183,7 @@ document.addEventListener("submit", function (event) {
     })
     .catch((error) => {
       console.error("Error al editar el perfil:", error);
-      alert("No se pudo conectar con el servidor. Inténtalo nuevamente.");
+      alert("Could not connect to the server. Please try again.");
     })
     .finally(() => {
       boton.disabled = false;

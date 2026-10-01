@@ -6,31 +6,31 @@ header('Content-Type: application/json; charset=utf-8');
 require_once '../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status' => 'error', 'message' => 'Método no permitido.']);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
     exit;
 }
 
-// Obtener datos enviados (Soporta JSON o $_POST)
+// Get submitted data (supports JSON or $_POST)
 $inputData = json_decode(file_get_contents('php://input'), true);
 
 $email = trim($inputData['correo'] ?? $_POST['correo'] ?? '');
 $password = trim($inputData['contra'] ?? $_POST['contra'] ?? '');
 
 if (empty($email) || empty($password)) {
-    echo json_encode(['status' => 'error', 'message' => 'Por favor, llena todos los campos.']);
+    echo json_encode(['status' => 'error', 'message' => 'Please fill in all fields.']);
     exit;
 }
 
 try {
-    // Buscar el usuario por email (incluyendo rol, foto y datos de contacto)
+    // Look up the user by email (including role, photo and contact data)
     $stmt = $conexion->prepare("SELECT id_usuario, nombre, email, password, rol, foto_perfil, departamento, distrito, telefono FROM usuario WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $usuario = $stmt->fetch();
 
-    // Verificar si el usuario existe y si la contraseña coincide
+    // Check that the user exists and the password matches
     if ($usuario && password_verify($password, $usuario['password'])) {
-        
-        // Guardar información relevante en la sesión
+
+        // Store relevant information in the session
         $_SESSION['usuario_id'] = $usuario['id_usuario'];
         $_SESSION['usuario_nombre'] = $usuario['nombre'];
         $_SESSION['usuario_email'] = $usuario['email'];
@@ -42,7 +42,7 @@ try {
 
         echo json_encode([
             'status' => 'success',
-            'message' => 'Inicio de sesión exitoso.',
+            'message' => 'Login successful.',
             'usuario' => [
                 'id_usuario' => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
@@ -55,13 +55,14 @@ try {
             ]
         ]);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Correo o contraseña incorrectos.']);
+        echo json_encode(['status' => 'error', 'message' => 'Incorrect email or password.']);
     }
 
 } catch (PDOException $e) {
+    error_log('Error al iniciar sesión: ' . $e->getMessage());
     echo json_encode([
         'status' => 'error',
-        'message' => 'Error al procesar la solicitud: ' . $e->getMessage()
+        'message' => 'An error occurred while processing the request.'
     ]);
 }
 ?>

@@ -7,13 +7,13 @@ require_once '../config/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    echo json_encode(['status' => 'error', 'message' => 'Método no permitido.']);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
     exit;
 }
 
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
-    echo json_encode(['status' => 'error', 'message' => 'Debes iniciar sesión.']);
+    echo json_encode(['status' => 'error', 'message' => 'You must log in.']);
     exit;
 }
 
@@ -21,12 +21,12 @@ $idUsuario = (int) $_SESSION['usuario_id'];
 $idSolicitud = filter_var($_POST['id_solicitud'] ?? '', FILTER_VALIDATE_INT);
 
 if (!$idSolicitud) {
-    echo json_encode(['status' => 'error', 'message' => 'Solicitud no válida.']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
     exit;
 }
 
 try {
-    // El id_usuario en el WHERE garantiza que solo el dueño pueda cerrarla
+    // The id_usuario in the WHERE guarantees that only the owner can close it
     $stmt = $conexion->prepare("
         UPDATE solicitudes
         SET estado = 'cerrada'
@@ -40,15 +40,15 @@ try {
     ]);
 
     if ($stmt->rowCount() === 0) {
-        echo json_encode(['status' => 'error', 'message' => 'No se pudo cerrar la solicitud.']);
+        echo json_encode(['status' => 'error', 'message' => 'The request could not be closed.']);
         exit;
     }
 
-    echo json_encode(['status' => 'success', 'message' => 'Solicitud cerrada correctamente.']);
+    echo json_encode(['status' => 'success', 'message' => 'Request closed successfully.']);
 
 } catch (PDOException $e) {
     error_log('Error al cerrar solicitud: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'No se pudo cerrar la solicitud.']);
+    echo json_encode(['status' => 'error', 'message' => 'The request could not be closed.']);
 }
 ?>
